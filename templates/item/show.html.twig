@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<body>
+
+	<h1>{{ item.name }}</h1>
+	{% set prefix  = 'item.' %}
+    <a href="{{ path( prefix~'list_base') }}" class="btn btn-primary">Back</a>
+</body>
+
+{% endblock %}

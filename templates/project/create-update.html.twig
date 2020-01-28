@@ -1,0 +1,57 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block stylesheets %}
+
+	<style>
+		#project-create-form{
+			min-height:329.66px;
+			max-height:329.66px;
+		}
+	</style>
+
+{% endblock %}
+
+
+{% block middle_top %}
+
+	<div id="project-create-form">
+		
+	    {{ form(form) }}
+
+		{% set prefix  = 'project.' %}
+	    <a href="{{ path( prefix~'list_base') }}" class="btn btn-primary">Back</a>
+	</div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+    <script>
+
+        $(document).ready(function(){
+
+        	var urlSaveForm = '{{ path('project.create') }}';
+        	var urlRedirection = '{{ path('home') }}';
+
+			$('#form_save').on( 'click', function (e) {
+				e.preventDefault();
+				var form = $(this).closest('form');
+				var formData = form.serialize();
+
+				$.ajax({
+					method:'POST',
+					url: urlSaveForm,
+					data: formData,
+					success: function(data){
+						location.href = urlRedirection;
+					}
+				});
+			});
+        });
+
+    </script>
+
+
+{% endblock %}

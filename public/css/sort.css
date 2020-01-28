@@ -1,0 +1,14 @@
+[draggable] {
+    user-select: none;
+    -webkit-user-drag: element;
+    cursor: move;
+        border: 5px dashed red;
+}
+table.sortable {
+    i.fa.fa-arrows {
+        color: #999;
+    }
+    tr.over {
+        border: 5px dashed red;
+    }
+}

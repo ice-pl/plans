@@ -1,0 +1,193 @@
+{% extends('base.html.twig') %}
+
+{% if  default_middle_top is not defined %}
+	{% set default_middle_top = 'App\\Controller\\ProductController::list' %}
+	{% set default_middle_bottom = 'App\\Controller\\ItemController::list' %}
+
+{% endif %}
+
+
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+
+
+    <style> 
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+
+
+		#column-left{
+		    width: 13%;
+		   	float: left;
+		   	max-height: 900px;
+		}
+		#column-middle{
+		    width: 76.5%;
+		    overflow-x: hidden;
+		    overflow-y: hidden;
+
+		   	max-height: 900px;
+		}
+		#column-right{
+            width: 10.5%;
+		   	float: right;
+		   	max-height: 900px;
+		}
+
+
+
+    </style>
+{% endblock %}
+
+
+
+{% block body %}
+
+	{# 1 - jQuery #}
+	{# 2 - jQuery ui#}
+	{# 3 - Popper #}
+	{# 4 - Bootstrap js #}
+
+
+	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/jquery-ui-1.12.1.min.js') }}"></script>
+
+	<script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+
+	<script>
+
+
+
+
+
+
+
+
+	    function refreshColumnMiddleTop(urlForColumnMiddleTop)
+	    {
+			// alert(urlForColumnMiddleTop.value)
+	        $.ajax({
+	            type: "GET",
+	            url: urlForColumnMiddleTop.value,
+	            data: '',
+	            cache: false,
+	            success: function(data){
+	                $('#column-middle-top').html(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
+
+
+	    function refreshColumnMiddleBottom(urlForColumnMiddleBottom)
+	    {
+	        // alert(urlForColumnMiddleTop.value)
+	        $.ajax({
+	            type: "GET",
+	            url: urlForColumnMiddleBottom.value,
+	            data: '',
+	            cache: false,
+	            success: function(data){
+	                $('#column-middle-bottom').html(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="top">
+		{% block navbar %}
+			{{ parent() }}
+		{% endblock %}
+	</div>
+
+
+
+
+	<div class="row">
+
+		<div id="column-left"> 
+			{% block left %}
+				{{ render(controller( 'App\\Controller\\ProjectController::list' )) }}
+			{% endblock %}
+		</div>
+
+
+		<div id="column-middle">
+			{# {% block middle %} #}
+
+
+
+
+			<div class="column" id="column-middle-top">
+				{% block middle_top %}
+					{{ render( controller( default_middle_top )) }}
+				{% endblock %}
+			</div>
+			<div id="column-middle-bottom">
+				{% block middle_bottom %}
+					{# {{ render( controller( default_middle_bottom )) }} #}
+				{% endblock %}
+			</div>
+
+
+
+
+			{# {% endblock %} #}
+
+		</div>
+
+
+		<div id="column-right">
+			{% block right %}
+					{{ render( controller( 'App\\Controller\\SampleProductController::list' )) }}
+					{# {{ render( controller( default_middle_top )) }} #}
+
+			{% endblock %}
+		</div>
+
+	</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block javascripts %}
+{% endblock %}

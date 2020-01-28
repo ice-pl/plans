@@ -1,0 +1,154 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block stylesheets %}
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+{% endblock %}
+
+
+
+
+
+{% block body %}
+
+
+    <ul id="conversation-list">
+        {% for conversation in conversations %}
+            <li class = "default" data-index="{{ conversation.id }}">
+                <span id="username">{{ conversation.user.username }} : &nbsp; </span><span id="text"> {{ conversation.content }}</span>
+                <a href="{{ path('conversation.delete', { 'id': conversation.id }) }}" class="btn btn-primary deleteBtn" id="conversation-{{ conversation.id }}">-</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+
+
+
+
+
+
+<script>
+
+    var $inner_conversation = $('#conversation-list');
+    if ( $inner_conversation.length){
+        $('#conversation-list').scrollTop($('#conversation-list')[0].scrollHeight);
+    }
+    
+
+    $('.deleteBtn').click(function (e) {
+        e.preventDefault();
+
+        var $current = $(this);
+        conversationId = $(this).attr('id');
+
+        $.ajax({
+            url: $(this).attr('href'),
+            data: {'id':conversationId},
+            method: 'post',
+            success: function () {
+                $current.parent().remove();
+            },
+            error: function () {
+            },
+        });
+    });
+
+
+
+
+
+
+    $('#form_save').click(function (e) {
+    	e.preventDefault();
+
+
+    	var formURL = "{{ path('conversation.create_byItem', {itemId: itemId }) }}";
+    	var currentUsername = '{{ user.username }}' ;
+
+
+    	if($("#form_content").val() == '')
+            return false;
+
+    	$.ajax({
+    		url: formURL,
+    		type: "POST",
+    		data: $('#form_content'),
+
+    		success: function (result)
+    			{
+
+    				var lastConversationId = getLastConversationId();
+
+    				var path = '{{ path('conversation.delete', { 'id': 'conversation_id' }) }}';
+    				path = path.replace("conversation_id", lastConversationId);
+
+
+    				$('#conversation-list').append(
+    					'<li class="default" data-index='+lastConversationId+'>' +
+    					'<span id="username">' + currentUsername + ' : &nbsp; </span>' +
+    					'<span id="text"> '+ $('#form_content').val() + '\xa0</span>'+
+                        '<a href="'+path+'" class="btn btn-primary deleteBtn" id="conversation-'+lastConversationId+'"'+''+'>-</a>'+
+    					'</li>'
+    				);
+
+
+    				$('#form_content').val('');
+
+
+    				$('#conversation-list').scrollTop($('#conversation-list')[0].scrollHeight);
+
+
+                    $('.deleteBtn').click(function (e) {
+                        e.preventDefault();
+
+                        var $current = $(this);
+                        conversationId = $(this).attr('id');
+
+                        $.ajax({
+                            url: $(this).attr('href'),
+                            data: {'id':conversationId},
+                            method: 'post',
+                            success: function () {
+                                $current.parent().remove();
+                            },
+                            error: function () {
+                            },
+                        });
+                    });
+    			}
+    	});
+
+    });
+
+
+
+	function getLastConversationId() {
+	    var lastConversationId = null;
+
+		var lastConversationId_url= "{{ path('conversation.getLastId', {itemId: itemId }) }}";
+
+	    $.ajax({
+	        'async': false,
+	        'global': false,
+	        'url': lastConversationId_url,
+	        'dataType': "json",
+	        'success': function (data) {
+	            // json = data;
+	            lastConversationId = JSON.stringify(data.lastConversationId);
+	        }
+	    });
+	    return lastConversationId;
+	};
+
+
+
+</script>
+
+
+
+
+
+{% endblock %}

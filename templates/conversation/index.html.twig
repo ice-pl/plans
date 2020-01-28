@@ -1,0 +1,95 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block stylesheets %}
+
+
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+
+    <style>
+        #inner_conversation{
+            border: solid 1px lightgrey;
+            border-radius: 5px;
+            display: table-cell;
+            vertical-align: bottom;
+            overflow-y: scroll;
+            display: flex;
+            flex: 1;
+        }
+        #conversation-list {
+            padding: 0px 0px 0px 0px;
+            min-height: 200px;
+            max-height: 200px;
+        }
+        #conversation-list > li{
+            list-style-type: none;
+            padding: 5px 5px 5px 15px;
+            word-break: break-all;
+        }
+        #username{
+            font-weight: 600;
+            margin: 0px 0px 0px -5px;
+        }
+
+
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block body %}
+
+
+
+        <ul id="conversation-list">
+            {% for conversation in conversations %}
+                <li class = "default" data-index="{{ conversation.id }}">
+                    <span id="username">{{ conversation.user.username }} : &nbsp; </span><span id="text"> {{ conversation.content }}</span>
+                    <a href="{{ path('conversation.delete', { 'id': conversation.id }) }}" class="btn btn-primary deleteBtn" id="conversation-{{ conversation.id }}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+
+
+
+
+
+<script>
+
+    var $inner_conversation = $('#inner_conversation');
+    if ( $inner_conversation.length){
+        $('#inner_conversation').scrollTop($('#inner_conversation')[0].scrollHeight);
+    }
+    
+    $(document).ready(function(){
+
+        $('.deleteBtn').click(function (e) {
+            e.preventDefault();
+
+            var $current = $(this);
+            conversationId = $(this).attr('id');
+
+
+            $.ajax({
+                url: $(this).attr('href'),
+                data: {'id':conversationId},
+                method: 'post',
+                success: function () {
+                    $current.parent().remove();
+                },
+                error: function () {
+                },
+            });
+        });
+    });
+
+</script>
+
+
+
+{% endblock %}
+

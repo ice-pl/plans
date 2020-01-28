@@ -1,0 +1,98 @@
+
+
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+    <style> 
+
+        #nav-column-left{
+            width: 13%;
+            float: left;
+            border-right: 5px solid #EB6864;
+
+        }
+
+        #nav-column-middle{
+            width: 76.5%;
+        }
+
+        #nav-column-right{
+            width: 10.5%;
+            float: right;
+            border-left: 5px solid #EB6864;
+        }
+
+        #nav-column-left, #nav-column-middle, #nav-column-right{
+            padding: 3px 3px 5px 3px;
+            margin-bottom:-3px;
+            text-align: center;
+        }
+        #nav-column-right:last-child {
+            padding-right: 17px;
+        }
+        #nav-column-left:first-child {
+            padding-left: 17px;
+        }
+
+    </style>
+
+
+
+<div class="row">
+
+
+    <div id="nav-column-left"> 
+        
+
+
+
+        <a>
+            <button onClick="refreshColumnMiddleTop(this), $(this).attr('value','{{ path('empty') }}'), refreshColumnMiddleBottom(this), $(this).attr('value','{{ path('project.create') }}')" value="{{ path('project.create') }}" type="button" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;">Create</button>
+        </a>
+        <a>
+            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
+        </a>
+        <a>
+            <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+        </a>
+
+
+    </div>
+
+
+    <div id="nav-column-middle">
+
+        <a>
+            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;">Create</button>
+        </a>
+        <a>
+            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
+        </a>
+        <a>
+            <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+        </a>
+    </div>
+
+
+    <div id="nav-column-right">
+
+
+
+        <a>
+            <button onClick="refreshColumnMiddleTop(this), $(this).attr('value','{{ path('empty') }}'), refreshColumnMiddleBottom(this), $(this).attr('value','{{ path('sample_product.create') }}')" value="{{ path('sample_product.create') }}" type="button" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;">Create</button>
+        </a>
+        <a>
+            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
+        </a>
+        <a>
+            <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+        </a>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+</script>

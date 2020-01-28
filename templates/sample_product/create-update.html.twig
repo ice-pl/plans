@@ -1,0 +1,149 @@
+
+
+{% block stylesheets %}
+
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+
+	<style>
+		#sample_product-create-form{
+			min-height:329.66px;
+			max-height:329.66px;
+		}
+
+		input[type='file'] {
+		  opacity:0    
+		}
+	</style>
+
+{% endblock %}
+
+
+
+{% block middle_top %}
+
+	{{ form_start(form) }}
+
+
+	<div id="sample_product-create-form">
+
+
+
+		{{ form_row(form.position, { 'value': '1' } ) }}
+
+
+
+
+
+
+	    <div class="card-group">
+	        <div class="row-cards" id="container">
+
+	            <div class="empty" data-index="" data-position="">
+	                <div class="card border-primary fill" data-index="" data-position="">
+	                    <div class="card-header">{# header_doing #}</div>
+
+            {# {{ form_widget(form.image) }} #}
+
+						{{ form_row(form.image) }}
+						<div class="form-card-img-top">
+							Insert image
+						</div>
+
+	                    {# <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="..."> #}
+
+{# 	                    <a>
+	                        <button onClick="" value=""></button>
+	                    </a> #}
+
+	                    <h5 class="card-title">{{ form_row(form.name) }}</h5>
+	                    <div class="kanban-buttons">
+	                        <a href="#" class="btn btn-primary todo">1</a>
+	                        <a href="#" class="btn btn-primary doing">1</a>
+	                        <a href="#" class="btn btn-primary done">1</a>
+	                    </div>
+	                    <br>
+
+	                    {# {% set hours = "%02d"|format( undone_value % 24 ) %} #}
+	                    {# {% set days = "%02d"|format( (undone_value - hours) % 23 ) %} #}
+
+	                    <div class="card-footer">00:00:00:00</div>
+	                </div>
+	            </div>
+
+	        </div>
+	    </div>
+
+
+
+
+
+{# 		{% set prefix  = 'sample_product.' %}
+	    <a href="{{ path( prefix~'list_base') }}" class="btn btn-primary">Back</a>
+	    <a href="{{ path( 'sample_item.create') }}" class="btn btn-primary">Add item</a> #}
+
+
+
+		{{ form_row(form.save) }}
+	</div>
+	
+	{{ form_end(form) }}
+
+{% endblock %}
+
+
+
+
+
+{% block javascripts %}
+
+    <script>
+        $(document).ready(function(){
+
+    		$('.card-title * #form_name').attr('placeholder', 'Insert Name');
+    		$('.card-title * label').css('display','none');
+
+    		$('label[for="form_image"]').css('display','none');
+
+    		$('#form_image').css('width','172px').css('height','115px');
+    		$('.form-card-img-top').css('top','-72px').css('right','-40px').css('position','relative').css('max-height','0px').css('pointer-events','none');
+        
+    		$('#form_position').parent().css('display','none');
+
+
+
+
+        	var urlSaveForm = '{{ path('sample_product.create') }}';
+        	var urlRedirection = '{{ path('home') }}';
+
+			$('#form_save').on( 'click', function (e) {
+				e.preventDefault();
+				var form = $(this).closest('form');
+				var formData = form.serialize();
+
+				$.ajax({
+					method:'POST',
+					url: urlSaveForm,
+					data: formData,
+					success: function(data){
+						location.href = urlRedirection;
+					}
+				});
+			});
+
+
+
+
+
+
+
+
+
+
+        });
+
+    </script>
+
+
+{% endblock %}
+
+

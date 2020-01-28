@@ -1,0 +1,363 @@
+{% extends 'home/index.html.twig' %}
+
+
+{% block middle %}
+                
+
+
+<style>
+
+
+/*porządki*/
+/*do obslugi js*/
+
+/*///////////////////////////////*/
+
+    .panner {
+        display: inline-block;
+        width: 50px;
+        height: calc( 100% - 5px);
+
+
+        font-size: 64px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-style: solid; 
+        cursor: default;
+        opacity: 0; 
+    }
+    .active {
+        color:red;
+        opacity: 1.0; 
+        cursor: pointer;
+    }
+    .panner {
+        position: absolute;
+        top: 4px;
+    }
+    #panLeft {
+        left: 0px;
+    }
+    #panRight {
+        right: 0px;
+    }
+    .card-group{
+        position: relative;
+        /*flex: 1;*/
+        display: flex;
+    }
+
+
+/*    #container{
+        margin-left: -50px;
+        margin-right: -50px;
+    }
+    .panner {
+        position: sticky;
+    }
+    #panLeft {
+        left: 50px;
+    }
+    #panRight {
+        right: 50px;
+    }*/
+
+
+
+/*///////////////////////////////*/
+
+
+
+.row-cards {
+    /*overflow-x: auto;*/
+    overflow-x: hidden;
+    white-space: nowrap;
+        margin-top: 3px;
+}
+
+
+
+.empty{
+    border-style: solid;
+    /*border-color: #EB6864;*/
+    border-color: #EB686440;
+
+    border-width: 1px;
+    border-radius: 5px;
+    height: calc( 100% - 2px);
+
+    max-width: 11rem;
+    min-width: 11rem;
+
+        vertical-align: text-top;
+        display: inline-block;
+        float: none;
+
+        background-color: #fcfcfc;
+
+
+}
+
+
+
+
+
+
+
+
+
+/*colors*/
+
+    .card-title{
+        text-align: center;
+    }
+    .kanban-buttons>.todo{
+        background-color: #ff00ff;
+        margin-left: 5px;
+    }
+    .kanban-buttons>.doing{
+        background-color: #cccc00;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .kanban-buttons>.done{
+        background-color: #00ffff;
+        margin-right: 5px;
+    }
+    .kanban-buttons>*:hover{
+        opacity: 0.6; 
+    }
+    .kanban-buttons>*{
+        opacity: 0.3; 
+        transition: 0.3s;
+    }
+    .card-header {cursor: move;}
+    .card-img-top{cursor: pointer;}
+    .card-footer{cursor: default;}
+    .card-title{cursor: default;}
+
+    .kanban-buttons>*{
+        border-style: none;
+    }
+
+
+
+
+/*size*/
+
+
+    .kanban-buttons{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .card-title{
+        margin-top: 13px;
+        margin-bottom: 15px;
+    }
+    .card-footer{
+        max-width: 174px;
+        min-width: 174px;
+        bottom: 0px;
+    }
+
+
+</style>
+
+
+
+<div class="card-group">
+    <div class="row-cards" id="container">
+
+        <div class="empty" id="position-1">
+            <div class="card border-primary fill" id="position-1">
+                <div class="card-header">Header-doing</div>
+                <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
+                <h5 class="card-title">Primary  card title</h5>
+                <div class="kanban-buttons">
+                    <a href="#" class="btn btn-primary todo">1</a>
+                    <a href="#" class="btn btn-primary doing">2</a>
+                    <a href="#" class="btn btn-primary done">3</a>
+                </div>
+                <br>
+                <div class="card-footer">Footer-timer</div>
+            </div>
+        </div>
+
+        <div class="empty" id="position-2">
+            <div class="card border-primary fill" id="position-2">
+                <div class="card-header">Header-doing</div>
+                <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
+                <h5 class="card-title">Primary  card title</h5>
+                <div class="kanban-buttons">
+                    <a href="#" class="btn btn-primary todo">1</a>
+                    <a href="#" class="btn btn-primary doing">1</a>
+                    <a href="#" class="btn btn-primary done">1</a>
+                </div>
+                <br>
+                <div class="card-footer">Footer-timer</div>
+            </div>
+        </div>
+        <div class="empty" id="position-3"></div>
+        <div class="empty" id="position-4"></div>
+        <div class="empty" id="position-5"></div>
+        <div class="empty" id="position-6"></div>
+        <div class="empty" id="position-7"></div>
+        <div class="empty" id="position-8"></div>
+        <div class="empty" id="position-9"></div>
+        <div class="empty" id="position-10"></div>
+
+        <span id="panLeft" class="panner" data-scroll-modifier='-1'>&#10094;</span>
+        <span id="panRight" class="panner" data-scroll-modifier='1'>&#10095;</span>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+{% block javascripts %}
+
+
+
+
+
+<script>
+
+$(document).ready(function(){
+
+
+    var startId;
+    var stopId;
+    // var reverted = true;
+    var reverted;
+
+    console.log("\n "+"na poczatku :="+"\n ");
+    console.log("'reverted' := " + reverted);
+    console.log("'startId' := " + startId);
+    console.log("'stopId' := " + stopId);
+
+    $(".fill").draggable(
+        {
+            helper: 'clone',
+        //     revert: 'invalid',
+
+
+            start:function( event, ui ){
+                parent = $(this.parentNode);
+                startId = $(this.parentNode).attr('id');
+                console.log("\n "+"f.start :="+"\n ");
+                console.log("'startId' := " + startId);
+            },
+
+
+            revert: function(is_valid_drop){
+                // console.log("is_valid_drop = " + is_valid_drop);
+                // when you're done, you need to remove the "dragging" class
+                // and yes, I'm sure this can be refactored better, but I'm 
+                // out of time for today! :)
+                console.log("\n "+"f.revert := "+"\n ");
+
+                if(!is_valid_drop){
+                    reverted = true;
+                    console.log("'reverted' := " + reverted);
+                    return true;
+                } else {
+                    reverted = false;
+                    console.log("'reverted' := " + reverted);
+                }
+            },
+
+            stop:function( event, ui ){
+                stopId = $(this.parentNode).attr('id');
+                console.log("\n "+"f.stop :="+"\n ");
+                console.log("'stopId' := " + stopId);
+                console.log("'reverted' := " + reverted);
+
+                if(reverted == false){
+                    $(parent).attr('class','empty ui-droppable').droppable( 'enable' );
+                }
+            },
+
+        });
+
+
+    $(".empty").droppable(
+        {
+            accept: ".fill",
+
+            // accept: ".active",
+            drop:function(ev, ui){
+                // var droppedItem = $(ui.draggable).clone();
+                var droppedItem = $(ui.draggable);
+                
+                $(this).append(droppedItem);
+
+                $(this).children().attr('id',$(this).attr('id'));
+                $(this).attr('class','empty').droppable( 'disable' );
+
+                console.log($(this).attr('class'));
+                console.log("'reverted-in-droppable' := " + reverted);
+
+            }
+        }
+    ).each(function() {
+            $(".empty:not(:empty)").attr('class','empty ui-droppable-disabled').droppable( 'disable' );
+    });
+
+
+
+
+
+    $("#panLeft").mouseenter(
+        function animateLeft(){
+            $('.row-cards').animate({ scrollLeft: "-="+"100px" }, 
+                100,  "linear",
+                animateLeft );
+        });
+    $("#panLeft").mouseleave(
+        function() {
+            $(".row-cards").stop();
+        });
+
+
+    $("#panRight").mouseenter(
+        function animateRight(){
+            $('.row-cards').animate({ scrollLeft: "+="+"100px" }, 
+                100, "linear",
+                animateRight );
+        });
+    $("#panRight").mouseleave(
+        function() {
+            $(".row-cards").stop();
+        });
+
+
+
+});
+
+
+
+
+</script>
+
+
+
+
+
+{% endblock %}

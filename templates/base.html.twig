@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+
+{% block stylesheets %}
+    <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+</head>
+
+<body style="overflow: hidden;">
+
+
+    {% block body %}
+
+
+
+
+
+            {% block navbar %}
+                    {% include('navbar.html.twig') %}
+                    {% include('navbar_second.html.twig') %}
+            {% endblock %}
+
+
+            {% block columns %}
+            {% endblock %}
+
+
+
+    {% endblock %}
+
+
+
+
+</body>
+</html>

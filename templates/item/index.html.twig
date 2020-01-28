@@ -1,0 +1,624 @@
+
+
+
+{% block stylesheets %}
+
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+
+
+    <style>
+
+        #items{
+            display: flex;
+            flex-direction: column;
+        }
+
+
+
+        #items-title{
+            /*background: white;*/
+            /*min-height: 300px;*/
+            display: flex;
+            float: left;
+        }
+
+
+
+        #items-title > h2:nth-child(1){
+            background: #dd00dd30;
+
+        }
+        #items-title > h2:nth-child(2){
+            background: #dddd0060;
+        }
+        #items-title > h2:nth-child(3){
+            background: #00dddd60;
+        }
+
+
+
+        #items-title > h2{
+            border-radius: 5px;
+            color: #fff;
+            margin: 0px 5px 5px 5px;
+            padding: 0px 0px 0px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clear:both;
+            min-width: 150px;
+            max-width: 150px;
+        }
+
+
+
+        #items-content{
+            background: white;
+            /*min-height: 300px;*/
+            min-height: 393px;
+            max-height: 393px;
+
+            display: flex;
+            float: left;
+        }
+
+
+
+
+
+        #items-sortable-1{
+            background: #dd00dd20;
+            overflow-x: hidden;
+        }
+        #items-sortable-2{
+            background: #dddd0040;
+            overflow-x: hidden;
+        }
+        #items-sortable-3{
+            background: #00dddd40;
+            overflow-x: hidden;
+        }
+
+
+        ul::-webkit-scrollbar {
+            width: 3px;
+        }
+        ul::-webkit-scrollbar-thumb {
+            background: inherit;
+            border: 25vh solid transparent;
+            background-clip: content-box;
+        }
+        ul::-webkit-scrollbar-track {
+          border-radius: 5px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+         #items-sortable-1, #items-sortable-2, #items-sortable-3{ 
+            list-style-type: none;
+            margin: 0px 5px 0px 5px;
+            padding: 0;
+            width: 10%;
+            border-radius: 5px;
+            min-width: 150px;
+            max-width: 150px;
+        }
+
+
+
+        #items-content>*>*{
+            background: inherit;
+        }
+
+
+        #items-content>*>*>a{
+            background: inherit;
+            margin-left: auto;
+            margin-right: 0;
+            border-radius: 18px;
+            padding: 5px 5px 5px 5px;
+        }
+
+
+        #items-content>*>*>a>button{
+            background: inherit;
+            border-radius: 13px;
+            text-decoration: none;
+            color:white;
+            border: none;
+            outline:none;
+            min-width: 25px;
+        }
+
+
+
+
+
+        #items-content > #items-sortable-1 > .default{
+            color: rgba(170, 0, 170, 0.6);
+        }
+        #items-content > #items-sortable-2 > .default{
+            color: rgba(170, 170, 0, 0.8);
+        }
+        #items-content > #items-sortable-3 > .default{
+            color: rgba(0, 170, 170, 0.8);
+        }
+
+        #items-content>*>.default{
+            border-width: 3px;
+            border-radius: 5px;
+            border-color: red;
+            margin: 3px 5px 3px 5px; 
+            min-height: 30px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            padding: 0px 5px 0px 5px;
+            font-family: "Lucida Console", Monaco, monospace;
+        }
+
+        #together{
+            display: flex;
+            float: left;
+            width: 100%;
+            /*width: calc( 100% - 300px );*/
+
+            padding: 50px 50px 0px 50px;
+        }
+
+
+        #together > #info{
+            display: flex;
+            flex-direction: column;
+            padding: 0px 5px 0px 5px;
+        }
+
+        #together > #info > *{
+            width: 450px;
+            height: 254px;
+            border: 0px;
+            border-radius: 5px;
+
+        }
+
+        #together > #info > #descriptions{
+            resize: none;
+            flex: 1;
+            /*width: calc( 100% - 60px );*/
+            /*height: 30px;*/
+            pointer-events: none;
+
+            -moz-appearance: textfield-multiline;
+            -webkit-appearance: textarea;
+            border: 1px solid #e8e8e8;
+            font: medium -moz-fixed;
+            font: -webkit-small-control;
+            overflow: auto;
+            /*padding: 2px;*/
+            margin: 5px 0px 0px 0px;
+            padding: 15px 15px 15px 15px;
+            border-radius: 5px;
+            resize: none;
+            /*resize: both;*/
+        }
+
+        #conversation{
+            display: flex;
+            flex: 1;
+            width:250px;
+            margin-right: 0;
+            flex-direction: column;
+        }
+        #conversation > #conversations-menu{
+            overflow-x: scroll;
+            white-space: nowrap;
+            height: 55px;
+        }
+        #conversation > #conversations-menu > ul{
+            padding: 0px 0px 0px 0px;
+        }
+        #conversation > #conversations-menu > ul > li{
+            display: inline-block;
+        }
+        #conversation > #conversations-menu::-webkit-scrollbar {
+            height: 15px;
+        }
+        #conversation > #conversations-menu::-webkit-scrollbar-thumb {
+          background: #EB6864;
+          border-radius: 3px;
+        }
+        #conversation > #conversations-menu::-webkit-scrollbar-thumb:hover {
+          background: #E74742; 
+        }
+        #conversation > #conversations-menu::-webkit-scrollbar-track {
+          border-radius: 5px;
+        }
+
+
+        #conversation > #conversation-content > #inner_conversation{
+            display: flex;
+            flex-direction: column;
+            min-height: 285px;
+            max-height: 285px;
+        }
+
+        #conversation > #conversation-content > #inner_conversation > #conversation-list {
+            padding: 0px 0px 0px 0px;
+            min-height: 262px;
+            max-height: 262px;
+            overflow-y: scroll;
+            margin: 0px 0px 0px 0px;
+            border: solid 1px #e8e8e8;
+            border-radius: 5px;
+
+        }
+        
+        #conversation > #conversation-content > #inner_conversation > #conversation-list > li{
+            /*list-style-type: none;*/
+            padding: 5px 5px 5px 15px;
+            /*word-break: break-all;*/
+            word-break: break-word;
+        }
+
+        #conversation > #conversation-content > #inner_conversation > #conversation-list > * >#username{
+            font-weight: 600;
+            margin: 0px 0px 0px -5px;
+        }
+
+        #conversation > #conversation-content > #inner_conversation > #conversation-list > li > a{
+            border-radius: 10px;
+            padding: 5px 6px 10px 6px;
+            position:relative;
+            top: -3px;
+            line-height: 2px;
+        }
+
+
+
+        #conversation > #conversation-content > #inner_conversation > form[name="form"]{
+            margin-top:auto;
+            margin-bottom: 0;
+        }
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > label[for="form_content"]{
+            display:none;
+        }
+
+
+
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #form_content{
+            border: solid 1px #e8e8e8;
+            min-height: 110px;
+            max-height: 110px;
+            margin-top: 5px;
+            resize: none;
+        }
+
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #form_save {
+            display:none;
+        }
+
+
+
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #form_content::-webkit-scrollbar {
+            width: 15px;
+        }
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #form_content::-webkit-scrollbar-thumb {
+          background: #EB6864;
+          border-radius: 3px;
+        }
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #form_content::-webkit-scrollbar-thumb:hover {
+          background: #E74742; 
+        }
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #form_content::-webkit-scrollbar-track {
+          border-radius: 5px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        #conversation > #conversation-content > #inner_conversation > #conversation-list::-webkit-scrollbar {
+            width: 15px;
+        }
+        #conversation > #conversation-content > #inner_conversation > #conversation-list::-webkit-scrollbar-thumb {
+          background: #EB6864;
+          border-radius: 3px;
+        }
+        #conversation > #conversation-content > #inner_conversation > #conversation-list::-webkit-scrollbar-thumb:hover {
+          background: #E74742; 
+        }
+        #conversation > #conversation-content > #inner_conversation > #conversation-list::-webkit-scrollbar-track {
+          border-radius: 5px;
+        }
+
+
+
+
+
+
+        #items-content>*>.default{cursor: move;}
+        #items-content>*>h2{cursor: default;}
+        #items-content>*>*>a>button{cursor: pointer;}
+
+    </style>
+{% endblock %}
+
+
+
+{% block middle_bottom %}
+
+
+    <div id="together">
+
+        <div id="items">
+            
+            <div id="items-title">
+                <h2 class="ui-state-default ui-state-disabled">To-Do</h2>
+                <h2 class="ui-state-default ui-state-disabled">Doing</h2>
+                <h2 class="ui-state-default ui-state-disabled">Done</h2>
+            </div>
+
+
+            <div id="items-content">
+                {% set doing_id = 0  %}
+
+                <ul id="items-sortable-1" class="connectedSortable">
+                {% set checked = false %}
+
+                    {% for item in items %}
+                        {% for i in 1..20 %}
+                            {% if  item.position == i  %}
+                                <li class = "default" data-index="{{ item.id }}" data-position="{{ i }}">
+                                    {% if checked == false %}
+                                        {% set doing_id = item.id  %}
+                                        {% set checked = true %}
+                                    {% endif %}
+                                    {% if  item.name|length > 6  %}
+                                        {{ item.name|slice(0, 7)~'..' }}
+                                    {% else %}
+                                        {{ item.name }}
+                                    {% endif %}
+                                    <a>
+                                        <button onClick="refreshItemDescription(this)" value="{{ path('item.description', {itemId: item.id }) }}">{{ item.value }}</button>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+
+
+                <ul id="items-sortable-2" class="connectedSortable">
+                {% set checked = false %}
+
+                    {% for item in items %}
+                        {% for i in 21..40 %}
+                            {% if  item.position == i  %}
+                                <li class = "default" data-index="{{ item.id }}" data-position="{{ i }}">
+                                    {% if checked == false %}
+                                        {% set doing_id = item.id  %}
+                                        {% set checked = true %}
+                                    {% endif %}
+                                    {% if  item.name|length > 6  %}
+                                        {{ item.name|slice(0, 7)~'..' }}
+                                    {% else %}
+                                        {{ item.name }}
+                                    {% endif %}
+                                    <a>
+                                        <button onClick="refreshItemDescription(this)" value="{{ path('item.description', {itemId: item.id }) }}">{{ item.value }}</button>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+
+                <ul id="items-sortable-3" class="connectedSortable">
+
+                    {% for item in items %}
+                        {% for i in 41..60 %}
+                            {% if  item.position == i  %}
+                                <li class = "default" data-index="{{ item.id }}" data-position="{{ i }}">
+                                    {% if doing_id == 0 %}
+                                        {% set doing_id = item.id  %}
+                                    {% endif %}
+                                    {% if  item.name|length > 6  %}
+                                        {{ item.name|slice(0, 7)~'..' }}
+                                    {% else %}
+                                        {{ item.name }}
+                                    {% endif %}
+                                    <a>
+                                        <button onClick="refreshItemDescription(this)" value="{{ path('item.description', {itemId: item.id }) }}">{{ item.value }}</button>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+
+        <div id="info">
+            <iframe id="video" src="https://www.youtube.com/embed/kJQP7kiw5Fk?controls=2" allowFullScreen="allowFullScreen"></iframe>
+
+
+            <div id="descriptions">
+                <span id="inner_description">
+                </span>
+            </div>
+
+        </div>
+
+
+        <div id="conversation">
+            <div id="conversations-menu">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    {% for item in items %}
+                        <label class="btn btn-outline-primary" id="{{ item.id }}">
+                            <input type="radio" name="options" id="{{ item.id }}" autocomplete="off" onClick="refreshConversation(this)" value="{{ path('conversation.create_byItem', {itemId: item.id }) }}"> {{ item.name }}
+                        </label>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            <div id="conversation-content">
+                <div id="inner_conversation">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <script>
+        var doing_id = '{{ doing_id }}';
+    </script>
+
+    <script>
+        var urlSortItems = '{{ path( 'item.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
+    </script>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block javascripts %}
+
+
+    <script from="item">
+
+
+
+        $(document).ready(function() {
+
+            $("#inner_conversation").keypress(function (e) {
+                if(e.which == 13 && !e.shiftKey) {        
+                    $("#form * #form_save").trigger('click');
+                    e.preventDefault();
+                }
+            });
+
+            $("#conversations-menu .btn-group #"+doing_id+" input").trigger('click');
+
+            $("#items-sortable-1, #items-sortable-2, #items-sortable-3").sortable({
+                connectWith: ".connectedSortable",
+                items: "li:not(.ui-state-disabled)",
+                update: function(event, ui) {
+
+                    if (this === ui.item.parent()[0]) {
+                        $("#items-sortable-1").children().each(function(index) {
+                            if ($(this).attr('data-position') != (index + 1)) {
+                                $(this).attr('data-position', (index + 1)).addClass('updated')
+                            }
+                        });
+                        $("#items-sortable-2").children().each(function(index) {
+                            if ($(this).attr('data-position') != (index + 21)) {
+                                $(this).attr('data-position', (index + 21)).addClass('updated')
+                            }
+                        });
+                        $("#items-sortable-3").children().each(function(index) {
+                            if ($(this).attr('data-position') != (index + 41)) {
+                                $(this).attr('data-position', (index + 41)).addClass('updated')
+                            }
+                        });
+                        saveNewItemsPositions();
+                    }
+                }
+            }).disableSelection();
+        });
+
+
+        function saveNewItemsPositions() {
+            var positions = [];
+            $('.updated').each(function() {
+                positions.push([$(this).attr('data-index'), $(this).attr('data-position')]);
+                $(this).removeClass('updated');
+            });
+
+            $.ajax({
+                url: urlSortItems,
+                // url: 'ajax_update.php',
+                // url: 'index.php',
+                method: 'POST',
+                dataType: 'text',
+                data: {
+                    update: 1,
+                    positions: positions
+                },
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+
+
+
+
+    function refreshItemDescription(urlForItemDescription)
+    {
+        $.ajax({
+            type: "GET",
+            url: urlForItemDescription.value,
+            data: '',
+            cache: false,
+            success: function(data){
+                $('#inner_description').html(data);
+            },
+            error: function(){},
+            complete: function(){}
+        });
+    }
+
+
+
+        function refreshConversation(urlForConversation)
+    {
+        $.ajax({
+            type: "GET",
+            url: urlForConversation.value,
+            data: '',
+            cache: false,
+            success: function(data){
+                $('#inner_conversation').html(data);
+            },
+            error: function(){},
+            complete: function(){}
+        });
+    }
+
+
+</script>
+
+
+
+
+{% endblock %}

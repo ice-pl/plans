@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+	<h1>{{ conversation.content }}</h1>
+    <a href="{{ path('conversation.list') }}" class="btn btn-primary">Back</a>
+
+{% endblock %}

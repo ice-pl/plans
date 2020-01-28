@@ -1,0 +1,140 @@
+
+
+{% block stylesheets %}
+
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+
+
+    <style>
+        #projects{
+            background: white;
+            height: 100%;
+            /*width: 13%;*/
+            /*border: 1px solid #DDDDDD;*/
+            margin: 0px 0px 0px 17px;
+            /*border-radius: 5px;*/
+            border-right: 5px solid #EB6864;
+        }
+         #sortable-1 { 
+            list-style-type: none; 
+            margin: 0; 
+            padding: 0; 
+            width: 100%;
+        }
+         #sortable-1>li { 
+            margin: 3px 3px 3px 0px; 
+            padding: 0.4em; 
+            font-size: 17px; 
+            height: 48px;
+            border-radius: 5px;
+            line-height: 30px;
+            color: #EB6864;
+            font-weight: 400;
+            cursor: move;
+        }
+
+        #sortable-1>li>a>button{ 
+            text-decoration: none;
+            float: right;
+            font-weight: 900;
+            background: #EB6864;
+            height: 46px;
+            margin-top: -7px;
+            width: 25px;
+            margin-right: -7px;
+            border-radius: 5px;
+        }
+        #sortable-1>li>a>button:hover{ 
+            color: #FD8B86;
+            background: #FD8B86;
+        }
+        #sortable-1>.default {
+            background: #FFF;
+            border: 1px solid #FC7A75;
+            color: #333333;
+        }
+    </style>
+{% endblock %}
+
+
+
+
+{% block left %}
+    <div id = "projects">
+        <ul id = "sortable-1">
+            {% for project in projects %}
+                <li class = "default" data-index="{{ project.id }}" data-position="{{ project.position }}">{{ project.name }}
+
+                    <a>
+                        <button onClick="refreshColumnMiddleTop(this)" value="{{ path('product.list_byProject', {projectId: project.id }) }}"></button>
+                    </a>
+
+                </li>
+
+                {% set id = '{{ project.id }}' %}
+                {% set position = '{{ project.position }}' %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        var urlSortProjects = '{{ path( 'project.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block javascripts %}
+
+
+    <script from="project">
+        $(document).ready(function() {
+            // $('table tbody').sortable({
+            $("#sortable-1").sortable({
+                update: function(event, ui) {
+                    $(this).children().each(function(index) {
+                        // if ($(this).attr('data-position') != (index + 0)) {
+                        if ($(this).attr('data-position') != (index + 1)) {
+                            $(this).attr('data-position', (index + 1)).addClass('updated')
+                        }
+                    });
+                    saveNewProjectsPositions();
+                }
+            });
+        });
+
+
+        function saveNewProjectsPositions() {
+            var positions = [];
+            $('.updated').each(function() {
+                positions.push([$(this).attr('data-index'), $(this).attr('data-position')]);
+                $(this).removeClass('updated');
+            });
+
+            $.ajax({
+                url: urlSortProjects,
+                // url: 'ajax_update.php',
+                // url: 'index.php',
+                method: 'POST',
+                dataType: 'text',
+                data: {
+                    update: 1,
+                    positions: positions
+                },
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+    </script>
+
+
+{% endblock %}
+

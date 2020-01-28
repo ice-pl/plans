@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    {{ form(form) }}
+	{% set prefix  = 'product.' %}
+    <a href="{{ path( prefix~'list_base') }}" class="btn btn-primary">Back</a>
+{% endblock %}

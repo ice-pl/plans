@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!{% endblock %}
+
+{% block body %}
+
+
+	<h1>{{ product.name }}</h1>
+	<em>{{ product.position }}</em>
+	<hr>
+	<img src="{{ '/uploads/' ~ product.image }}" alt="">
+
+	{% set prefix  = 'product.' %}
+    <a href="{{ path( prefix~'list_base') }}" class="btn btn-primary">Back</a>
+
+
+{% endblock %}
