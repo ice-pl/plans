@@ -23,6 +23,7 @@
 
             border-left: 5px solid #EB6864;
             height: 900px;
+                flex-direction: column;
 
         }
 
@@ -144,6 +145,51 @@
 }
 
 
+.column-card-group>#switch_buttons_sample_product{
+    position: relative;
+    left: 65px;
+    top: -26px;
+    height: 0px;
+}
+
+
+        .column-cards>*>*>*>a>#delete{ 
+            text-decoration: none;
+            float: right;
+            font-weight: 900;
+            background: #000;
+            height: 26px;
+            width: 25px;
+            margin-right: -7px;
+            border-radius: 5px;
+        }
+        .column-cards>*>*>*>a>#delete:hover{ 
+            color: #000;
+            background: #000;
+        }
+
+        .column-cards>*>*>*>a>#update{ 
+            text-decoration: none;
+            float: right;
+            font-weight: 900;
+            background: #F57A00;
+            height: 26px;
+            width: 25px;
+            margin-right: -7px;
+            border-radius: 5px;
+        }
+        .column-cards>*>*>*>a>#update:hover{ 
+            color: #F57A00;
+            background: #F57A00;
+        }
+
+#column-right>*>*>*>*>*>*>#update{
+    display: none;
+}
+#column-right>*>*>*>*>*>*>#delete{
+    display: none;
+}
+
     </style>
 {% endblock %}
 
@@ -184,7 +230,20 @@
 
 
     <div class="column-card-group">
+    <div id="switch_buttons_sample_product">
+        
+        <a>
+            <button type="button" id="update_switch_sample_product" class="btn btn-outline-primary btn-sm py-0" onClick="update_switch_sample_product()" style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
+        </a>
+        <a>
+            <button type="button" id="delete_switch_sample_product" class="btn btn-primary btn-sm py-0" onClick="delete_switch_sample_product()" style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+        </a>
+    </div>
         <div class="column-cards" id="container">
+
+
+
+
 
 {#             {% for i in 1..10 %}
                 {% set checked = false %} #}
@@ -236,7 +295,20 @@
 
                             <div class="empty" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
                                 <div class="card border-primary fill" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
-                                    <div class="card-header">{{ header_doing }}</div>
+                                    <div class="card-header">{{ header_doing }}
+
+
+                    <a>
+                        <button id="update" onClick="refreshColumnMiddleTop(this)" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}"></button>
+                    </a>
+                    <a>
+                        <button id="delete" onClick="refreshColumnRight(this)" value="{{ path('sample_product.delete', { 'id': sample_product.id }) }}"></button>
+                    </a>
+                                    </div>
+
+
+
+
                                     <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
 
                                     <a>
@@ -301,6 +373,28 @@
 
 
 {% block javascripts %}
+
+    <script>
+
+
+        function update_switch_sample_product() {
+            $('#column-right').find("*").find('#update').toggle();
+            setTimeout(function() {
+                $('#column-right').find("*").find('#update').css('display', 'none');
+                $('#column-right').find("*").find('#update_switch_sample_product').attr('aria-pressed', 'false').removeClass('active focus');
+            }, 4000);
+        }
+
+
+
+        function delete_switch_sample_product() {
+            $('#column-right').find("*").find('#delete').toggle();
+            setTimeout(function() {
+                $('#column-right').find("*").find('#delete').css('display', 'none');
+                $('#column-right').find("*").find('#delete_switch_sample_product').attr('aria-pressed', 'false').removeClass('active focus');
+            }, 4000);
+        }
+    </script>
 
 
 {% endblock %}

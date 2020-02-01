@@ -113,10 +113,12 @@ class ProjectController extends AbstractController
             $em->persist($project);
             $em->flush();
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('project.list');
         }
         return $this->render('project/create-update.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'urlSaveType' => 'create',
+            'project_id' => ' '
         ]);
 
                 // return new Response('<h1>uuu </h1>'  );
@@ -147,7 +149,6 @@ class ProjectController extends AbstractController
                     'attr' => [ 'class' => 'form-control' ],
                 ]
             )
-
             ->add('save', SubmitType::class, 
                 [
                     'attr' => [ 'class' => 'btn btn-primary float-right' ]
@@ -159,14 +160,20 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $project = $form->getData();
+            // $project->setUser($user);
 
             $em = $this->getDoctrine()->getManager();
+            $em->persist($project);
+
             $em->flush();
 
             return $this->redirectToRoute('project.list');
         }
         return $this->render('project/create-update.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'urlSaveType' => 'update',
+            'project_id' => $id,
         ]);
 
     }
@@ -186,6 +193,7 @@ class ProjectController extends AbstractController
 
         // $this->addFlash('success', 'Post was removed');
         return $this->redirectToRoute('project.list');
+        // return new Response();
     }
 
 

@@ -2,18 +2,86 @@
 
 {% block stylesheets %}
 
-    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+{# 
+
+    <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet">
+
+ #}
 
 	<style>
-		#sample_product-create-form{
-			min-height:329.66px;
-			max-height:329.66px;
+
+        .panner {
+            display: inline-block;
+            width: 50px;
+            height: calc( 100% - 5px);
+            font-size: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /*border-style: solid; */
+            border-style: none; 
+            background-color: rgba(0, 0, 0, 0.0);
+            color:#EB6864;
+        }
+        .panner:hover{
+            color:red;
+            opacity: 1.0; 
+            cursor: pointer;
+        }
+        .panner {
+            position: absolute;
+            top: 4px;
+        }
+        #panLeft {
+            left: 0px;
+        }
+        #panRight {
+            right: 0px;
+        }
+        .card-group{
+            position: relative;
+            /*flex: 1;*/
+            display: flex;
+            padding: 0px 50px 0px 50px;
+        }
+
+
+
+
+		.row-form{
+			display: flex;
+			flex-direction: row;
+			min-height:326.66px;
+			max-height:326.66px;
+			/*overflow-x: auto;*/
+			overflow-x: hidden;
+			white-space: nowrap;
+			margin-top: 3px;
+		}
+		.empty{
+			min-height:326.66px;
+			max-height:326.66px;
+		}
+		.empty>*{
+			min-height:324.66px;
+			max-height:324.66px;
+			width:174px;
+		}
+		.well{
+			display: flex;
+			flex-direction: row;
 		}
 
-		input[type='file'] {
-		  opacity:0    
-		}
+/*.panel-body div div label{
+	display:none;
+}*/
+
+
+
+
 	</style>
+
+
 
 {% endblock %}
 
@@ -21,72 +89,63 @@
 
 {% block middle_top %}
 
+
+
 	{{ form_start(form) }}
 
 
-	<div id="sample_product-create-form">
-
-
-
-		{{ form_row(form.position, { 'value': '1' } ) }}
-
-
-
-
-
-
-	    <div class="card-group">
-	        <div class="row-cards" id="container">
-
-	            <div class="empty" data-index="" data-position="">
-	                <div class="card border-primary fill" data-index="" data-position="">
-	                    <div class="card-header">{# header_doing #}</div>
-
-            {# {{ form_widget(form.image) }} #}
-
-						{{ form_row(form.image) }}
-						<div class="form-card-img-top">
-							Insert image
-						</div>
-
-	                    {# <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="..."> #}
-
-{# 	                    <a>
-	                        <button onClick="" value=""></button>
-	                    </a> #}
-
-	                    <h5 class="card-title">{{ form_row(form.name) }}</h5>
-	                    <div class="kanban-buttons">
-	                        <a href="#" class="btn btn-primary todo">1</a>
-	                        <a href="#" class="btn btn-primary doing">1</a>
-	                        <a href="#" class="btn btn-primary done">1</a>
-	                    </div>
-	                    <br>
-
-	                    {# {% set hours = "%02d"|format( undone_value % 24 ) %} #}
-	                    {# {% set days = "%02d"|format( (undone_value - hours) % 23 ) %} #}
-
-	                    <div class="card-footer">00:00:00:00</div>
+    <div class="card-group">
+	    <div class="row-form" id="container">
+	        <div class="empty" data-index="" data-position="">
+	            <div class="card border-primary fill" data-index="" data-position="">
+	                <div class="card-header">{{ form_row(form.position, { 'value': 1 } ) }}</div>
+					<div class="form-card-img-top">{{ form_row(form.image) }}</div>
+	                <h5 class="card-title">{{ form_row(form.name) }}</h5>
+	                <div class="kanban-buttons">
+	                    <a href="#" class="btn btn-primary todo">0</a>
+	                    <a href="#" class="btn btn-primary doing">0</a>
+	                    <a href="#" class="btn btn-primary done">0</a>
 	                </div>
+	                <br>
+	                <div class="card-footer">00:00:00:00</div>
 	            </div>
-
 	        </div>
+
+			<div class="form-product">{{ form_row(form.save) }}</div>
+
+			<div class="well" id="items_list" data-prototype="{{ form_widget(form.sample_items.vars.prototype)|e('html_attr') }}">
+
+				{% for row in form.sample_items %}
+					<div class="panel panel-warning">
+						<div class="panel-heding"></div>
+						<div class="panel-body">
+							{{ form_row(row.name) }}
+							{{ form_row(row.position, {attr: { value : 1 } }) }}
+							{{ form_row(row.description) }}
+							{{ form_row(row.value) }}
+						</div>
+					</div>
+				{% endfor %}
+
+			</div>
+
+			{{ form_end(form) }}
+
+	        <span id="panLeft" class="panner" data-scroll-modifier='-1'>&#10094;</span>
+	        <span id="panRight" class="panner" data-scroll-modifier='1'>&#10095;</span>
 	    </div>
+    </div>
 
+<script>
+	var urlSaveType = '{{ urlSaveType }}' ;
+	var urlSaveForm = '{{ path('sample_product.create') }}';
 
+	if(urlSaveType == 'update' ){
+		var sample_product_id = '{{ sample_product_id }}' ;
+		urlSaveForm = '{{ path('sample_product.update', { 'id': sample_product_id }) }}';
+	}
+</script>
 
-
-
-{# 		{% set prefix  = 'sample_product.' %}
-	    <a href="{{ path( prefix~'list_base') }}" class="btn btn-primary">Back</a>
-	    <a href="{{ path( 'sample_item.create') }}" class="btn btn-primary">Add item</a> #}
-
-
-
-		{{ form_row(form.save) }}
-	</div>
-	
-	{{ form_end(form) }}
 
 {% endblock %}
 
@@ -96,26 +155,20 @@
 
 {% block javascripts %}
 
+{# 
+	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+ #}
+
+
     <script>
         $(document).ready(function(){
 
-    		$('.card-title * #form_name').attr('placeholder', 'Insert Name');
-    		$('.card-title * label').css('display','none');
-
-    		$('label[for="form_image"]').css('display','none');
-
-    		$('#form_image').css('width','172px').css('height','115px');
-    		$('.form-card-img-top').css('top','-72px').css('right','-40px').css('position','relative').css('max-height','0px').css('pointer-events','none');
-        
-    		$('#form_position').parent().css('display','none');
 
 
-
-
-        	var urlSaveForm = '{{ path('sample_product.create') }}';
+        	var urlAllPage = '{{ path('home') }}';
         	var urlRedirection = '{{ path('home') }}';
 
-			$('#form_save').on( 'click', function (e) {
+			$('#sample_product_save').on( 'click', function (e) {
 				e.preventDefault();
 				var form = $(this).closest('form');
 				var formData = form.serialize();
@@ -125,23 +178,227 @@
 					url: urlSaveForm,
 					data: formData,
 					success: function(data){
-						location.href = urlRedirection;
+						refreshAllPage(urlAllPage);
 					}
 				});
 			});
 
 
+        });
+
+    </script>
+
+
+
+    <script>
+
+		var $collectionHolder;
+		var $addNewItem = $('<a href="#" class="btn btn-info">Add new item</a>');
+
+        $(document).ready(function(){
+
+			$collectionHolder = $('#items_list');
+
+			$collectionHolder.append($addNewItem);
+
+			$collectionHolder.data('index', $collectionHolder.find('.panel').length);
+
+			$collectionHolder.find('.panel').each(function(item){
+				addRemoveButton($(this));
+			});
+
+			$addNewItem.click(function(e){
+				e.preventDefault();
+				addNewForm();
+
+				$parent = $(e.target).parents('.well');
+				$allChild = $parent.children('.panel-warning');
+				$lastChild = $allChild.last();
+
+				$allChild.css('min-width','208px').css('max-width','208px');
+				$lastChild.css('min-width','288px').css('max-width','288px');
+				$allChild.find('.panel-footer>a').css('min-width','208px').css('max-width','208px');
+				$lastChild.find('.panel-footer>a').css('min-width','288px').css('max-width','288px');
+
+
+				$('.row-form').find('.btn.btn-primary.todo').empty().append( $parent.children().length - 1 );
+
+				if( ($parent.children().length - 1) > 19 ) {
+					$lastChild.next().css('visibility', 'hidden');
+				}
+
+				var sum = 0;
+				$(".panel-body * div:last-child input").each(function(){
+					sum += +$(this).val();
+				});
+				sum = ((sum < 0) ? 0 : sum);
+				sum_hours = sum % 24 ;
+				sum_days = ( sum - sum_hours )% 23 ;
+				var zeroPad = (num, places) => String(num).padStart(places, '0');
+				sum_formatted = zeroPad(sum_days,2) +':'+ zeroPad(sum_hours,2) +':00:00';
+				$('.row-form').find('.card-footer').empty().append( sum_formatted );
+
+
+			});
+
+			$('.row-form * * .card-header:first-child * *').css('display','none');
+			$('.row-form * * .card-title * label').css('display','none');
+			$('.row-form * * .card-title * input').attr('placeholder', 'Insert Name');
+
+			$('.row-form * * .form-card-img-top * label').css('display','none');
+			$('.row-form * * .form-card-img-top * input').css('max-width','172px').css('min-width','172px');
+			$('.row-form * * .form-card-img-top').css('max-width','172px').css('min-width','172px').css('max-height','100px').css('min-height','100px');
+
+
+			$('.row-form * button').css('left','-12px').css('bottom','-283px').css('position','relative');
+			$('.row-form * button').parent().css('width','5px');
+			$('.row-form').find('input').css('border','1px solid #e8e8e8');
 
 
 
 
 
+
+
+
+
+			$('.panel-body div label').css('display','none');
+			$('.panel-body div:nth-child(1) input').attr('placeholder', 'Insert Name');
+			$('.panel-body div:nth-child(2)').css('display','none');
+
+			$('.panel-body div:nth-child(3) textarea').attr('placeholder', 'Insert Description');
+			$('.panel-body div:nth-child(4) input').attr('placeholder', 'Insert Number of Hours');
+			$('.panel-body div input').css('border','1px solid #e8e8e8');
+			$('.panel-body div textarea').css('border','1px solid #e8e8e8').css('resize','none');
+			$('.panel-body div:nth-child(3) textarea').css('min-height','212px');
+
+			$('.panel-footer>a').css('min-width', '208px');
 
 
 
         });
 
+
+
+		function addNewForm(){
+			var prototype = $collectionHolder.data('prototype');
+
+			var index = $collectionHolder.data('index');
+
+			var newForm = prototype;
+
+			newForm = newForm.replace(/__name__/g, index);
+
+			$collectionHolder.data('index', index+1);
+
+			var $panel = $('<div class="panel panel-warning"><div class="panel-heading"></div></div>');
+
+			var $panelBody = $('<div class="panel-body"></div>').append(newForm);
+
+			$panel.append($panelBody);
+			addRemoveButton($panel);
+			$addNewItem.before($panel);
+
+			$collectionHolder.find('.panel-body div div:nth-child(2)').css('display','none');
+			$collectionHolder.find('.panel-body div div:nth-child(3) textarea').css('min-height','212px');
+			$collectionHolder.find('.panel-body div div:last-child label').empty().append("Hours");
+
+			$collectionHolder.find('.panel-body div div label').css('display','none');
+
+
+			$('.card-title * #form_name').attr('placeholder', 'Insert Name');
+			$collectionHolder.find('.panel-body div div:nth-child(1) input').attr('placeholder', 'Insert Name');
+			$collectionHolder.find('.panel-body div div:nth-child(3) textarea').attr('placeholder', 'Insert Description');
+			$collectionHolder.find('.panel-body div div:nth-child(4) input').attr('placeholder', 'Insert Number of Hours');
+
+			$collectionHolder.find('.panel-footer>a').css('min-width', '288px');
+			$collectionHolder.find('input').css('border','1px solid #e8e8e8');
+			$collectionHolder.find('textarea').css('border','1px solid #e8e8e8').css('resize','none');
+		}
+
+
+
+
+		function addRemoveButton($panel){
+			var $removeButton = $('<a href="#" class="btn btn-outline-primary">Remove</a>');
+			var $panelFooter = $('<div class="panel-footer"></div>').append($removeButton);
+
+			$removeButton.click(function(e){
+				e.preventDefault();
+
+				$parent = $(e.target).parents('.well');
+				$(e.target).parents('.panel').remove();
+				$lastChild = $parent.children().last().prev();
+
+				$lastChild.css('min-width','288px').css('max-width','288px');
+				$lastChild.find('.panel-footer>a').css('min-width','288px').css('max-width','288px');
+
+				if( ($parent.children().length - 1) <= 19 ) {
+					$lastChild.next().css('visibility', 'visible');
+				}
+
+
+				$('.row-form').find('.btn.btn-primary.todo').empty().append( $parent.children().length - 1 );
+
+				var sum = 0;
+				$(".panel-body * div:last-child input").each(function(){
+					sum += +$(this).val();
+				});
+				sum = ((sum < 0) ? 0 : sum);
+				sum_hours = sum % 24 ;
+				sum_days = ( sum - sum_hours )% 23 ;
+				var zeroPad = (num, places) => String(num).padStart(places, '0');
+				sum_formatted = zeroPad(sum_days,2) +':'+ zeroPad(sum_hours,2) +':00:00';
+				$('.row-form').find('.card-footer').empty().append( sum_formatted );
+
+
+
+
+
+
+
+
+
+
+
+
+
+			});
+			$panel.append($panelFooter);
+		}
+
+
+
+
+        $(document).ready(function(){
+
+            $("#panLeft").mouseenter(
+                function animateLeft(){
+                    $('.row-form').animate({ scrollLeft: "-="+"100px" }, 
+                        100,  "linear",
+                        animateLeft );
+                });
+            $("#panLeft").mouseleave(
+                function() {
+                    $(".row-form").stop();
+                });
+            $("#panRight").mouseenter(
+                function animateRight(){
+                    $('.row-form').animate({ scrollLeft: "+="+"100px" }, 
+                        100, "linear",
+                        animateRight );
+                });
+            $("#panRight").mouseleave(
+                function() {
+                    $(".row-form").stop();
+                });
+        });
+
+
+
     </script>
+
+
 
 
 {% endblock %}

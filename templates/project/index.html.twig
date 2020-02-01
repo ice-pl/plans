@@ -21,6 +21,11 @@
             padding: 0; 
             width: 100%;
         }
+        #sortable-1>.default {
+            background: #FFF;
+            border: 1px solid #FC7A75;
+            color: #333333;
+        }
          #sortable-1>li { 
             margin: 3px 3px 3px 0px; 
             padding: 0.4em; 
@@ -33,7 +38,7 @@
             cursor: move;
         }
 
-        #sortable-1>li>a>button{ 
+        #sortable-1>li>a>#show{ 
             text-decoration: none;
             float: right;
             font-weight: 900;
@@ -44,15 +49,62 @@
             margin-right: -7px;
             border-radius: 5px;
         }
-        #sortable-1>li>a>button:hover{ 
+        #sortable-1>li>a>#show:hover{ 
             color: #FD8B86;
             background: #FD8B86;
         }
-        #sortable-1>.default {
-            background: #FFF;
-            border: 1px solid #FC7A75;
-            color: #333333;
+
+        #sortable-1>li>a>#update{ 
+            text-decoration: none;
+            float: right;
+            font-weight: 900;
+            background: #F57A00;
+            height: 46px;
+            margin-top: -7px;
+            width: 25px;
+            margin-right: -7px;
+            border-radius: 5px;
         }
+        #sortable-1>li>a>#update:hover{ 
+            color: #F57A00;
+            background: #F57A00;
+        }
+
+
+        #sortable-1>li>a>#delete{ 
+            text-decoration: none;
+            float: right;
+            font-weight: 900;
+            background: #000;
+            height: 46px;
+            margin-top: -7px;
+            width: 25px;
+            margin-right: -7px;
+            border-radius: 5px;
+        }
+        #sortable-1>li>a>#delete:hover{ 
+            color: #000;
+            background: #000;
+        }
+
+#projects>#switch_buttons{
+    position: relative;
+    left: 87px;
+    top: -26px;
+    height: 0px;
+}
+
+#projects>*>*>*>#update{
+    display: none;
+}
+#projects>*>*>*>#delete{
+    display: none;
+}
+
+
+
+
+
     </style>
 {% endblock %}
 
@@ -60,14 +112,30 @@
 
 
 {% block left %}
-    <div id = "projects">
+    <div id="projects">
+    <div id="switch_buttons">
+        
+        <a>
+            <button type="button" id="update_switch" class="btn btn-outline-primary btn-sm py-0" onClick="update_switch()" style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
+        </a>
+        <a>
+            <button type="button" id="delete_switch" class="btn btn-primary btn-sm py-0" onClick="delete_switch()" style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+        </a>
+    </div>
+
         <ul id = "sortable-1">
             {% for project in projects %}
                 <li class = "default" data-index="{{ project.id }}" data-position="{{ project.position }}">{{ project.name }}
-
                     <a>
-                        <button onClick="refreshColumnMiddleTop(this)" value="{{ path('product.list_byProject', {projectId: project.id }) }}"></button>
+                        <button id="show" onClick="refreshColumnMiddleTop(this)" value="{{ path('product.list_byProject', {projectId: project.id }) }}"></button>
                     </a>
+                    <a>
+                        <button id="update" onClick="refreshColumnMiddleTop(this)" value="{{ path('project.update', { 'id': project.id }) }}"></button>
+                    </a>
+                    <a>
+                        <button id="delete" onClick="refreshColumnLeft(this)" value="{{ path('project.delete', { 'id': project.id }) }}"></button>
+                    </a>
+
 
                 </li>
 
@@ -109,6 +177,35 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+
+
+            // $('#projects').find("*").find('#update').css('display', 'none');
+            // $('#projects').find("*").find('#delete').css('display', 'none');
+        });
+
+
+
+        function update_switch() {
+            $('#projects').find("*").find('#update').toggle();
+            setTimeout(function() {
+                // $('#projects').find("*").find('#update').toggle();
+            $('#projects').find("*").find('#update').css('display', 'none');
+
+
+                $('#projects').find("*").find('#update_switch').attr('aria-pressed', 'false').removeClass('active focus');
+            }, 4000);
+        }
+        function delete_switch() {
+            $('#projects').find("*").find('#delete').toggle();
+            setTimeout(function() {
+                $('#projects').find("*").find('#delete').css('display', 'none');
+                $('#projects').find("*").find('#delete_switch').attr('aria-pressed', 'false').removeClass('active focus');
+            }, 4000);
+        }
+
+
 
 
         function saveNewProjectsPositions() {

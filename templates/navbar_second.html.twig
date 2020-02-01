@@ -32,6 +32,14 @@
             padding-left: 17px;
         }
 
+        #nav-column-left>a>button{
+            position:relative;
+            left: -53px;
+        }
+        #nav-column-right>a>button{
+            position:relative;
+            left: -55px;
+        }
     </style>
 
 
@@ -47,12 +55,12 @@
         <a>
             <button onClick="refreshColumnMiddleTop(this), $(this).attr('value','{{ path('empty') }}'), refreshColumnMiddleBottom(this), $(this).attr('value','{{ path('project.create') }}')" value="{{ path('project.create') }}" type="button" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;">Create</button>
         </a>
-        <a>
+{#         <a>
             <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
         </a>
         <a>
             <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
-        </a>
+        </a> #}
 
 
     </div>
@@ -79,12 +87,12 @@
         <a>
             <button onClick="refreshColumnMiddleTop(this), $(this).attr('value','{{ path('empty') }}'), refreshColumnMiddleBottom(this), $(this).attr('value','{{ path('sample_product.create') }}')" value="{{ path('sample_product.create') }}" type="button" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;">Create</button>
         </a>
-        <a>
+{#         <a>
             <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
         </a>
         <a>
             <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
-        </a>
+        </a> #}
 
 
     </div>

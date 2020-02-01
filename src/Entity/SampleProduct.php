@@ -38,7 +38,7 @@ class SampleProduct
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SampleItem", mappedBy="sample_product", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\SampleItem", mappedBy="sample_product", cascade={"persist", "remove"})
      */
     protected $sample_items;
 
@@ -48,7 +48,9 @@ class SampleProduct
     }
 
 
-
+    public function __toString(){
+        return $this->name;
+    }
 
 
 

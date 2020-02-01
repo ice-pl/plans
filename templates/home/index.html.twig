@@ -66,15 +66,56 @@
 	<script>
 
 
+	    function refreshAllPage(urlAllPage)
+	    {
+	        $.ajax({
+	            type: "GET",
+	            url: urlAllPage,
+	            data: '',
+	            cache: false,
+	            success: function(data){
+	                $('html body').html(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
 
 
+	    function refreshColumnLeft(urlForColumnLeft)
+	    {
+	        $.ajax({
+	            type: "GET",
+	            url: urlForColumnLeft.value,
+	            data: '',
+	            cache: false,
+	            success: function(data){
+	                $('#column-left').html(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
 
 
+	    function refreshColumnRight(urlForColumnRight)
+	    {
+	        $.ajax({
+	            type: "GET",
+	            url: urlForColumnRight.value,
+	            data: '',
+	            cache: false,
+	            success: function(data){
+	                $('#column-right').html(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
 
 
 	    function refreshColumnMiddleTop(urlForColumnMiddleTop)
 	    {
-			// alert(urlForColumnMiddleTop.value)
 	        $.ajax({
 	            type: "GET",
 	            url: urlForColumnMiddleTop.value,
@@ -119,7 +160,7 @@
 
 
 
-
+	
 
 
 

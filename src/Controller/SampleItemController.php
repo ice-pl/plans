@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Form\SampleItemType;
 
 
 /**
@@ -89,33 +90,37 @@ class SampleItemController extends AbstractController
     {
         $sample_item = new SampleItem();
 
-        $form = $this->createFormBuilder($sample_item)
-            ->add('name', TextType::class,
-                [
-                    'attr' => [ 'class' => 'form-control' ],
-                ]
-            )
-            ->add('position', IntegerType::class,
-                [
-                    'attr' => ['class' => 'form-control' ],
-                ]
-            )
-            ->add('description', TextType::class,
-                [
-                    'attr' => [ 'class' => 'form-control' ],
-                ]
-            )
-            ->add('value', IntegerType::class,
-                [
-                    'attr' => ['class' => 'form-control' ],
-                ]
-            )
-            ->add('save', SubmitType::class, 
-            	[
-                	'attr' => [ 'class' => 'btn btn-primary float-right' ]
-	            ]
-	        )
-            ->getForm();
+        // $form = $this->createFormBuilder($sample_item)
+        //     ->add('name', TextType::class,
+        //         [
+        //             'attr' => [ 'class' => 'form-control' ],
+        //         ]
+        //     )
+        //     ->add('position', IntegerType::class,
+        //         [
+        //             'attr' => ['class' => 'form-control' ],
+        //         ]
+        //     )
+        //     ->add('description', TextType::class,
+        //         [
+        //             'attr' => [ 'class' => 'form-control' ],
+        //         ]
+        //     )
+        //     ->add('value', IntegerType::class,
+        //         [
+        //             'attr' => ['class' => 'form-control' ],
+        //         ]
+        //     )
+        //     ->add('save', SubmitType::class, 
+        //     	[
+        //         	'attr' => [ 'class' => 'btn btn-primary float-right' ]
+	       //      ]
+	       //  )
+        //     ->getForm();
+
+        $form = $this->createForm(SampleItemType::class, $sample_item);
+
+
 
         $form->handleRequest($request);
 

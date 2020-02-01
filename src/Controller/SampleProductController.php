@@ -16,6 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\SampleItem;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Form\SampleProductType;
 
 
 
@@ -80,35 +82,11 @@ class SampleProductController extends AbstractController
 
         $sample_product = new SampleProduct();
 
-        $form = $this->createFormBuilder($sample_product)
-            // ->setMethod("POST"),
-            ->add('name', TextType::class,
-                [
-                    'attr' => [ 'class' => 'form-control' ],
-                ]
-            )
-            ->add('position', IntegerType::class,
-                [
-                    'attr' => ['class' => 'form-control' ],
-                ]
-            )
-            ->add('image', FileType::class, 
-            	[
-	                'mapped' => false,
-	                'required' => false,
-	            ]
-	        )
-            ->add('save', SubmitType::class, 
-            	[
-                	'attr' => [ 'class' => 'btn btn-primary float-right' ]
-	            ]
-	        )
-            ->getForm();
+        $form = $this->createForm(SampleProductType::class, $sample_product);
 
         $form->handleRequest($request);
 
         if( $form->isSubmitted() && $form->isValid() ){
-            $sample_product = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($sample_product);
@@ -120,6 +98,8 @@ class SampleProductController extends AbstractController
 
         return $this->render('sample_product/create-update.html.twig', [
             'form' => $form->createView(),
+            'urlSaveType' => 'create',
+            'sample_product_id' => ' '
         ]);
 
     }
@@ -137,29 +117,31 @@ class SampleProductController extends AbstractController
         $sample_product = new SampleProduct();
         $sample_product = $this->getDoctrine()->getRepository(SampleProduct::class)->find($id);
 
-        $form = $this->createFormBuilder($sample_product)
-            ->add('name', TextType::class,
-                [
-                    'attr' => [ 'class' => 'form-control' ],
-                ]
-            )
-            ->add('position', IntegerType::class,
-                [
-                    'attr' => ['class' => 'form-control' ],
-                ]
-            )
-            ->add('image', FileType::class, 
-            	[
-	                'mapped' => false,
-	                'required' => false,
-	            ]
-	        )
-            ->add('save', SubmitType::class, 
-            	[
-                	'attr' => [ 'class' => 'btn btn-primary float-right' ]
-	            ]
-	        )
-            ->getForm();
+        $form = $this->createForm(SampleProductType::class, $sample_product);
+
+        // $form = $this->createFormBuilder($sample_product)
+        //     ->add('name', TextType::class,
+        //         [
+        //             'attr' => [ 'class' => 'form-control' ],
+        //         ]
+        //     )
+        //     ->add('position', IntegerType::class,
+        //         [
+        //             'attr' => ['class' => 'form-control' ],
+        //         ]
+        //     )
+        //     ->add('image', FileType::class, 
+        //     	[
+	       //          'mapped' => false,
+	       //          'required' => false,
+	       //      ]
+	       //  )
+        //     ->add('save', SubmitType::class, 
+        //     	[
+        //         	'attr' => [ 'class' => 'btn btn-primary float-right' ]
+	       //      ]
+	       //  )
+        //     ->getForm();
 
         $form->handleRequest($request);
 
@@ -175,7 +157,9 @@ class SampleProductController extends AbstractController
 
 
         return $this->render('sample_product/create-update.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'urlSaveType' => 'update',
+            'sample_product_id' => $id,
         ]);
 
     }
@@ -194,7 +178,8 @@ class SampleProductController extends AbstractController
         $entityManager->flush();
 
         // $this->addFlash('success', 'Post was removed');
-		return $this->redirectToRoute('sample_product.list_base');
+		// return $this->redirectToRoute('sample_product.list_base');
+        return $this->redirectToRoute('sample_product.list');
     }
 
 
