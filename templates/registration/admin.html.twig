@@ -1,0 +1,216 @@
+{# {% extends 'base.html.twig' %} #}
+
+
+
+{% block stylesheets %}
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+
+
+	<style>
+		#form>*>input{
+			margin-right: 7rem;
+			float: right;
+		}
+	</style>
+
+
+
+{% endblock %}
+
+
+
+
+{% block body %}
+
+{# 
+	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/jquery-ui-1.12.1.min.js') }}"></script>
+
+	<script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+
+ #}
+
+
+	<!-- Button to Open the Modal -->
+	{# <button type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#modalAdminPanel">Admin Panel</button> #}
+
+	{% set chosen_id = 0 %}
+
+	<!-- The Modal -->
+	{# <div  id="modalAdminPanel" class="modal"> #}
+	<div  id="modalAdminPanel" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+		<div id="modal-dialog-AdminPanel" class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Admin Panel</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+
+
+					<table class="table">
+						<thead>
+						    <tr>
+						        <th scope="col">#ID</th>
+						        <th scope="col">Name</th>
+						        {% if 'ROLE_SUPER_ADMIN' in currentUser.getroles(TRUE) %}
+						        	<th scope="col">Role</th>
+						        {% endif %}
+						        {# <th scope="col">Password</th> #}
+						    </tr>
+						</thead>
+
+						<tbody>
+							{% for user in users %}
+
+								{% if user.username != currentUser.username  %}
+								    <tr>
+										<td>{{user.id}}</td>
+										<td>{{user.username}}</td>
+										{% if 'ROLE_SUPER_ADMIN' in currentUser.getroles(TRUE)  %}
+
+											<script>
+												$(document).ready(function(){
+													// $('#modal-dialog-AdminPanel').css( 'min-width', 1000 + 'px' );
+													$('#modal-dialog-AdminPanel').css( 'min-width', 700 + 'px' );
+												});
+											</script>
+
+									      	<td>
+												{% for roles in user.roles %}
+													{% if loop.first %}
+
+														{% if roles == 'ROLE_SUPER_ADMIN' %}
+															<div class="btn-group btn-group-toggle d-inline" data-toggle="buttons">
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_SUPER_ADMIN' } ) }}" checked="true">ROLE_SUPER_ADMIN
+																</label>
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_ADMIN' } ) }}">ROLE_ADMIN
+																</label>
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_USER' } ) }}">ROLE_USER
+																</label>
+															</div>
+														{% endif %}
+														{% if roles == 'ROLE_ADMIN' %}
+															<div class="btn-group btn-group-toggle d-inline" data-toggle="buttons">
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_SUPER_ADMIN' } ) }}">ROLE_SUPER_ADMIN
+																</label>
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_ADMIN' } ) }}" checked="true">ROLE_ADMIN
+																</label>
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_USER' } ) }}">ROLE_USER
+																</label>
+															</div>
+														{% endif %}
+														{% if roles == 'ROLE_USER' %}
+															<div class="btn-group btn-group-toggle d-inline" data-toggle="buttons">
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_SUPER_ADMIN' } ) }}">ROLE_SUPER_ADMIN
+																</label>
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_ADMIN' } ) }}">ROLE_ADMIN
+																</label>
+																<label class="btn btn-secondary">
+																	<input type="radio" class="form-check-input" name="optionsRadios~{{ user.id }}" id="optionsRadios1~{{ user.id }}" onClick="saveNewRole(this)" value="{{ path('change_role', {'id': user.id, 'roleName': 'ROLE_USER' } ) }}" checked="true">ROLE_USER
+																</label>
+															</div>
+														{% endif %}
+													
+													{% endif %}
+												{% endfor %}
+									      	</td>
+										
+										{% endif %}
+										
+{# 										<td>
+											<button id="{{ user.id }}" type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#modalChangePassword">Change Password</button>
+										</td> #}
+									</tr>
+								{% endif %}
+
+							{% endfor %}
+						</tbody>
+					</table>
+
+
+
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	{# {{ render(controller( 'App\\Controller\\RegistrationController::admin_change_password', { id: chosen_id } )) }} #}
+
+
+
+
+	<script>
+		$(document).ready(function(){
+
+			var chosen_id ;
+			var urlSaveForm;
+			
+			$('.btn.btn-secondary').click(function(event){
+				chosen_id = this.id ;
+				urlSaveForm = '{{ path('admin_change_password', { 'id': chosen_id } ) }}';
+				urlSaveForm = urlSaveForm.substring(0, urlSaveForm.length - 1)+chosen_id;
+		        return urlSaveForm;
+			});
+
+			$('#form_Change_Password').on( 'click', function (e) {
+				e.preventDefault();
+				var form = $(this).closest('form');
+				var formData = form.serialize();
+				$.ajax({
+					method:'POST',
+					url: urlSaveForm,
+					data: formData,
+					success: function(data){
+						$("#modalChangePassword").find(".close_button").trigger("click");
+					},
+				});
+			});
+		});
+
+	</script>
+
+	<script>
+		function saveNewRole(urlForNewRole) {
+		    $.ajax({
+		        url: urlForNewRole.value,
+		        method: 'POST',
+		    });
+		}
+	</script>
+
+
+	<script>
+		$(document).ready(function(){
+	        $(document).on('show.bs.modal', '.modal', function (event) {
+	            var zIndex = 1040 + (10 * $('.modal:visible').length);
+	            $(this).css('z-index', zIndex);
+	            setTimeout(function() {
+	                $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+	            }, 0);
+	        });
+		});
+	</script>
+
+
+{% endblock %}

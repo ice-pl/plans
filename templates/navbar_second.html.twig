@@ -12,6 +12,8 @@
 
         #nav-column-middle{
             width: 76.5%;
+            float: left;
+
         }
 
         #nav-column-right{
@@ -40,6 +42,10 @@
             position:relative;
             left: -55px;
         }
+        #nav-column-middle>a>button{
+            position:relative;
+            z-index: -10;
+        }
     </style>
 
 
@@ -48,19 +54,21 @@
 
 
     <div id="nav-column-left"> 
-        
-
-
-
+{# 
         <a>
             <button onClick="refreshColumnMiddleTop(this), $(this).attr('value','{{ path('empty') }}'), refreshColumnMiddleBottom(this), $(this).attr('value','{{ path('project.create') }}')" value="{{ path('project.create') }}" type="button" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;">Create</button>
         </a>
-{#         <a>
-            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
-        </a>
+
+ #}
+
         <a>
-            <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+            <button type="button" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;" data-toggle="modal" data-target="#modal-ProjectPanel">Create</button>
+        </a>
+
+{#         <a>
+            <button type="button" id="create" onClick="refreshModal(this);" value="{{ path('project.create') }}" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;" data-toggle="modal" data-target="#modal-ProjectPanel">Create</button>
         </a> #}
+
 
 
     </div>
@@ -69,30 +77,24 @@
     <div id="nav-column-middle">
 
         <a>
-            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;">Create</button>
-        </a>
-        <a>
-            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
-        </a>
-        <a>
             <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
         </a>
+        <a>
+            <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Info</button>
+        </a>
+
     </div>
 
 
     <div id="nav-column-right">
-
-
-
-        <a>
+{#         <a>
             <button onClick="refreshColumnMiddleTop(this), $(this).attr('value','{{ path('empty') }}'), refreshColumnMiddleBottom(this), $(this).attr('value','{{ path('sample_product.create') }}')" value="{{ path('sample_product.create') }}" type="button" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;">Create</button>
         </a>
-{#         <a>
-            <button type="button" class="btn btn-outline-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
-        </a>
+ #}
         <a>
-            <button type="button" class="btn btn-primary btn-sm py-0"  style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
-        </a> #}
+            <button type="button" onclick="refreshModal(this)" value="{{ path('sample_product.list') }}" class="btn btn-outline-primary btn-sm py-0" style="font-size: 0.75rem;" data-toggle="modal" data-target="#modal-SampleProductPanel">Create</button>
+        </a>
+
 
 
     </div>

@@ -117,6 +117,8 @@ class SampleProductController extends AbstractController
         $sample_product = new SampleProduct();
         $sample_product = $this->getDoctrine()->getRepository(SampleProduct::class)->find($id);
 
+        $howMany = $sample_product->getHowMany();
+
         $form = $this->createForm(SampleProductType::class, $sample_product);
 
         // $form = $this->createFormBuilder($sample_product)
@@ -148,6 +150,7 @@ class SampleProductController extends AbstractController
         if( $form->isSubmitted() && $form->isValid() ){
             // $sample_product = $form->getData();
 
+            $sample_product->setHowMany($howMany);
             $em = $this->getDoctrine()->getManager();
             // $em->persist($sample_product);
             $em->flush();
@@ -180,6 +183,7 @@ class SampleProductController extends AbstractController
         // $this->addFlash('success', 'Post was removed');
 		// return $this->redirectToRoute('sample_product.list_base');
         return $this->redirectToRoute('sample_product.list');
+
     }
 
 

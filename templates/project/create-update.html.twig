@@ -2,36 +2,76 @@
 
 {% block stylesheets %}
 
+{# 
 	<style>
 		#project-create-form{
-			min-height:329.66px;
-			max-height:329.66px;
+			min-height: 329.66px;
+			max-height: 329.66px;
+			max-width: 60%;
+			display: block;
+			margin-right: auto;
+			margin-left: auto;
+		}
+		#project-create-form>a{
+		    text-align: right;
+		    float: right;
+		    margin-right: 5px;
 		}
 	</style>
+
+ #}
+
+{# 
+<style>
+	.modal-backdrop:nth-child(2n-1) {
+  opacity : 0;
+}
+</style>
+
+ #}
 
 {% endblock %}
 
 
-{% block middle_top %}
+{% block body %}
 
 
-<script>
-	var urlSaveType = '{{ urlSaveType }}' ;
-       	
-	var urlSaveForm = '{{ path('project.create') }}';
-	
-	if(urlSaveType == 'update' ){
-		var project_id = '{{ project_id }}' ;
-		urlSaveForm = '{{ path('project.update', { 'id': project_id }) }}';
-	}
-</script>
 
-	<div id="project-create-form">
-	    {{ form(form) }}
 
-		{% set prefix  = 'project.' %}
-	    <a href="{{ path( 'home') }}" class="btn btn-primary">Back</a>
-	</div>
+
+    <div id="modal-ProjectPanel" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+        <div id="modal-dialog ProjectPanel" class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header ProjectPanel">
+                    <h4 class="modal-title">Project Panel</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body ProjectPanel">
+					{{ form(form) }}
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer ProjectPanel">
+                    <button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
 
 {% endblock %}
 
@@ -43,8 +83,28 @@
 
         $(document).ready(function(){
 
-        	var urlAllPage = '{{ path('home') }}';
-        	var urlRedirection = '{{ path('home') }}';
+
+			urlSaveType = '{{ urlSaveType }}' ;
+			var project_id = '{{ project_id }}' ;
+
+			if( urlSaveType == 'create' ){
+				urlSaveForm = '{{ path('project.create') }}';
+				$('#modal-ProjectPanel').find('.modal-title').text('Create Project');
+			}
+
+
+			if( urlSaveType == 'update' ){
+				urlSaveForm = '{{ path('project.update', { 'id': 'project_id' }) }}';
+				urlSaveForm = urlSaveForm.replace("project_id", project_id );
+				$('#modal-ProjectPanel').find('.modal-title').text('Update Project Name');
+			}
+console.log(urlSaveType);
+
+
+
+
+
+        	urlRedirection = '{{ path('project.list') }}';
 
 			$('#form_save').on( 'click', function (e) {
 				e.preventDefault();
@@ -55,18 +115,42 @@
 					method:'POST',
 					url: urlSaveForm,
 					data: formData,
-					success: function(data){
-						refreshAllPage(urlAllPage);
-					}
+					success: function(){},
+	            	complete: function(){
+				        $.ajax({
+				            type: "GET",
+				            url: urlRedirection,
+				            data: '',
+				            cache: false,
+				            success: function(data){
+				                $('#column-left').html(data);
+				                // $('.modal-backdrop').detach();
+				            },
+				            error: function(){},
+				            complete: function(){
+				            }
+				        });
+		            	$('#modal-ProjectPanel').modal('hide');
+	            	}
 				});
 			});
         });
 
 
-
-
-
+        $(document).ready(function(){
+			$('form').find('#form_position').css('display','none');
+			$('form').find("label[for='form_position']").css('display','none');
+        });
     </script>
 
+{# 
+	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/jquery-ui-1.12.1.min.js') }}"></script>
+
+	<script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+
+ #}
 
 {% endblock %}
+

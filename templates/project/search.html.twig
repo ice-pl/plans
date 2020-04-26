@@ -1,0 +1,188 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block stylesheets %}
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+
+    <style>
+    	.modal-body.SearchPanel > div{
+			min-width:300px;
+			max-width:300px;
+			/*border-style: solid;*/
+			display: inline-block;
+			margin: 0px 0px 0px 30px;
+    	}
+    </style>
+
+{% endblock %}
+
+
+
+{% block body %}
+{# 
+    <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery-ui-1.12.1.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+
+ #}
+
+
+{{ form_start(form, {'class': 'myclass', 'attr': {'class': 'form-inline input-group my-2 my-lg-0 w-100', 'id':'searchBar', 'placeholder':'Search'}}) }}
+
+{{ form_row(form.query) }}
+{{ form_row(form.Search) }}
+
+{{ form_end(form) }}
+
+
+
+<div id="column-search">
+	
+</div>
+
+
+{% set dataTmpVal = '' %}
+{% set pathTmpVal = '' %}
+
+
+
+
+
+    {# <button type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#modal-SearchPanel">Search Panel</button> #}
+
+
+
+
+
+
+    <!-- Button to Open the Modal -->
+    <button type="button" id="button-SearchPanel" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#modal-SearchPanel" style="display:none;">Search Panel</button>
+
+
+
+    <div id="modal-SearchPanel" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+        <div id="modal-dialog-SearchPanel" class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header SearchPanel">
+                    <h4 class="modal-title">Search Panel</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body SearchPanel">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer SearchPanel">
+                    <button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{# 
+    <script>
+        $(document).ready(function(){
+            $('#modal-dialog-SearchPanel').css( 'min-width', 20 + '%' );
+        });
+    </script>
+
+ #}
+
+
+
+
+
+
+
+
+
+<script>
+
+
+	$('#searchBar div').find('input').unwrap();
+	$('#searchBar div').find('button').unwrap();
+	$('#searchBar').find('#form__token').remove();
+
+
+
+
+	$('#form_Search').on( 'click', function (e) {
+	    e.preventDefault();
+
+		var form = $(this).closest('form');
+		var data = form.serializeArray().reduce(function(obj, item) {
+		    obj[item.name] = item.value;
+		    return obj;
+		}, {});
+
+
+		urlForSearch = '{{ path('project.handleSearchForAjax', { 'query': 'dataTmpVal' }) }}';
+		urlForSearch = urlForSearch.replace("dataTmpVal", data['form[query]'] );
+
+
+		get_body_SearchPanel(urlForSearch);
+
+
+	});
+
+
+	function get_body_SearchPanel(urlForSearch)
+	{
+
+	    $.ajax({
+	        type: "GET",
+	        url: urlForSearch,
+	        data: '',
+	        cache: false,
+	        success: function(data){
+
+
+				currentUserId = data['userId'];
+
+				var dataJson = JSON.parse(data[0]);
+				$('.modal-body.SearchPanel').empty();
+				for (var i = 0; i < dataJson.length; i++) {
+					console.log(dataJson[i].id);
+					console.log(dataJson[i].name);
+					console.log(dataJson[i].owner);
+
+					// $('#column-search').append(dataJson[i].name+'<br>');
+					pathValue = "{{ path('project.ask', { 'projectId': 'pathTmpVal' }) }}";
+					pathValue = pathValue.replace("pathTmpVal", dataJson[i].id );
+					buttonAsk = '';
+					if(currentUserId != dataJson[i].owner){
+						buttonAsk = '<a><button type="button" id="ask_for_share" class="btn btn-outline-primary btn-sm py-0" onClick=ask_for_share('+'"'+pathValue+'"'+'); style="font-size: 0.75rem;" data-toggle="buttons" value='+pathValue+'>Ask For Share</button></a>';
+					}
+
+					$('.modal-body.SearchPanel').append('<div>'+dataJson[i].name+'</div>'+buttonAsk);
+				}
+				$('#button-SearchPanel').click();
+
+	        },
+	        error: function(){},
+	        complete: function(){}
+	    });
+
+
+	}
+	function ask_for_share(url)
+	{
+	    $.ajax({
+	        type: "GET",
+	        url: url,
+	        data: '',
+	        cache: false,
+	        success: function(){},
+	        error: function(){},
+	        complete: function(){}
+	    });
+	}
+</script>
+
+{% endblock %}
+

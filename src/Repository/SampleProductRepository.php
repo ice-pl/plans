@@ -19,6 +19,16 @@ class SampleProductRepository extends ServiceEntityRepository
         parent::__construct($registry, SampleProduct::class);
     }
 
+
+
+
+    public function findAll(){
+        return $this->findBy(array(), array('how_many' => 'DESC'));
+    }
+
+
+
+
     // /**
     //  * @return SampleProduct[] Returns an array of SampleProduct objects
     //  */

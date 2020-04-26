@@ -38,7 +38,7 @@ class Product
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Item", mappedBy="product", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Item", mappedBy="product", cascade={"persist", "remove"})
      */
     protected $items;
 
@@ -48,6 +48,13 @@ class Product
      * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="products")
      */
     private $project;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $parent_id;
+
+
 
     public function __construct()
     {
@@ -141,4 +148,18 @@ class Product
 
         return $this;
     }
+
+    public function getParentId(): ?int
+    {
+        return $this->parent_id;
+    }
+
+    public function setParentId(int $parent_id): self
+    {
+        $this->parent_id = $parent_id;
+
+        return $this;
+    }
+
+
 }

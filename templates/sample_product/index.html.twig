@@ -12,38 +12,23 @@
         /*porządki*/
         /*do obslugi js*/
 
-        /*///////////////////////////////*/
-
 
         .column-card-group{
             position: relative;
             flex: 1;
             display: flex;
-            /*padding: 0px 50px 0px 50px;*/
-
-            border-left: 5px solid #EB6864;
-            height: 900px;
                 flex-direction: column;
-
+                border-left: 5px solid #EB6864;
+                height: 900px;
         }
-
-
-
-        /*///////////////////////////////*/
-
         .column-cards {
-            overflow-x: auto;
-            /*overflow-x: hidden;*/
+            display: flex;
+            min-height: 326px;
             white-space: nowrap;
             margin: 3px 3px 0px 3px;
-
-                display: flex;
-                /*flex-direction: row;*/
                 flex-direction: column;
-                min-height: 326px;
+                overflow-x: auto;
         }
-
-
         .column-cards::-webkit-scrollbar {
             width: 0px;
         }
@@ -57,138 +42,18 @@
         }
 
 
-        .empty{
-            border-style: solid;
-            /*border-color: #EB6864;*/
-            border-color: #EB686440;
 
-            border-width: 1px;
-            border-radius: 5px;
-            /*height: calc( 100% - 2px);*/
 
-            max-width: 11rem;
-            min-width: 11rem;
 
-/*                vertical-align: text-top;
-                display: inline-block;
-                float: none;*/
-
-                background-color: #fcfcfc;
+        #switch_buttons_sample_product{
+            position: relative;
+            left: 65px;
+            top: -26px;
+            height: 0px;
         }
 
 
 
-
-
-        /*colors*/
-
-        .card-title{
-            text-align: center;
-        }
-        .kanban-buttons>.todo{
-            background-color: #ff00ff;
-            margin-left: 5px;
-        }
-        .kanban-buttons>.doing{
-            background-color: #cccc00;
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-        .kanban-buttons>.done{
-            background-color: #00ffff;
-            margin-right: 5px;
-        }
-        .kanban-buttons>*:hover{
-            opacity: 0.6; 
-        }
-        .kanban-buttons>*{
-            opacity: 0.3; 
-            transition: 0.3s;
-        }
-        .card-header {cursor: move;}
-        .card-img-top{cursor: pointer;}
-        .card-footer{cursor: default;}
-        .card-title{cursor: default;}
-
-        .kanban-buttons>*{
-            border-style: none;
-        }
-
-        /*size*/
-        .card-header{
-            min-height: 49px;
-        }
-        .kanban-buttons{
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .card-title{
-            margin-top: 13px;
-            margin-bottom: 15px;
-        }
-        .card-footer{
-            max-width: 174px;
-            min-width: 174px;
-            bottom: 0px;
-        }
-
-
-
-.column-cards>.empty>*>a>button{
-    position:absolute;
-    width:172px;
-    height:115px;
-    opacity: 0.0;
-    /*top: 50%;*/
-  /*left: 50%;*/
-    transform: translate(0%, -100%);
-}
-
-
-.column-card-group>#switch_buttons_sample_product{
-    position: relative;
-    left: 65px;
-    top: -26px;
-    height: 0px;
-}
-
-
-        .column-cards>*>*>*>a>#delete{ 
-            text-decoration: none;
-            float: right;
-            font-weight: 900;
-            background: #000;
-            height: 26px;
-            width: 25px;
-            margin-right: -7px;
-            border-radius: 5px;
-        }
-        .column-cards>*>*>*>a>#delete:hover{ 
-            color: #000;
-            background: #000;
-        }
-
-        .column-cards>*>*>*>a>#update{ 
-            text-decoration: none;
-            float: right;
-            font-weight: 900;
-            background: #F57A00;
-            height: 26px;
-            width: 25px;
-            margin-right: -7px;
-            border-radius: 5px;
-        }
-        .column-cards>*>*>*>a>#update:hover{ 
-            color: #F57A00;
-            background: #F57A00;
-        }
-
-#column-right>*>*>*>*>*>*>#update{
-    display: none;
-}
-#column-right>*>*>*>*>*>*>#delete{
-    display: none;
-}
 
     </style>
 {% endblock %}
@@ -196,32 +61,10 @@
 
 
 
-{% block middle_top %}
-{#     <div class="column-card-group">
-        <div class="column-cards" id="container">
-                {% for item in sample_products %}
-                            <div class="empty" data-index="{{ item.id }}">
-                                <div class="card border-primary fill" data-index="{{ item.id }}">
-                                    <div class="card-header">Header-doing</div>
-                                    <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
-                                    <a>
-                                    </a>
-                                    <h5 class="card-title">{{ item.name }}</h5>
-                                    <div class="kanban-buttons">
-                                        <a href="#" class="btn btn-primary todo">1</a>
-                                        <a href="#" class="btn btn-primary doing">2</a>
-                                        <a href="#" class="btn btn-primary done">3</a>
-                                    </div>
-                                    <br>
-                                    <div class="card-footer">Footer-timer</div>
-                                </div>
-                            </div>
-                {% set idSampleItem = '{{ item.id }}' %}
-                {% set position = '{{ item.position }}' %}
-                {% endfor %}
-        </div>
-    </div> #}
+{% block right %}
 
+
+                {{ render(controller( 'App\\Controller\\SampleProductController::create' )) }}
 
 
 
@@ -230,121 +73,123 @@
 
 
     <div class="column-card-group">
-    <div id="switch_buttons_sample_product">
-        
-        <a>
-            <button type="button" id="update_switch_sample_product" class="btn btn-outline-primary btn-sm py-0" onClick="update_switch_sample_product()" style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
-        </a>
-        <a>
-            <button type="button" id="delete_switch_sample_product" class="btn btn-primary btn-sm py-0" onClick="delete_switch_sample_product()" style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
-        </a>
-    </div>
+        <div id="switch_buttons_sample_product">
+            <a>
+                <button type="button" id="update_switch_sample_product" class="btn btn-outline-primary btn-sm py-0" onClick="update_switch_sample_product()" style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
+            </a>
+            <a>
+                <button type="button" id="delete_switch_sample_product" class="btn btn-primary btn-sm py-0" onClick="delete_switch_sample_product()" style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+            </a>
+        </div>
         <div class="column-cards" id="container">
 
+            {% for sample_product in sample_products %}
+
+                {% set todo_value = 0 %}
+                {% set todo_elements = 0 %}
+
+                {% set doing_value = 0 %}
+                {% set doing_elements = 0 %}
+
+                {% set done_value = 0 %}
+                {% set done_elements = 0 %}
+
+                {% set undone_value = 0 %}
+
+                {% set header_doing = '' %}
+                {% set header_exists = false %}
+
+
+                {% for sample_item in sample_product.sampleitems %}
+
+
+                    {% if  (sample_item.position >= 1) and (sample_item.position <= 20) %}
+
+                        {% if sample_item.intervalcounted is defined and (sample_item.intervalcounted / 3600)|round(0, 'floor') != 0 %}
+                            {% set todo_value = todo_value + ( sample_item.intervalcounted / 3600 ) %}
+                        {% else %}
+                            {% set todo_value = todo_value + sample_item.value %}
+                        {% endif %}
+
+
+                        {% set todo_elements = todo_elements + 1 %}
+                    {% endif %}
+                    {% if  (sample_item.position >= 21) and (sample_item.position <= 40) %}
+                        {% set doing_value = doing_value + sample_item.value %}
+                        {% set doing_elements = doing_elements + 1 %}
+                        
+                        {% if  (header_exists == false) %}
+                            {% set header_doing = sample_item.name %}
+                            {% set header_exists = true %}
+                        {% endif %}
+
+                    {% endif %}
+                    {% if  (sample_item.position >= 41) and (sample_item.position <= 60) %}
+                        {% set done_value = done_value + sample_item.value %}
+                        {% set done_elements = done_elements + 1 %}
+                    {% endif %}
+                {% endfor %}
+
+                {% set undone_value = todo_value + doing_value %}
 
 
 
+                    <div class="empty" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
+                        <div class="card border-primary fill" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
+                            <div class="card-header">{{ header_doing }}
+{#                                 <a>
+                                    <button id="update" onClick="refreshColumnMiddleTop(this)" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}"></button>
+                                </a>
+                                <a>
+                                    <button id="delete" onClick="refreshColumnRight(this)" value="{{ path('sample_product.delete', { 'id': sample_product.id }) }}"></button>
+                                </a> #}
 
-{#             {% for i in 1..10 %}
-                {% set checked = false %} #}
-
-
-{# {{ dump(sample_products) }} #}
-{# {{ dump(_context|keys) }} #}
-                {% for sample_product in sample_products %}
-
-                    {# {% if  sample_product.position == i  %} #}
-                        {% set todo_value = 0 %}
-                        {% set todo_elements = 0 %}
-
-                        {% set doing_value = 0 %}
-                        {% set doing_elements = 0 %}
-
-                        {% set done_value = 0 %}
-                        {% set done_elements = 0 %}
-
-                        {% set undone_value = 0 %}
-
-                        {% set header_doing = '' %}
-                        {% set header_exists = false %}
-
-{# {{ dump(sample_products) }} #}
-                        {% for sample_item in sample_product.sampleitems %}
-                            {% if  (sample_item.position >= 1) and (sample_item.position <= 20) %}
-                                {% set todo_value = todo_value + sample_item.value %}
-                                {% set todo_elements = todo_elements + 1 %}
-                            {% endif %}
-                            {% if  (sample_item.position >= 21) and (sample_item.position <= 40) %}
-                                {% set doing_value = doing_value + sample_item.value %}
-                                {% set doing_elements = doing_elements + 1 %}
-                                
-                                {% if  (header_exists == false) %}
-                                    {% set header_doing = sample_item.name %}
-                                    {% set header_exists = true %}
-                                {% endif %}
-
-                            {% endif %}
-                            {% if  (sample_item.position >= 41) and (sample_item.position <= 60) %}
-                                {% set done_value = done_value + sample_item.value %}
-                                {% set done_elements = done_elements + 1 %}
-                            {% endif %}
-                        {% endfor %}
-                                {% set undone_value = todo_value + doing_value %}
+            <a>
+                <button id="update" onClick="refresh(this.value, 'GET', '#column-middle-top', '#container')" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}"></button>
+            </a>
+            <a>
+                <button id="delete" onClick="refresh(this.value, 'GET', '#column-right', '#container')" value="{{ path('sample_product.delete', { 'id': sample_product.id }) }}"></button>
+            </a>
 
 
-
-                            <div class="empty" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
-                                <div class="card border-primary fill" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
-                                    <div class="card-header">{{ header_doing }}
-
-
-                    <a>
-                        <button id="update" onClick="refreshColumnMiddleTop(this)" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}"></button>
-                    </a>
-                    <a>
-                        <button id="delete" onClick="refreshColumnRight(this)" value="{{ path('sample_product.delete', { 'id': sample_product.id }) }}"></button>
-                    </a>
-                                    </div>
-
-
-
-
-                                    <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
-
-                                    <a>
-                                        <button onClick="refreshColumnMiddleBottom(this)" value="{{ path('sample_item.list_byProduct', {id: sample_product.id }) }}"></button>
-                                    </a>
-
-                                    <h5 class="card-title">{{ sample_product.name }}</h5>
-                                    <div class="kanban-buttons">
-                                        <a href="#" class="btn btn-primary todo">{{ todo_elements }}</a>
-                                        <a href="#" class="btn btn-primary doing">{{ doing_elements }}</a>
-                                        <a href="#" class="btn btn-primary done">{{ done_elements }}</a>
-                                    </div>
-                                    <br>
-
-                                    {% set hours = "%02d"|format( undone_value % 24 ) %}
-                                    {% set days = "%02d"|format( (undone_value - hours) % 23 ) %}
-
-                                    <div class="card-footer">{{ days }}:{{ hours }}:00:00</div>
-                                </div>
                             </div>
 
-                        {% set checked = true %}
-
-                        {% set id = '{{ sample_product.id }}' %}
-                        {% set position = '{{ sample_product.position }}' %}
 
 
-                    {# {% endif %} #}
-                {% endfor %}
-{# 
-                    {% if checked == false %}
-                            <div class="empty" data-index="" data-position="{{ i }}"></div>
-                        {% set checked = true %}
-                    {% endif %}
 
-            {% endfor %} #}
+                            <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
+
+                            <a>
+                                <button onClick="refreshElement(this, '#column-middle-bottom')" value="{{ path('sample_item.list_byProduct', {id: sample_product.id }) }}"></button>
+                            </a>
+
+                            <h5 class="card-title">{{ sample_product.name }}</h5>
+                            <div class="kanban-buttons">
+                                <a href="#" class="btn btn-primary todo">{{ todo_elements }}</a>
+                                <a href="#" class="btn btn-primary doing">{{ doing_elements }}</a>
+                                <a href="#" class="btn btn-primary done">{{ done_elements }}</a>
+                            </div>
+                            <br>
+
+                            {% set hours = "%02d"|format( undone_value % 24 ) %}
+                            {% set days = "%02d"|format( (undone_value - hours) % 23 ) %}
+
+                            <div class="card-footer">{{ days }}  {{ hours }}:00:00</div>
+                        </div>
+                    </div>
+
+                {% set checked = true %}
+
+                {% set id = '{{ sample_product.id }}' %}
+                {% set position = '{{ sample_product.position }}' %}
+
+
+            {% endfor %}
+
+                    <div class="empty">
+                    </div>
+                    <div class="empty">
+                    </div>
 
 
         </div>

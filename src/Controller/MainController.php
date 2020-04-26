@@ -8,6 +8,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+
+
 
 
 class MainController extends AbstractController
@@ -37,6 +44,20 @@ class MainController extends AbstractController
         // ]);
         return new Response();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

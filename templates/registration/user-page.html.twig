@@ -1,0 +1,169 @@
+{# {% extends 'base.html.twig' %} #}
+
+
+
+{% block stylesheets %}
+	<style>
+	.share{
+		text-align: center;
+	}
+		.share > div{
+			display: inline-block;
+			min-width: 45%;
+			min-height: 45%;
+			/*border-style: solid;*/
+			vertical-align: text-top;
+		}
+		.share > div > #title{
+			border: 2px #EB6864 solid;
+			border-radius: 5px;
+		}
+
+		.share > div > #content{
+			text-align: right;
+			position: relative;
+			bottom: -5px;
+		}
+
+		.share > div > div > #name{
+			float: left;
+		}
+
+/*		.share > div > #content > a > button{
+			position: relative;
+   			bottom: 2px;
+		}*/
+
+	</style>
+
+{% endblock %}
+
+
+
+
+{% block body %}
+
+
+
+
+
+    <div id="modal-UserPanel" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+        <div id="modal-dialog UserPanel" class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header UserPanel">
+                    <h4 class="modal-title">User Panel</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body UserPanel">
+
+	<div class="share">
+		<div class="share-questions">
+			<div id="title">Questions</div>
+
+				{% for project in questions %}
+
+					<div id="content">
+						<span id="name">{{project.project_name}}</span> <br>
+
+							{% for user in project.questions_from_userId %}
+									<span id="userName">{{ user[1] }}</span> 
+
+					                <a>
+					                    <button class="btn btn-outline-success btn-sm py-0" onClick="answer(this)" value="{{ path('project.answer', {projectId: project.project_id, answer: 1, nrInArray: loop.index0 }) }}">Accept</button>
+					                </a>
+					                <a>
+					                    <button class="btn btn-outline-primary btn-sm py-0" onClick="answer(this)" value="{{ path('project.answer', {projectId: project.project_id, answer: 0, nrInArray: loop.index0 }) }}">Deny</button>
+					                </a><br>
+
+							{% endfor %}
+
+					</div>
+
+
+				{% endfor %}
+
+
+		</div>
+		<div class="share-answers">
+			<div id="title">Answers</div>
+
+
+
+				{% for project in answers %}
+
+					<div id="content">
+						<span id="name">{{project.project_name}}</span>
+
+							{% for user in project.answers_to_userId %}
+				                <a>
+				                    {% if user[0] == userId %}
+				                    	<button class="btn btn-outline-primary btn-sm py-0" onClick="dismiss(this)" value="{{ path('project.dismiss', {projectId: project.project_id, nrInArray: loop.index0 }) }}">Dismiss</button>
+				                	{% endif %}
+				                </a>
+							{% endfor %}
+
+					</div>
+
+
+				{% endfor %}
+
+
+
+
+
+		</div>
+	</div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer UserPanel">
+                    <button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<script>
+
+	function answer(url)
+	{
+	    $.ajax({
+	        type: "GET",
+	        url: url.value,
+	        data: '',
+	        cache: false,
+	        success: function(){},
+	        error: function(){},
+	        complete: function(){
+				$("#modal-UserPanel").load(" #modal-UserPanel > *");
+	        }
+	    });
+	}
+
+
+	function dismiss(url)
+	{
+	    $.ajax({
+	        type: "GET",
+	        url: url.value,
+	        data: '',
+	        cache: false,
+	        success: function(){},
+	        error: function(){},
+	        complete: function(){
+				$("#modal-UserPanel").load(" #modal-UserPanel > *");
+	        }
+	    });
+	}
+
+
+</script>
+
+
+{% endblock %}

@@ -30,7 +30,7 @@ class Item
 
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=999, nullable=true)
      */
     private $description;
 
@@ -44,7 +44,7 @@ class Item
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Conversation", mappedBy="item", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Conversation", mappedBy="item", cascade={"persist", "remove"})
      */
     protected $conversations;
 
@@ -57,6 +57,32 @@ class Item
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="items")
      */
     private $product;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $start_time;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $end_time;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $parent_id;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $interval_time;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $delay_time;
+
 
     public function __construct()
     {
@@ -161,4 +187,66 @@ class Item
 
         return $this;
     }
+
+    public function getStartTime(): ?\DateTimeInterface
+    {
+        return $this->start_time;
+    }
+
+    public function setStartTime(?\DateTimeInterface $start_time): self
+    {
+        $this->start_time = $start_time;
+
+        return $this;
+    }
+
+    public function getEndTime(): ?\DateTimeInterface
+    {
+        return $this->end_time;
+    }
+
+    public function setEndTime(?\DateTimeInterface $end_time): self
+    {
+        $this->end_time = $end_time;
+
+        return $this;
+    }
+
+    public function getParentId(): ?int
+    {
+        return $this->parent_id;
+    }
+
+    public function setParentId(int $parent_id): self
+    {
+        $this->parent_id = $parent_id;
+
+        return $this;
+    }
+
+    public function getIntervalTime(): ?int
+    {
+        return $this->interval_time;
+    }
+
+    public function setIntervalTime(?int $interval_time): self
+    {
+        $this->interval_time = $interval_time;
+
+        return $this;
+    }
+
+    public function getDelayTime(): ?int
+    {
+        return $this->delay_time;
+    }
+
+    public function setDelayTime(?int $delay_time): self
+    {
+        $this->delay_time = $delay_time;
+
+        return $this;
+    }
+
+
 }

@@ -1,0 +1,112 @@
+.empty{
+    border-style: solid;
+    border-color: #EB686440;
+
+    border-width: 1px;
+    border-radius: 5px;
+
+    max-width: 11rem;
+    min-width: 11rem;
+
+    background-color: #fcfcfc;
+
+    min-height: 326.66px;
+}
+
+
+
+
+
+.empty>*>a>button{
+    position: absolute;
+    width: 172px;
+    height: 115px;
+    opacity: 0.0;
+    transform: translate(0%, -100%);
+}
+
+
+
+
+
+
+/*colors*/
+
+.card-title{
+    text-align: center;
+}
+.kanban-buttons>.todo{
+    background-color: #ff00ff;
+    margin-left: 5px;
+}
+.kanban-buttons>.doing{
+    background-color: #cccc00;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.kanban-buttons>.done{
+    background-color: #00ffff;
+    margin-right: 5px;
+}
+.kanban-buttons>*:hover{
+    opacity: 0.6; 
+}
+.kanban-buttons>*{
+    opacity: 0.3; 
+    transition: 0.3s;
+}
+.card-header {cursor: move;}
+.card-img-top {cursor: pointer;}
+.card-footer {cursor: default;}
+.card-title {cursor: default;}
+
+.kanban-buttons>*{
+    border-style: none;
+}
+
+
+/*size*/
+.card-header{
+    min-height: 49px;
+    padding: 12px 10px 12px 10px;
+}
+.kanban-buttons{
+    margin-left: auto;
+    margin-right: auto;
+}
+.card-title{
+    margin-top: 13px;
+    margin-bottom: 15px;
+}
+.card-footer{
+    max-width: 174px;
+    min-width: 174px;
+    bottom: 0px;
+    text-align: center;
+}
+
+
+
+
+.card-header>a>*{
+    text-decoration: none;
+    float: right;
+    font-weight: 900;
+    height: 24px;
+    width: 25px;
+    margin-right: -1px;
+    border-radius: 5px;
+    display: none;
+}
+.card-header>a>#delete{ 
+    background: #000;
+}
+.card-header>a>#update{
+    background: #f70;
+}
+
+.card-header>a>*:hover{ 
+    color: inherit;
+    background: inherit;
+    opacity: 0.5;
+}

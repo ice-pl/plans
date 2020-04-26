@@ -37,20 +37,61 @@ class Project
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="project", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="project", cascade={"persist", "remove"})
      */
     protected $products;
 
 
 
+
+
+
+
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="projects")
+     * @ORM\OneToMany(targetEntity="App\Entity\UserProject", mappedBy="projectMap", cascade={"persist", "remove"})
      */
-    private $user;
+    protected $projectInverse;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $owner;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $share_questions = [];
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $share_answers = [];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->projectInverse = new ArrayCollection();
     }
 
 
@@ -119,15 +160,124 @@ class Project
         return $this;
     }
 
-    public function getUser(): ?User
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @return Collection|UserProject[]
+     */
+    public function getProjectInverse(): Collection
     {
-        return $this->user;
+        return $this->projectInverse;
     }
 
-    public function setUser(?User $user): self
+    public function addProjectInverse(UserProject $projectInverse): self
     {
-        $this->user = $user;
+        if (!$this->projectInverse->contains($projectInverse)) {
+            $this->projectInverse[] = $projectInverse;
+            $projectInverse->setProjectMap($this);
+        }
 
         return $this;
     }
+
+    public function removeProjectInverse(UserProject $projectInverse): self
+    {
+        if ($this->projectInverse->contains($projectInverse)) {
+            $this->projectInverse->removeElement($projectInverse);
+            // set the owning side to null (unless already changed)
+            if ($projectInverse->getProjectMap() === $this) {
+                $projectInverse->setProjectMap(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOwner(): ?int
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?int $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getShareQuestions(): ?array
+    {
+        return $this->share_questions;
+    }
+
+    public function setShareQuestions(?array $share_questions): self
+    {
+        $this->share_questions = $share_questions;
+
+        return $this;
+    }
+
+    public function getShareAnswers(): ?array
+    {
+        return $this->share_answers;
+    }
+
+    public function setShareAnswers(?array $share_answers): self
+    {
+        $this->share_answers = $share_answers;
+
+        return $this;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -112,16 +112,22 @@
 
 
 {% block left %}
+
+
+
+
+                {{ render(controller( 'App\\Controller\\ProjectController::create' )) }}
+
     <div id="projects">
-    <div id="switch_buttons">
-        
-        <a>
-            <button type="button" id="update_switch" class="btn btn-outline-primary btn-sm py-0" onClick="update_switch()" style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
-        </a>
-        <a>
-            <button type="button" id="delete_switch" class="btn btn-primary btn-sm py-0" onClick="delete_switch()" style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
-        </a>
-    </div>
+        <div id="switch_buttons">
+            
+            <a>
+                <button type="button" id="update_switch" class="btn btn-outline-primary btn-sm py-0" onClick="update_switch()" style="font-size: 0.75rem;" data-toggle="buttons">Update</button>
+            </a>
+            <a>
+                <button type="button" id="delete_switch" class="btn btn-primary btn-sm py-0" onClick="delete_switch()" style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+            </a>
+        </div>
 
         <ul id = "sortable-1">
             {% for project in projects %}
@@ -129,11 +135,17 @@
                     <a>
                         <button id="show" onClick="refreshColumnMiddleTop(this)" value="{{ path('product.list_byProject', {projectId: project.id }) }}"></button>
                     </a>
+
                     <a>
-                        <button id="update" onClick="refreshColumnMiddleTop(this)" value="{{ path('project.update', { 'id': project.id }) }}"></button>
+                        <button id="update" onClick="refreshModal(this);" value="{{ path('project.update', { 'id': project.id }) }}" data-toggle="modal" data-target="#modal-ProjectPanel"></button>
                     </a>
-                    <a>
+
+{#                     <a>
                         <button id="delete" onClick="refreshColumnLeft(this)" value="{{ path('project.delete', { 'id': project.id }) }}"></button>
+                    </a> #}
+
+                    <a>
+                        <button id="delete" onClick="refreshElement(this, '#column-left')" value="{{ path('project.delete', { 'id': project.id }) }}"></button>
                     </a>
 
 
@@ -181,8 +193,7 @@
         $(document).ready(function() {
 
 
-            // $('#projects').find("*").find('#update').css('display', 'none');
-            // $('#projects').find("*").find('#delete').css('display', 'none');
+
         });
 
 
@@ -204,7 +215,6 @@
                 $('#projects').find("*").find('#delete_switch').attr('aria-pressed', 'false').removeClass('active focus');
             }, 4000);
         }
-
 
 
 

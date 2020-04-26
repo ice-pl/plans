@@ -56,6 +56,57 @@ class ProjectRepository extends ServiceEntityRepository
 
 
 
+    public function findProjectsName_byOwnerId(int $ownerId){
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('p.name AS project_name')
+            ->addSelect('p.id AS project_id')
+            ->addSelect('p.share_questions AS questions_from_userId')
+            ->where('p.owner = :ownerId' )
+            ->andWhere('p.share_questions IS NOT NULL')
+            ->setParameter('ownerId', $ownerId )
+            ->orderBy('p.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
+    public function findProjectsName_byUserIdInside(int $userId){
+        $qb = $this->createQueryBuilder('p');
+        $qb
+
+            ->select('p.name AS project_name')
+            ->addSelect('p.owner AS owner_Id')
+            ->addSelect('p.id AS project_id')
+            ->addSelect('p.share_answers AS answers_to_userId')
+            ->where('p.share_answers IS NOT NULL')
+            ->andWhere(
+                $qb->expr()->like('p.share_answers', ':userId'),
+            )
+            ->setParameter('userId', '%' .'['. $userId . '%' )
+
+            ->orderBy('p.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
+
+
+    public function findProjectByName(string $query){
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->where(
+                $qb->expr()->like('p.name', ':query'),
+            )
+            ->setParameter('query', '%' . $query . '%' )
+            ;
+
+        return $qb->getQuery()->getResult();
+    }
+
 
 
     // /**

@@ -28,7 +28,7 @@ class SampleItem
 
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=999, nullable=true)
      */
     private $description;
 
@@ -47,6 +47,18 @@ class SampleItem
      * @ORM\ManyToOne(targetEntity="App\Entity\SampleProduct", inversedBy="sample_items")
      */
     private $sample_product;
+
+
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $interval_counted;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $delay_counted;
 
 
 
@@ -119,4 +131,32 @@ class SampleItem
 
         return $this;
     }
+
+
+
+    public function getIntervalCounted(): ?int
+    {
+        return $this->interval_counted;
+    }
+
+    public function setIntervalCounted(?int $interval_counted): self
+    {
+        $this->interval_counted = $interval_counted;
+
+        return $this;
+    }
+
+    public function getDelayCounted(): ?int
+    {
+        return $this->delay_counted;
+    }
+
+    public function setDelayCounted(?int $delay_counted): self
+    {
+        $this->delay_counted = $delay_counted;
+
+        return $this;
+    }
+
+
 }

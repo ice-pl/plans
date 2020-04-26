@@ -26,6 +26,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Events\ConversationEvent;
+// use Symfony\Component\EventDispatcher\EventDispatcher;
+// use App\Events;
+
+// use Symfony\Contracts\EventDispatcher\Event;
+
+// use Symfony\Component\EventDispatcher\Event;
+
 
 
 /**
@@ -127,16 +136,22 @@ class ConversationController extends AbstractController
     /**
      * @Route("/list/{itemId}", name="list_byItem")
      */
-    public function list_byItem(Request $request, UserInterface $user, $itemId)
+    public function list_byItem($itemId)
     {
         $conversations = $this->getDoctrine()->getRepository(Conversation::class)->findConversations_byItemId( $itemId );
 
+// dump($conversations);
 
-        // return $this->render('conversation/index-base.html.twig', [
         return $this->render('conversation/index.html.twig', [
-
             'conversations' => $conversations,
+            'itemId' => $itemId
         ]);
+
+        // return new JsonResponse(
+        //     [ 'conversations' => $conversations ]
+        // );
+
+
     }
 
 
@@ -153,11 +168,13 @@ class ConversationController extends AbstractController
     /**
      * @Route("/create/{itemId}", name="create_byItem", methods={"GET", "POST"})
      */
-    public function create_byItem(Request $request, UserInterface $user, $itemId)
+    public function create_byItem(Request $request, UserInterface $user, $itemId, EventDispatcherInterface $eventDispatcher)
     {
 
         $conversations = $this->getDoctrine()->getRepository(Conversation::class)->findConversations_byItemId( $itemId );
 
+// dump($conversations);
+// die;
 
         $item = new Item();
         $item = $this->getDoctrine()->getRepository(Item::class)->findBy(['id' => $itemId ]);
@@ -189,8 +206,15 @@ class ConversationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($conversation);
             $entityManager->flush();
+
+
+        $conversationEvent = new ConversationEvent($conversation);
+        $eventDispatcher->dispatch($conversationEvent, ConversationEvent::NAME);
+        // dump($conversationEvent);
+        // dump($eventDispatcher);
         }
 
+// die;
 
         return $this->render('conversation/create-update.html.twig', [
             'conversations' => $conversations,
@@ -199,6 +223,25 @@ class ConversationController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

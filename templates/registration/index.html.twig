@@ -1,7 +1,97 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %} #}
 
-{% block title %}Hello RegistrationController!{% endblock %}
+
+
+{% block stylesheets %}
+
+	<style>
+		#form>*>input{
+			margin-right: 7rem;
+			float: right;
+		}
+	</style>
+
+
+{% endblock %}
+
+
+
 
 {% block body %}
-	{{ form(form) }}
+
+{# 
+	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/jquery-ui-1.12.1.min.js') }}"></script>
+
+	<script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+
+ #}
+
+ 
+	<!-- Button to Open the Modal -->
+	<button type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#modalRegister">Register</button>
+
+	<!-- The Modal -->
+	<div class="modal" id="modalRegister">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">User Registration</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					{{ form(form) }}
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+ 
+
+
+
+
+	<script>
+		$(document).ready(function(){
+
+			var urlSaveForm = '{{ path('register') }}';
+
+			$('#form_register').on( 'click', function (e) {
+				e.preventDefault();
+				var form = $(this).closest('form');
+				var formData = form.serialize();
+
+				$.ajax({
+					method:'POST',
+					url: urlSaveForm,
+					data: formData,
+					success: function(data){
+
+						if( data.status != 'error'){
+							$(".close_button").trigger("click");
+						}
+
+						if( $(".info").length == 0 ){
+							$('.modal-footer').prepend('<div class="info" style="display:flex; align-items: center; margin-left:auto;margin-right:auto; color:red;">'+data.info+'</div>'); 
+							setTimeout(function(){
+								$(".info").remove();
+							}, 2000);
+						}
+					},
+				});
+			});
+		});
+
+	</script>
+
 {% endblock %}

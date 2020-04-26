@@ -11,8 +11,46 @@
         /*porządki*/
         /*do obslugi js*/
 
-        /*///////////////////////////////*/
 
+
+
+        .row-card-group{
+            position: relative;
+            flex: 1;
+            display: flex;
+                flex-direction: row;
+                padding: 0px 50px 0px 50px;
+        }
+        .row-cards{
+            display: flex;
+            min-height: 326px;
+            white-space: nowrap;
+            margin: 3px 3px 0px 3px;
+                flex-direction: row;
+                overflow-x: hidden;
+        }
+
+
+
+        #switch_button_delete{
+            position: relative;
+            left: 689px;
+            top: -26px;
+            height: 0px;
+        }
+        #switch_button_info{
+            position: relative;
+            left: 741px;
+            top: -26px;
+            height: 0px;
+        }
+
+
+
+
+        /*=============================*/
+        /*panner*/
+        /*=============================*/
         .panner {
             display: inline-block;
             width: 50px;
@@ -25,8 +63,8 @@
             align-items: center;
             justify-content: center;
 
-            /*border-style: solid; */
-            border-style: none; 
+            border-style: solid; 
+            border-style: none;
 
             background-color: rgba(0, 0, 0, 0.0);
             color:#EB6864;
@@ -48,13 +86,8 @@
         #panRight {
             right: 0px;
         }
-        .card-group{
-            position: relative;
-            /*flex: 1;*/
-            display: flex;
-            padding: 0px 50px 0px 50px;
-        }
 
+        /*-----------------------------*/
 
         /*#container{
             margin-left: -50px;
@@ -70,108 +103,7 @@
             right: 50px;
         }*/
 
-        /*///////////////////////////////*/
-
-        .row-cards {
-            /*overflow-x: auto;*/
-            overflow-x: hidden;
-            white-space: nowrap;
-                margin-top: 3px;
-
-                display: flex;
-                flex-direction: row;
-                min-height: 326px;
-        }
-
-        .empty{
-            border-style: solid;
-            /*border-color: #EB6864;*/
-            border-color: #EB686440;
-
-            border-width: 1px;
-            border-radius: 5px;
-            /*height: calc( 100% - 2px);*/
-
-            max-width: 11rem;
-            min-width: 11rem;
-
-/*                vertical-align: text-top;
-                display: inline-block;
-                float: none;*/
-
-                background-color: #fcfcfc;
-        }
-
-
-
-
-
-        /*colors*/
-
-        .card-title{
-            text-align: center;
-        }
-        .kanban-buttons>.todo{
-            background-color: #ff00ff;
-            margin-left: 5px;
-        }
-        .kanban-buttons>.doing{
-            background-color: #cccc00;
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-        .kanban-buttons>.done{
-            background-color: #00ffff;
-            margin-right: 5px;
-        }
-        .kanban-buttons>*:hover{
-            opacity: 0.6; 
-        }
-        .kanban-buttons>*{
-            opacity: 0.3; 
-            transition: 0.3s;
-        }
-        .card-header {cursor: move;}
-        .card-img-top{cursor: pointer;}
-        .card-footer{cursor: default;}
-        .card-title{cursor: default;}
-
-        .kanban-buttons>*{
-            border-style: none;
-        }
-
-        /*size*/
-        .card-header{
-            min-height: 49px;
-        }
-
-        .kanban-buttons{
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .card-title{
-            margin-top: 13px;
-            margin-bottom: 15px;
-        }
-        .card-footer{
-            max-width: 174px;
-            min-width: 174px;
-            bottom: 0px;
-            text-align: center;
-
-        }
-
-
-
-.row-cards>.empty>*>a>button{
-    position:absolute;
-    width:172px;
-    height:115px;
-    opacity: 0.0;
-    /*top: 50%;*/
-  /*left: 50%;*/
-    transform: translate(0%, -100%);
-}
+        /*=============================*/
 
 
     </style>
@@ -181,13 +113,32 @@
 
 
 {% block middle_top %}
-    <div class="card-group">
+
+                {{ render(controller( 'App\\Controller\\ProjectController::info', { 'projectId': projectId } )) }}
+
+
+    <div id="switch_button_delete">
+        <a>
+            <button type="button" id="delete_switch_product" class="btn btn-primary btn-sm py-0" onClick="delete_switch_product()" style="font-size: 0.75rem;" data-toggle="buttons">Delete</button>
+        </a>
+    </div>
+    <div id="switch_button_info">
+        <a>
+            <button type="button" class="btn btn-primary btn-sm py-0" data-toggle="modal" data-target="#modalInfoPanel" style="font-size: 0.75rem;" data-toggle="buttons">Info</button>
+        </a>
+    </div>
+
+    <div class="row-card-group">
         <div class="row-cards" id="container">
+
 
             {% for i in 1..10 %}
                 {% set checked = false %}
 
                 {% for product in products %}
+
+
+
 
                     {% if  product.position == i  %}
                         {% set todo_value = 0 %}
@@ -233,7 +184,15 @@
 
                             <div class="empty" data-index="{{ product.id }}" data-position="{{ i }}">
                                 <div class="card border-primary fill" data-index="{{ product.id }}" data-position="{{ i }}">
-                                    <div class="card-header">{{ header_doing }}</div>
+                                    <div class="card-header">{{ header_doing }}
+
+
+            <a>
+                <button id="delete" onClick="refresh(this.value, 'GET', '#column-middle-top', '#container')" value="{{ path('product.delete', { 'id': product.id }) }}"></button>
+            </a>
+
+
+                                    </div>
                                     <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
 
                                     <a>
@@ -251,7 +210,7 @@
                                     {% set hours = "%02d"|format( undone_value % 24 ) %}
                                     {% set days = "%02d"|format( (undone_value - hours) % 23 ) %}
 
-                                    <div class="card-footer">{{ days }}:{{ hours }}:00:00</div>
+                                    <div class="card-footer">{{ days }} {{ hours }}:00:00</div>
                                 </div>
                             </div>
 
@@ -278,9 +237,7 @@
     </div>
 
 
-    <script>
-        var urlSortItems = '{{ path( 'product.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
-    </script>
+
 
 
 {% endblock %}
@@ -298,81 +255,125 @@
 
 
     <script from="product">
+
+
+        $('#container').on( 'scroll', function() {
+            $('#container').scroll(function() {
+                sessionStorage.scrollLeft = $(this).scrollLeft();
+                sessionStorage.scrollTop = $(this).scrollTop();
+                // console.log(sessionStorage.scrollLeft);
+                // console.log(sessionStorage.scrollTop);
+            });
+        });
+
+
+
         $(document).ready(function(){
+
+
 
             var startId;
             var stopId;
-            // var reverted = true;
             var reverted;
 
-            console.log("\n "+"na poczatku :="+"\n ");
-            console.log("'reverted' := " + reverted);
-            console.log("'startId' := " + startId);
-            console.log("'stopId' := " + stopId);
+            var from;
 
-            $(".fill").draggable(
-                {
-                    helper: 'clone',
-                //     revert: 'invalid',
+            updateDraggables();
 
-                    start:function( event, ui ){
-                        parent = $(this.parentNode);
-                        startId = $(this.parentNode).attr('data-position');
-                        console.log("\n "+"f.start :="+"\n ");
-                        console.log("'startId' := " + startId);
-                    },
+            function updateDraggables(){
 
-                    revert: function(is_valid_drop){
-                        // console.log("is_valid_drop = " + is_valid_drop);
-                        // when you're done, you need to remove the "dragging" class
-                        // and yes, I'm sure this can be refactored better, but I'm 
-                        // out of time for today! :)
-                        console.log("\n "+"f.revert := "+"\n ");
+                $(".fill").draggable(
+                    {
+                        helper: 'clone',
 
-                        if(!is_valid_drop){
-                            reverted = true;
-                            console.log("'reverted' := " + reverted);
-                            return true;
-                        } else {
-                            reverted = false;
-                            console.log("'reverted' := " + reverted);
-                        }
-                    },
+                        start:function( event, ui ){
 
-                    stop:function( event, ui ){
-                        stopId = $(this.parentNode).attr('data-position');
-                        $(this.parentNode).attr('data-index', $(this).attr('data-index') );
+                            parent = $(this.parentNode);
+                            startId = $(this.parentNode).attr('data-position');
 
-                        console.log("\n "+"f.stop :="+"\n ");
-                        console.log("'stopId' := " + stopId);
-                        console.log("'reverted' := " + reverted);
+                            // console.log("f.start -> 'startId' := " + startId);
 
-                        if(reverted == false){
-                            $(parent).attr('class','empty ui-droppable').droppable( 'enable' ).attr('data-index',"");
-                            saveNewItemsPositions();
-                        }
-                    },
+                            grandParent = parent.parent();
 
-                });
+                            if(grandParent.attr('class') == 'row-cards'){
+                                from = "row";
+                            }else{
+                                from = "column";
+                            }
+                            // console.log("f.start -> 'from' := " + from );
 
+                            if( from == 'row'){
+                                urlSortProducts = '{{ path( 'product.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
+                            }
+                            if( from == 'column'){
+                                urlSortProducts = '{{ path( 'product.createFromSample', { 'id': '{{ id }}', 'position': '{{ position }}', 'projectId': projectId } ) }}';
+                            }
+
+
+                        },
+
+                        revert: function(is_valid_drop){
+
+                            if(!is_valid_drop){
+                                reverted = true;
+                                return true;
+                            } else {
+                                reverted = false;
+                            }
+                        },
+
+                        // stop:async function( event, ui ){
+                        stop:function( event, ui ){
+                            stopId = $(this.parentNode).attr('data-position');
+                            $(this.parentNode).attr('data-index', $(this).attr('data-index') );
+
+                            // console.log("f.stop -> 'stopId' := " + stopId);
+                            // console.log("f.stop -> 'reverted' := " + reverted);
+
+                            if(reverted == false){
+                                if( from == 'row'){
+                                    $(parent).attr('class','empty ui-droppable').droppable( 'enable' ).attr('data-index',"");
+                                }
+
+                                saveNewItemsPositions();
+
+  // return new Promise((resolve, reject) => {
+
+  //   // urlProductsList = '{{ path( 'product.createFromSample', { 'id': '{{ id }}', 'position': '{{ position }}', 'projectId': projectId } ) }}';
+  //   urlProductsList = '{{ path( 'product.list_byProject', { 'projectId': projectId } ) }}';
+
+
+  //                               refreshColumnMiddleTop(urlProductsList);
+  // });
+                            }
+                        },
+
+                    });
+            };
 
             $(".empty").droppable(
                 {
                     accept: ".fill",
-
-                    // accept: ".active",
                     drop:function(ev, ui){
-                        // var droppedItem = $(ui.draggable).clone();
-                        var droppedItem = $(ui.draggable);
-                        
+                        // console.log("f.drop -> 'from' := " + from );
+                        if( from == 'row'){
+                            var droppedItem = $(ui.draggable);
+                        }
+                        if( from == 'column'){
+                            var droppedItem = $(ui.draggable).clone();
+                        }
                         $(this).append(droppedItem);
+
                         $(this).children().attr('data-position', $(this).attr('data-position'));
                         $(this).attr('class','empty').droppable( 'disable' ).addClass('updated');
 
+                        if( from == 'column'){
+                            $(this).attr('data-index', $(this).children().attr('data-index'));
+                            $(this).find('.card-header a').remove();
 
+                            updateDraggables();
+                        }
 
-                        console.log($(this).attr('class'));
-                        console.log("'reverted-in-droppable' := " + reverted);
                     }
                 }
             ).each(function() {
@@ -380,15 +381,18 @@
             });
 
 
+
+
+
             function saveNewItemsPositions() {
                 var positions = [];
                 $('.updated').each(function() {
                     positions.push([$(this).attr('data-index'), $(this).attr('data-position')]);
-                    $(this).removeClass('updated');
+                    $(this).removeClass('updated').addClass('response');
                 });
 
                 $.ajax({
-                    url: urlSortItems,
+                    url: urlSortProducts,
                     // url: 'ajax_update.php',
                     // url: 'index.php',
                     method: 'POST',
@@ -398,17 +402,54 @@
                         positions: positions
                     },
                     success: function(response) {
-                        console.log(response);
+                        if( from == 'column'){
+                            $('.response').attr('data-index', response);
+                            $('.response').children().attr('data-index', response);
+                        }
+                        $('.response').removeClass('response');
+
+
+                        address="{{ path('product.list_byProject', {projectId: projectId }) }}";
+                        refresh(address, 'GET', '#column-middle-top', '#container' );
                     }
                 });
             }
 
+        });
+
+
+
+        function delete_switch_product() {
+            $('#column-middle').find("*").find('#delete').toggle();
+            setTimeout(function() {
+                $('#column-middle').find("*").find('#delete').css('display', 'none');
+                $('#column-middle').find("*").find('#delete_switch_product').attr('aria-pressed', 'false').removeClass('active focus');
+            }, 4000);
+        }
 
 
 
 
 
+    
+        // $(document).ready(function(){
+        //     for (i = 0; i <= 10; i++) {
+        //         if( ( $('.row-cards').find("div[data-position="+i+"]").find('.kanban-buttons .todo').text() == 0 ) & ( $('.row-cards').find("div[data-position="+i+"]").find('.kanban-buttons .doing').text() == 0 ) ){
+        //             $('.row-cards').find("div[data-position="+i+"]").find('.fill').css({"opacity": "0.4"});
+        //         }
+        //     }
+        // });
 
+        (function () {
+            for (i = 0; i <= 10; i++) {
+                if( ( $('.row-cards').find("div[data-position="+i+"]").find('.kanban-buttons .todo').text() == 0 ) & ( $('.row-cards').find("div[data-position="+i+"]").find('.kanban-buttons .doing').text() == 0 ) ){
+                    $('.row-cards').find("div[data-position="+i+"]").find('.fill').css({"opacity": "0.4"});
+                }
+            }
+        })();
+
+
+        $(document).ready(function(){
 
 
             $("#panLeft").mouseenter(
@@ -434,6 +475,9 @@
 
         });
     </script>
+
+
+
 
 
 {% endblock %}

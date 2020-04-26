@@ -76,7 +76,10 @@
 	display:none;
 }*/
 
-
+		.row-form>.well>a{
+			max-height:288px;
+    		box-shadow: none !important;
+		}
 
 
 	</style>
@@ -87,7 +90,27 @@
 
 
 
-{% block middle_top %}
+{# {% block middle_top %} #}
+{% block body %}
+
+
+    <div id="modal-SampleProductPanel" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+        <div id="modal-dialog-SampleProductPanel" class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header SampleProductPanel">
+                    <h4 class="modal-title">Sample Product Panel</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body SampleProductPanel">
+
+
+
+
+
 
 
 
@@ -107,11 +130,11 @@
 	                    <a href="#" class="btn btn-primary done">0</a>
 	                </div>
 	                <br>
+
 	                <div class="card-footer">00:00:00:00</div>
 	            </div>
 	        </div>
 
-			<div class="form-product">{{ form_row(form.save) }}</div>
 
 			<div class="well" id="items_list" data-prototype="{{ form_widget(form.sample_items.vars.prototype)|e('html_attr') }}">
 
@@ -125,9 +148,11 @@
 							{{ form_row(row.value) }}
 						</div>
 					</div>
+
 				{% endfor %}
 
 			</div>
+			<div class="form-product">{{ form_row(form.save) }}</div>
 
 			{{ form_end(form) }}
 
@@ -135,6 +160,23 @@
 	        <span id="panRight" class="panner" data-scroll-modifier='1'>&#10095;</span>
 	    </div>
     </div>
+
+
+
+
+
+					{# {{ form(form) }} #}
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer SampleProductPanel">
+                    <button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
 <script>
 	var urlSaveType = '{{ urlSaveType }}' ;
@@ -145,6 +187,12 @@
 		urlSaveForm = '{{ path('sample_product.update', { 'id': sample_product_id }) }}';
 	}
 </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#modal-dialog-SampleProductPanel').css( 'min-width', 80 + '%' );
+        });
+    </script>
 
 
 {% endblock %}
@@ -207,6 +255,11 @@
 				addRemoveButton($(this));
 			});
 
+			getSum();
+
+
+
+
 			$addNewItem.click(function(e){
 				e.preventDefault();
 				addNewForm();
@@ -227,17 +280,7 @@
 					$lastChild.next().css('visibility', 'hidden');
 				}
 
-				var sum = 0;
-				$(".panel-body * div:last-child input").each(function(){
-					sum += +$(this).val();
-				});
-				sum = ((sum < 0) ? 0 : sum);
-				sum_hours = sum % 24 ;
-				sum_days = ( sum - sum_hours )% 23 ;
-				var zeroPad = (num, places) => String(num).padStart(places, '0');
-				sum_formatted = zeroPad(sum_days,2) +':'+ zeroPad(sum_hours,2) +':00:00';
-				$('.row-form').find('.card-footer').empty().append( sum_formatted );
-
+				getSum();
 
 			});
 
@@ -250,7 +293,7 @@
 			$('.row-form * * .form-card-img-top').css('max-width','172px').css('min-width','172px').css('max-height','100px').css('min-height','100px');
 
 
-			$('.row-form * button').css('left','-12px').css('bottom','-283px').css('position','relative');
+			$('.row-form * button').css('left','-5px').css('bottom','-288px').css('position','relative').css('width','119px');
 			$('.row-form * button').parent().css('width','5px');
 			$('.row-form').find('input').css('border','1px solid #e8e8e8');
 
@@ -274,9 +317,27 @@
 
 			$('.panel-footer>a').css('min-width', '208px');
 
-
-
         });
+
+
+
+
+		function getSum(){
+			sum = 0;
+			wartosc = $(".panel-body div:last-child").find("input[name*='value']");
+
+			for (index = 0; index < wartosc.length; index++) {
+				sum += +wartosc[index].value ;
+			}
+
+			sum = ((sum < 0) ? 0 : sum);
+			sum_hours = sum % 24 ;
+			sum_days = ( sum - sum_hours )% 23 ;
+			var zeroPad = (num, places) => String(num).padStart(places, '0');
+			sum_formatted = zeroPad(sum_days,2) +':'+ zeroPad(sum_hours,2) +':00:00';
+			$('.row-form').find('.card-footer').empty().append( sum_formatted );
+		}
+
 
 
 
@@ -340,28 +401,7 @@
 
 				$('.row-form').find('.btn.btn-primary.todo').empty().append( $parent.children().length - 1 );
 
-				var sum = 0;
-				$(".panel-body * div:last-child input").each(function(){
-					sum += +$(this).val();
-				});
-				sum = ((sum < 0) ? 0 : sum);
-				sum_hours = sum % 24 ;
-				sum_days = ( sum - sum_hours )% 23 ;
-				var zeroPad = (num, places) => String(num).padStart(places, '0');
-				sum_formatted = zeroPad(sum_days,2) +':'+ zeroPad(sum_hours,2) +':00:00';
-				$('.row-form').find('.card-footer').empty().append( sum_formatted );
-
-
-
-
-
-
-
-
-
-
-
-
+				getSum();
 
 			});
 			$panel.append($panelFooter);

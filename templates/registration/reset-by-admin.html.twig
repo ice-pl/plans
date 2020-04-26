@@ -1,0 +1,70 @@
+{# {% extends 'base.html.twig' %} #}
+
+
+
+{% block stylesheets %}
+
+	<style>
+		#form>*>input{
+			margin-right: 7rem;
+			float: right;
+		}
+	</style>
+
+
+{% endblock %}
+
+
+
+
+{% block body %}
+
+{# 
+	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/jquery-ui-1.12.1.min.js') }}"></script>
+
+	<script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+
+ #}
+
+ 
+	<!-- Button to Open the Modal -->
+{# 	<button type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#modalChangePassword">Change Password</button> #}
+
+	<!-- The Modal -->
+
+
+	<div id="modalChangePassword" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Change Password</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					{{ form(form) }}
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+ 
+
+
+
+
+
+
+
+
+{% endblock %}

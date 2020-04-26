@@ -37,6 +37,16 @@ class SampleProductType extends AbstractType
                     'required' => false,
                 ]
             )
+            ->add('how_many', IntegerType::class,
+                [
+                    'attr' => [
+                        'class' => 'form-control',
+                        'style' => 'display:none;',
+                        ],
+                    'data' => '0',
+                    'label' => false,
+                ]
+            )
             ->add('sample_items', CollectionType::class, [
                 'entry_type' => SampleItemType::class,
                 'entry_options' => ['label' => false],

@@ -159,6 +159,40 @@
             font-family: "Lucida Console", Monaco, monospace;
         }
 
+
+        .item_name_t {
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;   
+            text-overflow: ellipsis;
+            display: block;
+            width: 100%;
+            top: 3px;
+        }
+        .item_name_s {
+          display: inline-block;
+          width: 100%;
+        }
+        .item_name_t:hover, .item_name_s:hover {
+          width: auto;
+        }
+        .item_name_s:hover .item_name_t { 
+          animation: scroll 6s;
+        }
+        .item_name_f {
+          width: 100px;
+          overflow: hidden;
+        }
+        @keyframes scroll {
+            0% {left: 0px;}
+            100% {left: -100%;}                   
+        }
+
+
+
+
+
+
         #together{
             display: flex;
             float: left;
@@ -341,18 +375,27 @@
 
 
             <div id="sample_items-content">
+                {% set sample_doing_id = 0  %}
 
                 <ul id="sample_items-sortable-1" class="connectedSortable">
+                {% set sample_checked = false %}
 
                     {% for sample_item in sample_items %}
                         {% for i in 1..20 %}
                             {% if  sample_item.position == i  %}
                                 <li class = "default" data-index="{{ sample_item.id }}" data-position="{{ i }}">
-                                    {% if  sample_item.name|length > 6  %}
-                                        {{ sample_item.name|slice(0, 7)~'..' }}
-                                    {% else %}
-                                        {{ sample_item.name }}
+                                    {% if sample_checked == false %}
+                                        {% set sample_doing_id = sample_item.id  %}
+                                        {% set sample_checked = true %}
                                     {% endif %}
+
+                                    <div class="item_name_f">
+                                        <div class="item_name_s">
+                                            <div class="item_name_t">{{ sample_item.name }}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a>
                                         <button onClick="refreshItemDescription(this)" value="{{ path('sample_item.description', {id: sample_item.id }) }}">{{ sample_item.value }}</button>
                                     </a>
@@ -367,16 +410,24 @@
 
 
                 <ul id="sample_items-sortable-2" class="connectedSortable">
+                {% set sample_checked = false %}
 
                     {% for sample_item in sample_items %}
                         {% for i in 21..40 %}
                             {% if  sample_item.position == i  %}
                                 <li class = "default" data-index="{{ sample_item.id }}" data-position="{{ i }}">
-                                    {% if  sample_item.name|length > 6  %}
-                                        {{ sample_item.name|slice(0, 7)~'..' }}
-                                    {% else %}
-                                        {{ sample_item.name }}
+                                    {% if sample_checked == false %}
+                                        {% set sample_doing_id = sample_item.id  %}
+                                        {% set sample_checked = true %}
                                     {% endif %}
+
+                                    <div class="item_name_f">
+                                        <div class="item_name_s">
+                                            <div class="item_name_t">{{ sample_item.name }}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a>
                                         <button onClick="refreshItemDescription(this)" value="{{ path('sample_item.description', {id: sample_item.id }) }}">{{ sample_item.value }}</button>
                                     </a>
@@ -393,11 +444,17 @@
                         {% for i in 41..60 %}
                             {% if  sample_item.position == i  %}
                                 <li class = "default" data-index="{{ sample_item.id }}" data-position="{{ i }}">
-                                    {% if  sample_item.name|length > 6  %}
-                                        {{ sample_item.name|slice(0, 7)~'..' }}
-                                    {% else %}
-                                        {{ sample_item.name }}
+                                    {% if sample_doing_id == 0 %}
+                                        {% set sample_doing_id = item.id  %}
                                     {% endif %}
+
+                                    <div class="item_name_f">
+                                        <div class="item_name_s">
+                                            <div class="item_name_t">{{ sample_item.name }}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a>
                                         <button onClick="refreshItemDescription(this)" value="{{ path('sample_item.description', {id: sample_item.id }) }}">{{ sample_item.value }}</button>
                                     </a>
@@ -445,6 +502,13 @@
     </div>
 
 
+
+
+    <script>
+        var sample_doing_id = '{{ sample_doing_id }}';
+    </script>
+
+
 {# 
     <script>
         // var urlSortItems = '{{ path( 'sample_item.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
@@ -468,6 +532,11 @@
 
 
         $(document).ready(function() {
+
+
+            $('#sample_items-content').find("li[data-index="+sample_doing_id+"]").find("a button").trigger('click');
+
+
             $("#sample_items-sortable-1, #sample_items-sortable-2, #sample_items-sortable-3").sortable({
                 connectWith: ".connectedSortable",
                 sample_items: "li:not(.ui-state-disabled)",
@@ -530,7 +599,8 @@
             data: '',
             cache: false,
             success: function(data){
-                $('#inner_description').html(data);
+                $('#inner_description').html('<b><ins>'+data['name']+'</ins></b>'+'<br>'+'<br>');
+                $('#inner_description').append(data['description']);
             },
             error: function(){},
             complete: function(){}

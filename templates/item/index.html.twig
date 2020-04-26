@@ -163,7 +163,46 @@
             align-items: center;
             padding: 0px 5px 0px 5px;
             font-family: "Lucida Console", Monaco, monospace;
+            height:36px;
         }
+
+
+        .item_name_t {
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;   
+            text-overflow: ellipsis;
+            display: block;
+            width: 100%;
+            top: 3px;
+        }
+        .item_name_s {
+          display: inline-block;
+          width: 100%;
+        }
+        .item_name_t:hover, .item_name_s:hover {
+          width: auto;
+        }
+        .item_name_s:hover .item_name_t { 
+          animation: scroll 6s;
+        }
+        .item_name_f {
+          width: 100px;
+          overflow: hidden;
+        }
+        @keyframes scroll {
+            0% {left: 0px;}
+            100% {left: -100%;}                   
+        }
+
+
+
+
+
+
+
+
+
 
         #together{
             display: flex;
@@ -388,11 +427,14 @@
                                         {% set doing_id = item.id  %}
                                         {% set checked = true %}
                                     {% endif %}
-                                    {% if  item.name|length > 6  %}
-                                        {{ item.name|slice(0, 7)~'..' }}
-                                    {% else %}
-                                        {{ item.name }}
-                                    {% endif %}
+
+                                    <div class="item_name_f">
+                                        <div class="item_name_s">
+                                            <div class="item_name_t">{{ item.name }}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a>
                                         <button onClick="refreshItemDescription(this)" value="{{ path('item.description', {itemId: item.id }) }}">{{ item.value }}</button>
                                     </a>
@@ -415,11 +457,14 @@
                                         {% set doing_id = item.id  %}
                                         {% set checked = true %}
                                     {% endif %}
-                                    {% if  item.name|length > 6  %}
-                                        {{ item.name|slice(0, 7)~'..' }}
-                                    {% else %}
-                                        {{ item.name }}
-                                    {% endif %}
+
+                                    <div class="item_name_f">
+                                        <div class="item_name_s">
+                                            <div class="item_name_t">{{ item.name }}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a>
                                         <button onClick="refreshItemDescription(this)" value="{{ path('item.description', {itemId: item.id }) }}">{{ item.value }}</button>
                                     </a>
@@ -439,11 +484,14 @@
                                     {% if doing_id == 0 %}
                                         {% set doing_id = item.id  %}
                                     {% endif %}
-                                    {% if  item.name|length > 6  %}
-                                        {{ item.name|slice(0, 7)~'..' }}
-                                    {% else %}
-                                        {{ item.name }}
-                                    {% endif %}
+
+                                    <div class="item_name_f">
+                                        <div class="item_name_s">
+                                            <div class="item_name_t">{{ item.name }}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a>
                                         <button onClick="refreshItemDescription(this)" value="{{ path('item.description', {itemId: item.id }) }}">{{ item.value }}</button>
                                     </a>
@@ -458,7 +506,8 @@
         </div>
 
         <div id="info">
-            <iframe id="video" src="https://www.youtube.com/embed/kJQP7kiw5Fk?controls=2" allowFullScreen="allowFullScreen"></iframe>
+            {# <iframe id="video" src="https://www.youtube.com/embed/kJQP7kiw5Fk?controls=2" allowFullScreen="allowFullScreen"></iframe> #}
+            <iframe id="video" src="https://www.youtube.com/embed/MRfsHix1eRA?controls=2" allowFullScreen="allowFullScreen"></iframe>
 
 
             <div id="descriptions">
@@ -471,9 +520,9 @@
 
         <div id="conversation">
             <div id="conversations-menu">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <div class="btn-group btn-group-toggle d-flex" data-toggle="buttons">
                     {% for item in items %}
-                        <label class="btn btn-outline-primary" id="{{ item.id }}">
+                        <label class="btn btn-outline-primary flex-fill" id="{{ item.id }}">
                             <input type="radio" name="options" id="{{ item.id }}" autocomplete="off" onClick="refreshConversation(this)" value="{{ path('conversation.create_byItem', {itemId: item.id }) }}"> {{ item.name }}
                         </label>
                     {% endfor %}
@@ -528,6 +577,7 @@
             });
 
             $("#conversations-menu .btn-group #"+doing_id+" input").trigger('click');
+            $('#items-content').find("li[data-index="+doing_id+"]").find("a button").trigger('click');
 
             $("#items-sortable-1, #items-sortable-2, #items-sortable-3").sortable({
                 connectWith: ".connectedSortable",
@@ -591,7 +641,8 @@
             data: '',
             cache: false,
             success: function(data){
-                $('#inner_description').html(data);
+                $('#inner_description').html('<b><ins>'+data['name']+'</ins></b>'+'<br>'+'<br>');
+                $('#inner_description').append(data['description']);
             },
             error: function(){},
             complete: function(){}

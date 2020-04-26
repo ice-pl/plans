@@ -31,9 +31,6 @@
 		}
 		#column-middle{
 		    width: 76.5%;
-		    overflow-x: hidden;
-		    overflow-y: hidden;
-
 		   	max-height: 900px;
 		}
 		#column-right{
@@ -42,7 +39,9 @@
 		   	max-height: 900px;
 		}
 
-
+		#column-middle-top{
+			min-height: 329.66px;
+		}
 
     </style>
 {% endblock %}
@@ -66,6 +65,27 @@
 	<script>
 
 
+	    function refresh(address, connection, replace, position)
+	    {
+	        $.ajax({
+	            type: connection,
+	            url: address,
+	            data: '',
+	            cache: false,
+	            async: true,
+	            success: function(data){
+	                $(replace).html(data);
+					if (sessionStorage.scrollLeft != "undefined" || sessionStorage.scrollTop != "undefined" ) {
+						$(position).scrollLeft(sessionStorage.scrollLeft);
+						$(position).scrollTop(sessionStorage.scrollTop);
+					}
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
+
+
 	    function refreshAllPage(urlAllPage)
 	    {
 	        $.ajax({
@@ -82,36 +102,37 @@
 	    }
 
 
-	    function refreshColumnLeft(urlForColumnLeft)
-	    {
+	    // function refreshColumnLeft(urlForColumnLeft)
+	    // {
+	    //     $.ajax({
+	    //         type: "GET",
+	    //         url: urlForColumnLeft.value,
+	    //         data: '',
+	    //         cache: false,
+	    //         success: function(data){
+	    //             $('#column-left').html(data);
+	    //         },
+	    //         error: function(){},
+	    //         complete: function(){}
+	    //     });
+	    // }
+
+	    function refreshElement(address, replacedElement){
 	        $.ajax({
 	            type: "GET",
-	            url: urlForColumnLeft.value,
+	            url: address.value,
 	            data: '',
 	            cache: false,
 	            success: function(data){
-	                $('#column-left').html(data);
+	                // $('#column-left').html(data);
+	                $(replacedElement).html(data);
 	            },
 	            error: function(){},
 	            complete: function(){}
-	        });
-	    }
+	        });	    }
 
 
-	    function refreshColumnRight(urlForColumnRight)
-	    {
-	        $.ajax({
-	            type: "GET",
-	            url: urlForColumnRight.value,
-	            data: '',
-	            cache: false,
-	            success: function(data){
-	                $('#column-right').html(data);
-	            },
-	            error: function(){},
-	            complete: function(){}
-	        });
-	    }
+
 
 
 	    function refreshColumnMiddleTop(urlForColumnMiddleTop)
@@ -129,6 +150,36 @@
 	        });
 	    }
 
+	    function withoutRefresh(urlForwithoutRefresh)
+	    {
+	        $.ajax({
+	            type: "GET",
+	            url: urlForwithoutRefresh.value,
+	            data: '',
+	            cache: false,
+	            success: function(){
+	                // $('.top').html(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
+	    function refreshModal(urlForModal)
+	    {
+	        $.ajax({
+	            type: "GET",
+	            url: urlForModal.value,
+	            data: '',
+	            cache: false,
+	            success: function(data){
+	                $('#column-left').append(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
+
+
 
 	    function refreshColumnMiddleBottom(urlForColumnMiddleBottom)
 	    {
@@ -140,6 +191,22 @@
 	            cache: false,
 	            success: function(data){
 	                $('#column-middle-bottom').html(data);
+	            },
+	            error: function(){},
+	            complete: function(){}
+	        });
+	    }
+
+
+	    function refreshColumnRight(urlForColumnRight)
+	    {
+	        $.ajax({
+	            type: "GET",
+	            url: urlForColumnRight.value,
+	            data: '',
+	            cache: false,
+	            success: function(data){
+	                $('#column-right').html(data);
 	            },
 	            error: function(){},
 	            complete: function(){}
@@ -176,46 +243,48 @@
 
 
 	<div class="row">
+		{% block columns %}
 
-		<div id="column-left"> 
-			{% block left %}
-				{{ render(controller( 'App\\Controller\\ProjectController::list' )) }}
-			{% endblock %}
-		</div>
-
-
-		<div id="column-middle">
-			{# {% block middle %} #}
-
-
-
-
-			<div class="column" id="column-middle-top">
-				{% block middle_top %}
-					{{ render( controller( default_middle_top )) }}
-				{% endblock %}
-			</div>
-			<div id="column-middle-bottom">
-				{% block middle_bottom %}
-					{# {{ render( controller( default_middle_bottom )) }} #}
+			<div id="column-left"> 
+				{% block left %}
+					{{ render(controller( 'App\\Controller\\ProjectController::list' )) }}
 				{% endblock %}
 			</div>
 
 
+			<div id="column-middle">
+				{# {% block middle %} #}
 
 
-			{# {% endblock %} #}
-
-		</div>
 
 
-		<div id="column-right">
-			{% block right %}
-					{{ render( controller( 'App\\Controller\\SampleProductController::list' )) }}
-					{# {{ render( controller( default_middle_top )) }} #}
+				<div class="column" id="column-middle-top">
+					{% block middle_top %}
+						{# {{ render( controller( default_middle_top )) }} #}
+					{% endblock %}
+				</div>
+				<div id="column-middle-bottom">
+					{% block middle_bottom %}
+						{# {{ render( controller( default_middle_bottom )) }} #}
+					{% endblock %}
+				</div>
 
-			{% endblock %}
-		</div>
+
+
+
+				{# {% endblock %} #}
+
+			</div>
+
+
+			<div id="column-right">
+				{% block right %}
+						{{ render( controller( 'App\\Controller\\SampleProductController::list' )) }}
+						{# {{ render( controller( default_middle_top )) }} #}
+
+				{% endblock %}
+			</div>
+		{% endblock %}
 
 	</div>
 

@@ -42,6 +42,11 @@ class SampleProduct
      */
     protected $sample_items;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $how_many;
+
     public function __construct()
     {
         $this->sample_items = new ArrayCollection();
@@ -124,6 +129,18 @@ class SampleProduct
                 $sampleItem->setSampleProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHowMany(): ?int
+    {
+        return $this->how_many;
+    }
+
+    public function setHowMany(int $how_many): self
+    {
+        $this->how_many = $how_many;
 
         return $this;
     }

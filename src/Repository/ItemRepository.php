@@ -80,5 +80,22 @@ class ItemRepository extends ServiceEntityRepository
 
 
 
+    public function findAllItems_byParentId(int $parentId){
+
+        $qb = $this->createQueryBuilder('i');
+        $qb
+            ->andWhere('i.parent_id = :parent_id' )
+            ->setParameter('parent_id', $parentId )
+            // ->select('i.description')
+            ->select('i.id')
+            ->addSelect('i.interval_time')
+            ->addSelect('i.delay_time')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
 
 }

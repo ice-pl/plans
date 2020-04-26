@@ -27,6 +27,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use \stdClass;
 
+use \DateTime;
+
+
+use App\Entity\SampleItem;
+
+
+
 
 /**
  * @Route("/item", name="item.")
@@ -275,10 +282,92 @@ class ItemController extends AbstractController
                 $item = $em->getRepository(Item::class)->find($index);
                 $item->setPosition($newPosition);
 
-                $em->persist($item);
+                $newDateTime = new DateTime();
+                if($newPosition>0 && $newPosition<=20){
+                    // $item->setStartTime(null);
+                    // $item->setEndTime(null);
+                    // $item->setIntervalTime(null);
+                    // $item->setDelayTime(null);
+                    $em->persist($item);
+                    $em->flush();
+                }
+
+                if($newPosition>20 && $newPosition<=40){
+                    $item->setStartTime($newDateTime);
+                    $em->persist($item);
+                    $em->flush();
+                }
+                if($newPosition>40 && $newPosition<=60){
+                    $item->setEndTime($newDateTime);
+
+                    $intervalTime = $newDateTime->getTimestamp() - $item->getStartTime()->getTimestamp();
+                    $item->setIntervalTime($intervalTime);
+
+                    $em->persist($item);
+                    $em->flush();
+
+
+
+                    $allItemsThatType = $this->getDoctrine()->getRepository(Item::class)->findAllItems_byParentId($item->getParentId());
+
+// interval
+                    $howManyItemsForInterval = 0;
+                    $cumIntervalTime = 0;
+                    foreach($allItemsThatType as $count => $val){
+                        if($val['interval_time'] == null){
+                            $howManyItemsForInterval-=1;
+                        }else{
+                            $cumIntervalTime = $cumIntervalTime + $val['interval_time'];
+                        }
+                        $howManyItemsForInterval+=1;
+                    }
+
+                    $averageIntervalTime = 0;
+                    if($howManyItemsForInterval != 0){
+                        $averageIntervalTime = $cumIntervalTime/$howManyItemsForInterval;
+                    }
+
+                    $sampleItem = $em->getRepository(SampleItem::class)->find($item->getParentId());
+                    $sampleItem->setIntervalCounted($averageIntervalTime);
+                    $em->persist($sampleItem);
+                    $em->flush();
+
+// delay
+
+
+                    foreach($allItemsThatType as $key => $value){
+                        $itemForDelay = $em->getRepository(Item::class)->find($value['id']);
+                        $delayTime = $itemForDelay->getIntervalTime() - $sampleItem->getIntervalCounted();
+                        $itemForDelay->setDelayTime($delayTime);
+                        $em->persist($itemForDelay);
+                        $em->flush();
+                    }
+
+                    $counter = 0;
+                    $cum = 0;
+                    foreach($allItemsThatType as $key => $value){
+                        $itemForAverageDelay = $em->getRepository(Item::class)->find($value['id']);
+                        if( $itemForAverageDelay->getDelayTime() > 0){
+                            $counter += 1;
+                            $cum = $cum + $itemForAverageDelay->getDelayTime();
+                        }
+                    }
+                    if($counter > 0){
+                        $averageDelayTime = $cum/$counter;
+                        $sampleItem->setDelayCounted($averageDelayTime);
+                    }
+
+                    $em->persist($sampleItem);
+                    $em->flush();
+
+
+                }
+
+
+                // $em->persist($item);
             }
         }
-        $em->flush();
+        // $em->flush();
 
         return new Response();
     }
@@ -292,11 +381,17 @@ class ItemController extends AbstractController
     public function description(Request $request, $itemId)
     {
 
-        $item = $this->getDoctrine()->getRepository(Item::class)
-            ->findItemDescription_byId($itemId);
-        $item = $item[0]['description'];
+//         $item = $this->getDoctrine()->getRepository(Item::class)
+//             ->findItemDescription_byId($itemId);
+//         $description = $item[0]['description'];
 
-        return new Response( $item );
+        $description = $this->getDoctrine()->getRepository(Item::class)->find($itemId)->getDescription();
+        $name = $this->getDoctrine()->getRepository(Item::class)->find($itemId)->getName();
+
+        return new JsonResponse( [
+            'name' => $name,
+            'description' => $description,
+        ] );
     }
 
 

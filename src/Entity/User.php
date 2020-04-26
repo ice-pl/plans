@@ -39,21 +39,41 @@ class User implements UserInterface
 
 
 
+
+
+
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\UserProject", mappedBy="userMap", cascade={"persist", "remove"})
      */
-    private $projects;
+    protected $userInverse;
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Conversation", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Conversation", mappedBy="user", cascade={"persist", "remove"})
      */
     protected $conversations;
 
+
+
+
+
+
+
     public function __construct()
     {
-        $this->projects = new ArrayCollection();
         $this->conversations = new ArrayCollection();
+        $this->userInverse = new ArrayCollection();
     }
 
 
@@ -134,36 +154,13 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Project[]
-     */
-    public function getProjects(): Collection
-    {
-        return $this->projects;
-    }
 
-    public function addProject(Project $project): self
-    {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->setUser($this);
-        }
 
-        return $this;
-    }
 
-    public function removeProject(Project $project): self
-    {
-        if ($this->projects->contains($project)) {
-            $this->projects->removeElement($project);
-            // set the owning side to null (unless already changed)
-            if ($project->getUser() === $this) {
-                $project->setUser(null);
-            }
-        }
 
-        return $this;
-    }
+
+
+
 
     /**
      * @return Collection|Conversation[]
@@ -195,4 +192,83 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @return Collection|UserProject[]
+     */
+    public function getUserInverse(): Collection
+    {
+        return $this->userInverse;
+    }
+
+    public function addUserInverse(UserProject $userInverse): self
+    {
+        if (!$this->userInverse->contains($userInverse)) {
+            $this->userInverse[] = $userInverse;
+            $userInverse->setUserMap($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserInverse(UserProject $userInverse): self
+    {
+        if ($this->userInverse->contains($userInverse)) {
+            $this->userInverse->removeElement($userInverse);
+            // set the owning side to null (unless already changed)
+            if ($userInverse->getUserMap() === $this) {
+                $userInverse->setUserMap(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

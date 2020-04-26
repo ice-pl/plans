@@ -32,7 +32,13 @@ use App\Entity\Item;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Entity\UserProject;
 
+use App\Entity\SampleProduct;
+// use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use App\Entity\SampleItem;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 /**
@@ -86,14 +92,18 @@ class ProductController extends AbstractController
 
         $userId = $user->getId(); 
 
-        $projectsId = $this->getDoctrine()->getRepository(Project::class)
-            ->findProjectsId_byUserId($userId);
+        // $projectsId = $this->getDoctrine()->getRepository(Project::class)->findProjectsId_byUserId($userId);
+
+
+
+        $projectsId = $this->getDoctrine()->getRepository(UserProject::class)->findProjectId_byUserId($userId);
 
 
         $projectExist = false;
 
         foreach($projectsId as $field){
-            if($field['project_id'] == $projectId )
+            // if($field['project_id'] == $projectId )
+            if($field['projectId'] == $projectId )
             $projectExist = true;
         }
 
@@ -101,70 +111,30 @@ class ProductController extends AbstractController
             $products = $this->getDoctrine()->getRepository(Product::class)
                 ->findProducts_byProjectId($projectId);
 
-////////////////////////
-////////////////////////
-
-        // dump($products);
 
 
-        foreach($products as $product){
 
-            $productId = $product->getId();
-            $items = $this->getDoctrine()->getRepository(Item::class)->findItems_byProductId($productId);
+            foreach($products as $product){
 
-            foreach($items as $item){
-                $product = $product->addItem($item);
+                $productId = $product->getId();
+                $items = $this->getDoctrine()->getRepository(Item::class)->findItems_byProductId($productId);
+
+                foreach($items as $item){
+                    $product = $product->addItem($item);
+                }
             }
-        }
 
-        // dump($products);
-
-
-
-
-
-// $query = $this->getDoctrine()
-//     ->getRepository(Product::class)
-//     ->createQueryBuilder('p')
-//     ->getQuery();
-// $result_product = $query->getResult(Query::HYDRATE_ARRAY);
-
-// dump($result_product);
-
-
-
-//         foreach($result_product as $product){
-// $productId = $product['id'];
-
-
-//     $items = $this->getDoctrine()->getRepository(Item::class)
-//                 ->findItems_byProductId($productId);
-
-// dump($items);
-
-
-
-
-
-
-//         }
-
-
-
-
-
-////////////////////////
-////////////////////////
 
         }
         else{
             $products=0;
         }
-
+// dump($projectId);
         // return $this->render('product/index-base.html.twig', [
         return $this->render('product/index.html.twig', [
 
-            'products' => $products
+            'products' => $products,
+            'projectId' => $projectId,
         ]);
     }
 
@@ -295,13 +265,36 @@ class ProductController extends AbstractController
     public function delete(Request $request, $id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        $projectId = $product->getProject()->getId();
+// dump($projectId);
+// die;
+
+
+
+        $sampleProduct = $this->getDoctrine()->getRepository(SampleProduct::class)->find($product->getParentId());
+    
+        $newHowMany = $sampleProduct->getHowMany() - 1;
+        $sampleProduct->setHowMany( $newHowMany );
+        if($newHowMany < 0){
+            $sampleProduct->setHowMany( 0 );
+        }
+
+
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($product);
         $entityManager->flush();
 
+        $entityManager->persist($sampleProduct);
+        $entityManager->flush();
+
+
+
+
         // $this->addFlash('success', 'Post was removed');
-        return $this->redirectToRoute('home');
+        // return $this->redirectToRoute('home');
+        return $this->redirectToRoute('product.list_byProject', array('projectId' => $projectId));
+        // return new Response();
     }
 
 
@@ -347,6 +340,101 @@ class ProductController extends AbstractController
         $em->flush();
 
         return new Response();
+    }
+
+
+
+
+
+
+
+    /**
+     * @Route("/createFromSample/{id}/{position}/{projectId}", name="createFromSample")
+     */
+    public function createFromSample(Request $request, $id, $position, $projectId)
+    {
+
+
+        $data = $request->request->all();
+
+        if (isset($data['update'])){
+            foreach($data['positions'] as $position){
+                $index = $position[0];
+                $newPosition = $position[1];
+
+                $sampleProduct = $this->getDoctrine()->getRepository(SampleProduct::class)->find($index);
+                $product = new Product();
+
+
+                $oldProductReflection = new \ReflectionObject($sampleProduct);
+                $newProductReflection = new \ReflectionObject($product);
+
+                foreach ($oldProductReflection->getProperties() as $property) {
+
+                    if ($newProductReflection->hasProperty($property->getName())) {
+                        $newProperty = $newProductReflection->getProperty($property->getName());
+                        $newProperty->setAccessible(true);
+                        $property->setAccessible(true);
+                        $newProperty->setValue($product, $property->getValue($sampleProduct));
+                    }
+                    $product->setPosition($newPosition);
+                }
+
+                $sampleItems = $sampleProduct->getSampleItems();
+
+                foreach ($sampleItems as $sampleItem) {
+
+                    $item = new Item();
+                    $oldItemReflection = new \ReflectionObject($sampleItem);
+                    $newItemReflection = new \ReflectionObject($item);
+
+
+                    foreach ($oldItemReflection->getProperties() as $property) {
+                        if ($newItemReflection->hasProperty($property->getName())) {
+                            $newProperty = $newItemReflection->getProperty($property->getName());
+                            $newProperty->setAccessible(true);
+                            $property->setAccessible(true);
+                            $newProperty->setValue($item, $property->getValue($sampleItem));
+                        }
+                        $item->setPosition($newPosition);
+                        $item->setParentId($sampleItem->getId());
+                    }
+                    
+                    $product->addItem($item);
+                }
+            }
+        }
+
+        $project = $this->getDoctrine()->getRepository(Project::class)->find($projectId);
+        $product->setProject($project);
+        $product->setParentId($sampleProduct->getId());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+        $newId = $product->getId();
+
+// dump($product->getId());
+
+
+        $sampleProduct->setHowMany( $sampleProduct->getHowMany() + 1 );
+        $em->persist($sampleProduct);
+        $em->flush();
+
+// die;
+
+// return new JsonResponse(['newId' => $newId]);
+        return new Response($newId);
+
+
+        // $response = new JsonResponse();
+        // $response->setData(array('newId' => $newId));
+
+        // return $response;
+
+
+
+
+
     }
 
 

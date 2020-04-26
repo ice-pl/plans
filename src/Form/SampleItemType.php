@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextAreaType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 
@@ -35,7 +35,7 @@ class SampleItemType extends AbstractType
                     ],
                 ]
             )
-            ->add('description', TextAreaType::class,
+            ->add('description', TextareaType::class,
                 [
                     'attr' => [ 'class' => 'form-control' ],
                 ]
@@ -45,9 +45,9 @@ class SampleItemType extends AbstractType
                     'attr' => 
                     [
                         'class' => 'form-control',
-                        'value' => '1',
+                        'min' => '1',
                     ],
-
+                    'empty_data' => '1',
                 ]
             )
             // ->add('sample_product')

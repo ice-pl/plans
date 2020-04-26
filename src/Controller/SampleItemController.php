@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Form\SampleItemType;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 /**
  * @Route("/sample_item", name="sample_item.")
@@ -171,7 +173,7 @@ class SampleItemController extends AbstractController
             ->add('value', IntegerType::class,
                 [
                     'attr' => ['class' => 'form-control' ],
-                ]
+                ],
             )
             ->add('save', SubmitType::class, 
             	[
@@ -244,12 +246,13 @@ class SampleItemController extends AbstractController
      */
     public function description(Request $request, $id)
     {
+        $description = $this->getDoctrine()->getRepository(SampleItem::class)->find($id)->getDescription();
+        $name = $this->getDoctrine()->getRepository(SampleItem::class)->find($id)->getName();
 
-        $sample_item = $this->getDoctrine()->getRepository(SampleItem::class)
-            ->findSampleItemDescription_byId($id);
-        $sample_item = $sample_item[0]['description'];
-
-        return new Response( $sample_item );
+        return new JsonResponse( [
+            'name' => $name,
+            'description' => $description,
+        ] );
     }
 
 

@@ -1,0 +1,943 @@
+{# {% extends 'home/index.html.twig' %} #}
+{% block stylesheets %}
+
+    {# <link href="{{ asset('css/bootswatch.css') }}" rel="stylesheet"> #}
+{% endblock %}
+
+
+{% block body %}
+                
+{# 
+    <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery-ui-1.12.1.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+
+ #}
+
+    <!-- Button to Open the Modal -->
+{#     <button type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#modalInfoPanel">Info Panel</button> #}
+
+
+
+
+
+
+    <div  id="modalInfoPanel" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+        <div id="modal-dialog-InfoPanel" class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Info Panel</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+
+    <table class="table table-hover table-borderless">
+        <thead>
+            <tr>
+                <th colspan="3" scope="colgroup" style="text-align: center; border: 1px solid #ccc; border-bottom: none; border-top: none; border-left: none;">Name</th>
+                <th colspan="3" scope="colgroup" style="text-align: center; border: 1px solid #ccc; border-bottom: none; border-top: none;">Interval Time</th>
+                <th colspan="3" scope="colgroup" style="text-align: center; border: 1px solid #ccc; border-bottom: none; border-top: none; border-right: none;">Delay Time</th>
+                <th colspan="1" rowspan="2" scope="colgroup" style="text-align: center; border: 1px solid #ccc; border-bottom: none; border-top: none; border-right: none;"><p>Efficiency</p></th>
+            </tr>
+            <tr>
+                <th scope="col">Project</th>
+                <th scope="col">Product</th>
+                <th scope="col">Item</th>
+
+
+                <th scope="col" style="text-align: center; border-left: 1px solid #ccc;">Item</th>
+                <th scope="col" style="text-align: center;">Average</th>
+                <th scope="col" style="text-align: center;">Progress Bar</th>
+
+
+                <th scope="col" style="text-align: center; border-left: 1px solid #ccc;">Item</th>
+                <th scope="col" style="text-align: center;">Average</th>
+                <th scope="col" style="text-align: center;">Progress Bar</th>
+
+            </tr>
+            <tr>
+                <th colspan="10" scope="colgroup"></th>
+            </tr>
+        </thead>
+
+
+
+
+
+
+
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {% set timeProjectInterval = 0 %}
+            {% set daysProjectInterval = 0 %}
+            {% set hoursProjectInterval = 0 %}
+            {% set minsProjectInterval = 0 %}
+            {% set secProjectInterval = 0 %}
+
+            {% for product in project.product %}
+                {% for item in product.item %}
+
+                    {% set timeProjectInterval = timeProjectInterval + item.intervaltime  %}
+
+                    {% if timeProjectInterval is defined %}
+                        {% set time = timeProjectInterval %}
+                        {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                        {% set time = time - days * (60 * 60 * 24) %}
+                        {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                        {% set time = time - hours * (60 * 60) %}
+                        {% set mins =  (time / 60)|round(0, 'floor') %}
+                        {% set time = time - mins * 60 %}
+                        {% set sec =  (time)|round(0, 'floor') %}
+                        {% set time = time - sec %}
+
+                        {% set daysProjectInterval = days %}
+                        {% set hoursProjectInterval = hours %}
+                        {% set minsProjectInterval = mins %}
+                        {% set secProjectInterval = sec %}
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+
+
+
+            {% set timeProjectIntervalCounted = 0 %}
+            {% set daysProjectIntervalCounted = 0 %}
+            {% set hoursProjectIntervalCounted = 0 %}
+            {% set minsProjectIntervalCounted = 0 %}
+            {% set secProjectIntervalCounted = 0 %}
+
+            {% for product in project.product %}
+                {% for item in product.item %}
+
+                    {% set timeProjectIntervalCounted = timeProjectIntervalCounted + item.sampleItem.intervalcounted %}
+
+                    {% if timeProjectIntervalCounted is defined %}
+                        {% set time = timeProjectIntervalCounted %}
+                        {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                        {% set time = time - days * (60 * 60 * 24) %}
+                        {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                        {% set time = time - hours * (60 * 60) %}
+                        {% set mins =  (time / 60)|round(0, 'floor') %}
+                        {% set time = time - mins * 60 %}
+                        {% set sec =  (time)|round(0, 'floor') %}
+                        {% set time = time - sec %}
+
+                        {% set daysProjectIntervalCounted = days %}
+                        {% set hoursProjectIntervalCounted = hours %}
+                        {% set minsProjectIntervalCounted = mins %}
+                        {% set secProjectIntervalCounted = sec %}
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+
+
+
+            {% set timeProjectDelay = 0 %}
+            {% set daysProjectDelay = 0 %}
+            {% set hoursProjectDelay = 0 %}
+            {% set minsProjectDelay = 0 %}
+            {% set secProjectDelay = 0 %}
+
+            {% for product in project.product %}
+                {% for item in product.item %}
+
+                    {% set timeProjectDelay = timeProjectDelay + item.delaytime %}
+
+                    {% if timeProjectDelay is defined %}
+                        {% set time = timeProjectDelay %}
+                        {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                        {% set time = time - days * (60 * 60 * 24) %}
+                        {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                        {% set time = time - hours * (60 * 60) %}
+                        {% set mins =  (time / 60)|round(0, 'floor') %}
+                        {% set time = time - mins * 60 %}
+                        {% set sec =  (time)|round(0, 'floor') %}
+                        {% set time = time - sec %}
+
+                        {% set daysProjectDelay = days %}
+                        {% set hoursProjectDelay = hours %}
+                        {% set minsProjectDelay = mins %}
+                        {% set secProjectDelay = sec %}
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+
+
+
+
+            {% set timeProjectDelayCounted = 0 %}
+            {% set daysProjectDelayCounted = 0 %}
+            {% set hoursProjectDelayCounted = 0 %}
+            {% set minsProjectDelayCounted = 0 %}
+            {% set secProjectDelayCounted = 0 %}
+
+            {% for product in project.product %}
+                {% for item in product.item %}
+
+                    {% set timeProjectDelayCounted = timeProjectDelayCounted + item.sampleItem.delaycounted %}
+
+                    {% if timeProjectDelayCounted is defined %}
+                        {% set time = timeProjectDelayCounted %}
+                        {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                        {% set time = time - days * (60 * 60 * 24) %}
+                        {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                        {% set time = time - hours * (60 * 60) %}
+                        {% set mins =  (time / 60)|round(0, 'floor') %}
+                        {% set time = time - mins * 60 %}
+                        {% set sec =  (time)|round(0, 'floor') %}
+                        {% set time = time - sec %}
+
+                        {% set daysProjectDelayCounted = days %}
+                        {% set hoursProjectDelayCounted = hours %}
+                        {% set minsProjectDelayCounted = mins %}
+                        {% set secProjectDelayCounted = sec %}
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+            {% set insideIntervalItemsForProjectEfficiency = 0 %}
+            {% set overDelayItemsForProjectEfficiency = 0 %}
+            {% set allItemsForProjectEfficiency = 0 %}
+            {% set firstValueForProjectEfficiency = 0 %}
+            {% set secValueForProjectEfficiency = 0 %}
+            {% set intervalProductProgressForProjectEfficiency = 0 %}
+            {% set delayProductProgressForProjectEfficiency = 0 %}
+            {% set projectEfficiency = 0 %}
+
+            {% for product in project.product %}
+                {% set timeProductIntervalForProjectEfficiency = 0 %}
+                {% set timeProductIntervalCountedForProjectEfficiency = 0 %}
+                {% set timeProductDelayForProjectEfficiency = 0 %}
+                {% set timeProductDelayCountedForProjectEfficiency = 0 %}
+
+                {% for item in product.item %}
+                    {% set timeProductIntervalForProjectEfficiency = timeProductIntervalForProjectEfficiency + item.intervaltime  %}
+                    {% set timeProductIntervalCountedForProjectEfficiency = timeProductIntervalCountedForProjectEfficiency + item.sampleItem.intervalcounted %}
+
+                    {% set timeProductDelayForProjectEfficiency = timeProductDelayForProjectEfficiency + item.delaytime  %}
+                    {% set timeProductDelayCountedForProjectEfficiency = timeProductDelayCountedForProjectEfficiency + item.sampleItem.delaycounted  %}
+                {% endfor %}
+
+
+                {% if timeProductIntervalCountedForProjectEfficiency > 0 %}
+                    {% set intervalProductProgressForProjectEfficiency = ( timeProductIntervalForProjectEfficiency / ( timeProductIntervalCountedForProjectEfficiency ) *100) |round(0, 'floor') %}
+                {% else %}
+                    {% set intervalProductProgressForProjectEfficiency = 0 %}
+                {% endif %}
+
+                {% if intervalProductProgressForProjectEfficiency > 100 %}
+                    {% set intervalProductProgressForProjectEfficiency = 100 %}
+                {% endif %}
+                {% if intervalProductProgressForProjectEfficiency < 0 %}
+                    {% set intervalProductProgressForProjectEfficiency = 0 %}
+                {% endif %}
+
+
+
+                {% set allItemsForProjectEfficiency = loop.index %}
+
+
+
+                {% if timeProductDelayCountedForProjectEfficiency > 0 %}
+                    {% set delayProductProgressForProjectEfficiency = ( timeProductDelayForProjectEfficiency / ( timeProductDelayCountedForProjectEfficiency ) *100) |round(0, 'floor') %}
+                {% else %}
+                    {% set delayProductProgressForProjectEfficiency = 0 %}
+                {% endif %}
+
+                {% if delayProductProgressForProjectEfficiency > 100 %}
+                    {% set delayProductProgressForProjectEfficiency = 100 %}
+                {% endif %}
+                {% if delayProductProgressForProjectEfficiency < 0 %}
+                    {% set delayProductProgressForProjectEfficiency = 0 %}
+                {% endif %}
+
+
+
+
+                {% if intervalProductProgressForProjectEfficiency < 100 %}
+                    {% set insideIntervalItemsForProjectEfficiency = insideIntervalItemsForProjectEfficiency + 1 %}
+                {% endif %}
+
+                {% if delayProductProgressForProjectEfficiency >= 100 %}
+                    {% set overDelayItemsForProjectEfficiency = overDelayItemsForProjectEfficiency + 1 %}
+                {% endif %}
+
+
+                {% set firstValueForProjectEfficiency = insideIntervalItemsForProjectEfficiency / allItemsForProjectEfficiency %}
+                {% set secValueForProjectEfficiency = overDelayItemsForProjectEfficiency / allItemsForProjectEfficiency %}
+
+
+            {% endfor %}
+
+
+
+
+            {% if timeProjectDelayCounted > 0 %}
+                {% set delayProjectProgresssForProjectEfficiency = ( timeProjectDelay / ( timeProjectDelayCounted ) *100) |round(0, 'floor') %}
+            {% else %}
+                {% set delayProjectProgresssForProjectEfficiency = 0 %}
+            {% endif %}
+
+            {% if delayProjectProgresssForProjectEfficiency > 100 %}
+                {% set delayProjectProgresssForProjectEfficiency = 100 %}
+            {% endif %}
+            {% if delayProjectProgresssForProjectEfficiency < 0 %}
+                {% set delayProjectProgresssForProjectEfficiency = 0 %}
+            {% endif %}
+
+            {% set projectEfficiency = ( (firstValueForProjectEfficiency - secValueForProjectEfficiency * ( delayProjectProgresssForProjectEfficiency / 100 )) * 100 ) |round(0, 'floor') %}
+            {% if projectEfficiency < 0 %}
+                {% set projectEfficiency = 1 %}
+            {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+            <td style="border-style: hidden; white-space:nowrap; font-weight: 900; color:#fff; background: #bbb;">{{project.name}}</td>
+            <td style="border-style: hidden; white-space:nowrap; font-weight: 900; color:#fff; background: #bbb;"></td>
+            <td style="border-style: hidden; white-space:nowrap; font-weight: 900; color:#fff; background: #bbb;"></td>
+            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 900; color:#fff; background: #bbb;">{{ "%02d"|format(daysProjectInterval) }} _ {{ "%02d"|format(hoursProjectInterval) }}:{{ "%02d"|format(minsProjectInterval) }}:{{ "%02d"|format(secProjectInterval) }}</td>
+            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 900; color:#fff; background: #bbb;">{{ "%02d"|format(daysProjectIntervalCounted) }} _ {{ "%02d"|format(hoursProjectIntervalCounted) }}:{{ "%02d"|format(minsProjectIntervalCounted) }}:{{ "%02d"|format(secProjectIntervalCounted) }}</td>
+
+            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 900; color:#fff; background: #bbb;">
+
+                {% if timeProjectIntervalCounted > 0 %}
+                    {% set intervalProjectProgresss = ( timeProjectInterval / ( timeProjectIntervalCounted ) *100) |round(0, 'floor') %}
+                {% else %}
+                    {% set intervalProjectProgresss = 0 %}
+                {% endif %}
+
+                {% if intervalProjectProgresss > 100 %}
+                    {% set intervalProjectProgresss = 100 %}
+                {% endif %}
+
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ intervalProjectProgresss }}%;" aria-valuenow="{{ intervalProjectProgresss }}" aria-valuemin="0" aria-valuemax="100">{{ intervalProjectProgresss }}%</div>
+                </div>
+            </td>
+
+
+
+            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 900; color:#fff; background: #bbb;">{{ "%02d"|format(daysProjectDelay) }} _ {{ "%02d"|format(hoursProjectDelay) }}:{{ "%02d"|format(minsProjectDelay) }}:{{ "%02d"|format(secProjectDelay) }}</td>
+            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 900; color:#fff; background: #bbb;">{{ "%02d"|format(daysProjectDelayCounted) }} _ {{ "%02d"|format(hoursProjectDelayCounted) }}:{{ "%02d"|format(minsProjectDelayCounted) }}:{{ "%02d"|format(secProjectDelayCounted) }}</td>
+
+            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 900; color:#fff; background: #bbb;">
+
+                {% if timeProjectDelayCounted > 0 %}
+                    {% set delayProjectProgresss = ( timeProjectDelay / ( timeProjectDelayCounted ) *100) |round(0, 'floor') %}
+                {% else %}
+                    {% set delayProjectProgresss = 0 %}
+                {% endif %}
+
+                {% if delayProjectProgresss > 100 %}
+                    {% set delayProjectProgresss = 100 %}
+                {% endif %}
+                {% if delayProjectProgresss < 0 %}
+                    {% set delayProjectProgresss = 0 %}
+                {% endif %}
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ delayProjectProgresss }}%;" aria-valuenow="{{ delayProjectProgresss }}" aria-valuemin="0" aria-valuemax="100">{{ delayProjectProgresss }}%</div>
+                </div>
+            </td>
+
+            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 900; color:#fff; background: #bbb;">
+                <div class="progress">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ projectEfficiency }}%;" aria-valuenow="{{ projectEfficiency }}" aria-valuemin="0" aria-valuemax="100">{{ projectEfficiency }}%</div>
+                </div>
+            </td>
+
+            <tr></tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {% for product in project.product %}
+
+
+
+
+                {% set timeProductInterval = 0 %}
+                {% for item in product.item %}
+                    {% set timeProductInterval = timeProductInterval + item.intervaltime  %}
+                {% endfor %}
+
+                {% if timeProductInterval is defined %}
+                    {% set time = timeProductInterval %}
+                    {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                    {% set time = time - days * (60 * 60 * 24) %}
+                    {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                    {% set time = time - hours * (60 * 60) %}
+                    {% set mins =  (time / 60)|round(0, 'floor') %}
+                    {% set time = time - mins * 60 %}
+                    {% set sec =  (time)|round(0, 'floor') %}
+                    {% set time = time - sec %}
+
+                    {% set daysProductInterval = days %}
+                    {% set hoursProductInterval = hours %}
+                    {% set minsProductInterval = mins %}
+                    {% set secProductInterval = sec %}
+                {% else %}
+                    {% set daysProductInterval = 0 %}
+                    {% set hoursProductInterval = 0 %}
+                    {% set minsProductInterval = 0 %}
+                    {% set secProductInterval = 0 %}
+                {% endif %}
+
+
+
+                {% set timeProductIntervalCounted = 0 %}
+                {% for item in product.item %}
+                    {% set timeProductIntervalCounted = timeProductIntervalCounted + item.sampleItem.intervalcounted %}
+                {% endfor %}
+
+                {% if timeProductIntervalCounted is defined %}
+                    {% set time = timeProductIntervalCounted %}
+                    {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                    {% set time = time - days * (60 * 60 * 24) %}
+                    {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                    {% set time = time - hours * (60 * 60) %}
+                    {% set mins =  (time / 60)|round(0, 'floor') %}
+                    {% set time = time - mins * 60 %}
+                    {% set sec =  (time)|round(0, 'floor') %}
+                    {% set time = time - sec %}
+
+                    {% set daysProductIntervalCounted = days %}
+                    {% set hoursProductIntervalCounted = hours %}
+                    {% set minsProductIntervalCounted = mins %}
+                    {% set secProductIntervalCounted = sec %}
+                {% else %}
+                    {% set daysProductIntervalCounted = 0 %}
+                    {% set hoursProductIntervalCounted = 0 %}
+                    {% set minsProductIntervalCounted = 0 %}
+                    {% set secProductIntervalCounted = 0 %}
+                {% endif %}
+
+
+
+                {% set timeProductDelay = 0 %}
+                {% for item in product.item %}
+                    {% set timeProductDelay = timeProductDelay + item.delaytime  %}
+                {% endfor %}
+
+                {% if timeProductDelay > 0 %}
+                    {% set time = timeProductDelay %}
+                    {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                    {% set time = time - days * (60 * 60 * 24) %}
+                    {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                    {% set time = time - hours * (60 * 60) %}
+                    {% set mins =  (time / 60)|round(0, 'floor') %}
+                    {% set time = time - mins * 60 %}
+                    {% set sec =  (time)|round(0, 'floor') %}
+                    {% set time = time - sec %}
+
+                    {% set daysProductDelay = days %}
+                    {% set hoursProductDelay = hours %}
+                    {% set minsProductDelay = mins %}
+                    {% set secProductDelay = sec %}
+                {% else %}
+                    {% set daysProductDelay = 0 %}
+                    {% set hoursProductDelay = 0 %}
+                    {% set minsProductDelay = 0 %}
+                    {% set secProductDelay = 0 %}
+                {% endif %}
+
+
+
+                {% set timeProductDelayCounted = 0 %}
+                {% for item in product.item %}
+                    {% set timeProductDelayCounted = timeProductDelayCounted + item.sampleItem.delaycounted  %}
+                {% endfor %}
+
+                {% if timeProductDelayCounted > 0 %}
+                    {% set time = timeProductDelayCounted %}
+                    {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                    {% set time = time - days * (60 * 60 * 24) %}
+                    {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                    {% set time = time - hours * (60 * 60) %}
+                    {% set mins =  (time / 60)|round(0, 'floor') %}
+                    {% set time = time - mins * 60 %}
+                    {% set sec =  (time)|round(0, 'floor') %}
+                    {% set time = time - sec %}
+
+                    {% set daysProductDelayCounted = days %}
+                    {% set hoursProductDelayCounted = hours %}
+                    {% set minsProductDelayCounted = mins %}
+                    {% set secProductDelayCounted = sec %}
+                {% else %}
+                    {% set daysProductDelayCounted = 0 %}
+                    {% set hoursProductDelayCounted = 0 %}
+                    {% set minsProductDelayCounted = 0 %}
+                    {% set secProductDelayCounted = 0 %}
+                {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {% set intervalProgresssForProductEfficiency = 0 %}
+                {% set insideIntervalItemsForProductEfficiency = 0 %}
+                {% set delayProgresssForProductEfficiency = 0 %}
+                {% set overDelayItemsForProductEfficiency = 0 %}
+                {% set allItemsForProductEfficiency = 0 %}
+                {% set delayProductProgresssForProductEfficiency = 0 %}
+                {% set firstValueForProductEfficiency = 0 %}
+                {% set secValueForProductEfficiency = 0 %}
+                {% set productEfficiency = 0 %}
+
+                {% for item in product.item %}
+
+                    {% if item.sampleItem.intervalcounted > 0 %}
+                        {% set intervalProgresssForProductEfficiency = ( item.intervaltime / ( item.sampleItem.intervalcounted ) *100) |round(0, 'floor') %}
+                    {% endif %}
+
+                    {% if intervalProgresssForProductEfficiency < 100 %}
+                        {% set insideIntervalItemsForProductEfficiency = insideIntervalItemsForProductEfficiency + 1 %}
+                    {% endif %}
+
+                    {% if item.sampleItem.delaycounted > 0 %}
+                        {% set delayProgresssForProductEfficiency = ( item.delaytime / ( item.sampleItem.delaycounted ) *100) |round(0, 'floor') %}
+                    {% endif %}
+
+                    {% if delayProgresssForProductEfficiency >= 100 %}
+                        {% set overDelayItemsForProductEfficiency = overDelayItemsForProductEfficiency + 1 %}
+                    {% endif %}
+
+                    {% set allItemsForProductEfficiency = loop.index %}
+
+                    {% if timeProductDelayCounted > 0 %}
+                        {% set delayProductProgresssForProductEfficiency = ( timeProductDelay / ( timeProductDelayCounted ) *100) |round(0, 'floor') %}
+                    {% endif %}
+
+                    {% set firstValueForProductEfficiency = insideIntervalItemsForProductEfficiency / allItemsForProductEfficiency %}
+                    {% set secValueForProductEfficiency = overDelayItemsForProductEfficiency / allItemsForProductEfficiency %}
+                    {% set productEfficiency = ( (firstValueForProductEfficiency - secValueForProductEfficiency * ( delayProductProgresssForProductEfficiency / 100 )) * 100 ) |round(0, 'floor') %}
+                    {% if productEfficiency < 0 %}
+                        {% set productEfficiency = 1 %}
+                    {% endif %}
+
+
+
+                {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {% for item in product.item %}
+
+                    <tr>
+
+                        {% if loop.first  == true %}
+
+                            <td style="border-style: hidden; white-space:nowrap; font-weight: 600; color:#444; background: #eee;"></td>
+                            <td style="border-style: hidden; white-space:nowrap; font-weight: 600; color:#444; background: #eee;">{{product.name}}</td>
+                            <td style="border-style: hidden; white-space:nowrap; font-weight: 600; color:#444; background: #eee;"></td>
+
+
+                            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 600; color:#444; background: #eee;">{{ "%02d"|format(daysProductInterval) }} _ {{ "%02d"|format(hoursProductInterval) }}:{{ "%02d"|format(minsProductInterval) }}:{{ "%02d"|format(secProductInterval) }}</td>
+                            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 600; color:#444; background: #eee;">{{ "%02d"|format(daysProductIntervalCounted) }} _ {{ "%02d"|format(hoursProductIntervalCounted) }}:{{ "%02d"|format(minsProductIntervalCounted) }}:{{ "%02d"|format(secProductIntervalCounted) }}</td>
+
+
+                            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 600; color:#444; background: #eee;">
+
+                                {% if timeProductIntervalCounted > 0 %}
+                                    {% set intervalProductProgresss = ( timeProductInterval / ( timeProductIntervalCounted ) *100) |round(0, 'floor') %}
+                                {% else %}
+                                    {% set intervalProductProgresss = 0 %}
+                                {% endif %}
+
+                                {% if intervalProductProgresss > 100 %}
+                                    {% set intervalProductProgresss = 100 %}
+                                {% endif %}
+
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ intervalProductProgresss }}%;" aria-valuenow="{{ intervalProductProgresss }}" aria-valuemin="0" aria-valuemax="100">{{ intervalProductProgresss }}%</div>
+                                </div>
+                            </td>
+
+
+
+                            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 600; color:#444; background: #eee;">{{ "%02d"|format(daysProductDelay) }} _ {{ "%02d"|format(hoursProductDelay) }}:{{ "%02d"|format(minsProductDelay) }}:{{ "%02d"|format(secProductDelay) }}</td>
+                            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 600; color:#444; background: #eee;">{{ "%02d"|format(daysProductDelayCounted) }} _ {{ "%02d"|format(hoursProductDelayCounted) }}:{{ "%02d"|format(minsProductDelayCounted) }}:{{ "%02d"|format(secProductDelayCounted) }}</td>
+
+
+                            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 600; color:#444; background: #eee;">
+
+                                {% if timeProductDelayCounted > 0 %}
+                                    {% set delayProductProgresss = ( timeProductDelay / ( timeProductDelayCounted ) *100) |round(0, 'floor') %}
+                                {% else %}
+                                    {% set delayProductProgresss = 0 %}
+                                {% endif %}
+
+                                {% if delayProductProgresss > 100 %}
+                                    {% set delayProductProgresss = 100 %}
+                                {% endif %}
+                                {% if delayProductProgresss < 0 %}
+                                    {% set delayProductProgresss = 0 %}
+                                {% endif %}
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ delayProductProgresss }}%;" aria-valuenow="{{ delayProductProgresss }}" aria-valuemin="0" aria-valuemax="100">{{ delayProductProgresss }}%</div>
+                                </div>
+                            </td>
+
+                            {# <td style="border-style: hidden; white-space:nowrap; font-weight: 600; color:#444; background: #eee;">{{ productEfficiency }}</td> #}
+
+
+                            <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 600; color:#444; background: #eee;">
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ productEfficiency }}%;" aria-valuenow="{{ productEfficiency }}" aria-valuemin="0" aria-valuemax="100">{{ productEfficiency }}%</div>
+                                </div>
+                            </td>
+
+
+
+
+                            <tr></tr>
+
+                        {% endif %}
+
+
+
+
+
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center;"></td>
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center;"></td>
+                        
+                        <td style="border-style: hidden; white-space:nowrap; font-weight: 400; color:#aaa;">{{item.name}}</td>
+
+
+
+
+
+
+
+                        {% if item.intervaltime is defined %}
+                            {% set time = item.intervaltime  %}
+                            {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                            {% set time = time - days * (60 * 60 * 24) %}
+                            {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                            {% set time = time - hours * (60 * 60) %}
+                            {% set mins =  (time / 60)|round(0, 'floor') %}
+                            {% set time = time - mins * 60 %}
+                            {% set sec =  (time)|round(0, 'floor') %}
+                            {% set time = time - sec %}
+
+                            {% set daysItemInterval = days %}
+                            {% set hoursItemInterval = hours %}
+                            {% set minsItemInterval = mins %}
+                            {% set secItemInterval = sec %}
+                        {% else %}
+                            {% set daysItemInterval = 0 %}
+                            {% set hoursItemInterval = 0 %}
+                            {% set minsItemInterval = 0 %}
+                            {% set secItemInterval = 0 %}
+                        {% endif %}
+
+
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 400; color:#aaa;">
+                            {{ "%02d"|format(daysItemInterval) }} _ {{ "%02d"|format(hoursItemInterval) }}:{{ "%02d"|format(minsItemInterval) }}:{{ "%02d"|format(secItemInterval) }}
+                        </td>
+
+                        {% if item.sampleItem.intervalcounted is defined %}
+                            {% set time = item.sampleItem.intervalcounted  %}
+                            {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                            {% set time = time - days * (60 * 60 * 24) %}
+                            {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                            {% set time = time - hours * (60 * 60) %}
+                            {% set mins =  (time / 60)|round(0, 'floor') %}
+                            {% set time = time - mins * 60 %}
+                            {% set sec =  (time)|round(0, 'floor') %}
+                            {% set time = time - sec %}
+
+                            {% set daysSampleItemIntervalCounted = days %}
+                            {% set hoursSampleItemIntervalCounted = hours %}
+                            {% set minsSampleItemIntervalCounted = mins %}
+                            {% set secSampleItemIntervalCounted = sec %}
+                        {% else %}
+                            {% set daysSampleItemIntervalCounted = 0 %}
+                            {% set hoursSampleItemIntervalCounted = 0 %}
+                            {% set minsSampleItemIntervalCounted = 0 %}
+                            {% set secSampleItemIntervalCounted = 0 %}
+                        {% endif %}
+
+
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 400; color:#aaa;">
+                            {{ "%02d"|format(daysSampleItemIntervalCounted) }} _ {{ "%02d"|format(hoursSampleItemIntervalCounted) }}:{{ "%02d"|format(minsSampleItemIntervalCounted) }}:{{ "%02d"|format(secSampleItemIntervalCounted) }}
+                        </td>
+
+
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center;">
+
+                            {% if item.sampleItem.intervalcounted > 0 %}
+                                {% set intervalProgresss = ( item.intervaltime / ( item.sampleItem.intervalcounted ) *100) |round(0, 'floor') %}
+                            {% else %}
+                                {% set intervalProgresss = 0 %}
+                            {% endif %}
+
+                            {% if intervalProgresss > 100 %}
+                                {% set intervalProgresss = 100 %}
+                            {% endif %}
+
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ intervalProgresss }}%; opacity: 0.3;" aria-valuenow="{{ intervalProgresss }}" aria-valuemin="0" aria-valuemax="100">{{ intervalProgresss }}%</div>
+                            </div>
+                        </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        {% if item.delaytime > 0 %}
+                            {% set time = item.delaytime  %}
+                            {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                            {% set time = time - days * (60 * 60 * 24) %}
+                            {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                            {% set time = time - hours * (60 * 60) %}
+                            {% set mins =  (time / 60)|round(0, 'floor') %}
+                            {% set time = time - mins * 60 %}
+                            {% set sec =  (time)|round(0, 'floor') %}
+                            {% set time = time - sec %}
+
+                            {% set daysItemDelay = days %}
+                            {% set hoursItemDelay = hours %}
+                            {% set minsItemDelay = mins %}
+                            {% set secItemDelay = sec %}
+                        {% else %}
+                            {% set daysItemDelay = 0 %}
+                            {% set hoursItemDelay = 0 %}
+                            {% set minsItemDelay = 0 %}
+                            {% set secItemDelay = 0 %}
+                        {% endif %}
+
+
+
+
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 400; color:#aaa;">
+                            {{ "%02d"|format(daysItemDelay) }} _ {{ "%02d"|format(hoursItemDelay) }}:{{ "%02d"|format(minsItemDelay) }}:{{ "%02d"|format(secItemDelay) }}
+                        </td>
+
+
+
+
+                        {% if item.sampleItem.delaycounted > 0 %}
+                            {% set time = item.sampleItem.delaycounted  %}
+                            {% set days = (time / (60 * 60 * 24) )|round(0, 'floor') %}
+                            {% set time = time - days * (60 * 60 * 24) %}
+                            {% set hours =  (time / (60 * 60) )|round(0, 'floor') %}
+                            {% set time = time - hours * (60 * 60) %}
+                            {% set mins =  (time / 60)|round(0, 'floor') %}
+                            {% set time = time - mins * 60 %}
+                            {% set sec =  (time)|round(0, 'floor') %}
+                            {% set time = time - sec %}
+
+                            {% set daysSampleItemDelayCounted = days %}
+                            {% set hoursSampleItemDelayCounted = hours %}
+                            {% set minsSampleItemDelayCounted = mins %}
+                            {% set secSampleItemDelayCounted = sec %}
+                        {% else %}
+                            {% set daysSampleItemDelayCounted = 0 %}
+                            {% set hoursSampleItemDelayCounted = 0 %}
+                            {% set minsSampleItemDelayCounted = 0 %}
+                            {% set secSampleItemDelayCounted = 0 %}
+                        {% endif %}
+
+
+
+
+
+
+
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center; font-weight: 400; color:#aaa;">
+                            {{ "%02d"|format(daysSampleItemDelayCounted) }} _ {{ "%02d"|format(hoursSampleItemDelayCounted) }}:{{ "%02d"|format(minsSampleItemDelayCounted) }}:{{ "%02d"|format(secSampleItemDelayCounted) }}
+                        </td>
+
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center;">
+
+                            {% if item.sampleItem.delaycounted > 0 %}
+                                {% set delayProgresss = ( item.delaytime / ( item.sampleItem.delaycounted ) *100) |round(0, 'floor') %}
+                            {% else %}
+                                {% set delayProgresss = 0 %}
+                            {% endif %}
+
+
+                            {% if delayProgresss > 100 %}
+                                {% set delayProgresss = 100 %}
+                            {% endif %}
+                            {% if delayProgresss < 0 %}
+                                {% set delayProgresss = 0 %}
+                            {% endif %}
+
+
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ delayProgresss }}%; opacity: 0.3;" aria-valuenow="{{ delayProgresss }}" aria-valuemin="0" aria-valuemax="100">{{ delayProgresss }}%</div>
+                            </div>
+                        </td>
+                        <td style="border-style: hidden; white-space:nowrap; text-align: center;"></td>
+
+
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+
+
+
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button class="btn btn-danger close_button" type="button" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#modal-dialog-InfoPanel').css( 'min-width', 80 + '%' );
+        });
+    </script>
+
+
+
+
+{% endblock %}
+
+
+
+
+

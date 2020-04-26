@@ -18,6 +18,7 @@
                 <a href="{{ path('conversation.delete', { 'id': conversation.id }) }}" class="btn btn-primary deleteBtn" id="conversation-{{ conversation.id }}">-</a>
             </li>
         {% endfor %}
+    {# {{ render(controller( 'App\\Controller\\ConversationController::list_byItem', { itemId: itemId } )) }} #}
     </ul>
 
 
@@ -145,6 +146,8 @@
 
 
 
+
+
 </script>
 
 
@@ -152,3 +155,19 @@
 
 
 {% endblock %}
+
+
+
+
+
+{# 
+    $(document).ready(function(){
+        var formuuURL = "{{ path('conversation.list_byItem', {itemId: itemId }) }}";
+
+        // $.ajaxSetup({ cache: false });
+        setInterval(function(){
+            $('#conversation-list').load(formuuURL);
+        }, 5000);
+    });
+
+  #}
