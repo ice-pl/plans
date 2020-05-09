@@ -36,6 +36,7 @@
             position: relative;
             left: 689px;
             top: -26px;
+
             height: 0px;
         }
         #switch_button_info{
@@ -104,6 +105,13 @@
         }*/
 
         /*=============================*/
+.empty * img{
+    filter: grayscale(100%);
+    max-height: 114.66px;
+    max-width: 172px;
+}
+
+
 
 
     </style>
@@ -129,6 +137,9 @@
     </div>
 
     <div class="row-card-group">
+
+
+
         <div class="row-cards" id="container">
 
 
@@ -187,16 +198,27 @@
                                     <div class="card-header">{{ header_doing }}
 
 
+
             <a>
-                <button id="delete" onClick="refresh(this.value, 'GET', '#column-middle-top', '#container')" value="{{ path('product.delete', { 'id': product.id }) }}"></button>
+                <button id="delete" onClick="refreshElement(this.value, '#column-middle-top')" value="{{ path('product.delete', { 'id': product.id }) }}"></button>
             </a>
 
 
                                     </div>
-                                    <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
+
+                        {% if not product.image %}
+                            <img src="{{ asset('uploads/noVideo.png') }}" class="card-img-top">
+                        {% else %}
+                            <img src="{{ 'https://img.youtube.com/vi/' ~ product.image ~ '/default.jpg' }} " class="card-img-top">
+                        {% endif %}
+
+
+
+
+
 
                                     <a>
-                                        <button onClick="refreshColumnMiddleBottom(this)" value="{{ path('item.list_byProduct', {productId: product.id }) }}"></button>
+                                        <button onClick="refreshElement(this.value, '#column-middle-bottom')" value="{{ path('item.list_byProduct', {productId: product.id }) }}"></button>
                                     </a>
 
                                     <h5 class="card-title">{{ product.name }}</h5>
@@ -254,17 +276,10 @@
 {% block javascripts %}
 
 
-    <script from="product">
+    <script from="product\index">
 
 
-        $('#container').on( 'scroll', function() {
-            $('#container').scroll(function() {
-                sessionStorage.scrollLeft = $(this).scrollLeft();
-                sessionStorage.scrollTop = $(this).scrollTop();
-                // console.log(sessionStorage.scrollLeft);
-                // console.log(sessionStorage.scrollTop);
-            });
-        });
+
 
 
 
@@ -337,14 +352,6 @@
 
                                 saveNewItemsPositions();
 
-  // return new Promise((resolve, reject) => {
-
-  //   // urlProductsList = '{{ path( 'product.createFromSample', { 'id': '{{ id }}', 'position': '{{ position }}', 'projectId': projectId } ) }}';
-  //   urlProductsList = '{{ path( 'product.list_byProject', { 'projectId': projectId } ) }}';
-
-
-  //                               refreshColumnMiddleTop(urlProductsList);
-  // });
                             }
                         },
 
@@ -410,7 +417,8 @@
 
 
                         address="{{ path('product.list_byProject', {projectId: projectId }) }}";
-                        refresh(address, 'GET', '#column-middle-top', '#container' );
+                        refreshElement(address, '#column-middle-top');
+
                     }
                 });
             }
@@ -447,6 +455,15 @@
                 }
             }
         })();
+
+
+        $('#container').on( 'scroll', function() {
+            $('#container').scroll(function() {
+                sessionStorage.scrollLeft = $(this).scrollLeft();
+                // console.log(sessionStorage.scrollLeft);
+            });
+        });
+
 
 
         $(document).ready(function(){

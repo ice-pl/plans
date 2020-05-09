@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -31,9 +32,28 @@ class SampleProductType extends AbstractType
                     'attr' => ['class' => 'form-control' ],
                 ]
             )
-            ->add('image', FileType::class, 
+            // ->add('image', FileType::class, 
+            //     [
+            //         'mapped' => false,
+            //         'required' => false,
+            //     ]
+            // )
+            // ->add('image', AddressType::class, 
+            //     [
+            //         'label_format' => 'form.address.%name%',
+            //         'mapped' => false,
+            //         'required' => false,
+            //     ]
+            // )
+            // ->add('image', UrlType::class,
+            //     [
+            //         'attr' => [ 'class' => 'form-control' ],
+            //         'required' => false,
+            //     ]
+            // )
+            ->add('image', TextType::class,
                 [
-                    'mapped' => false,
+                    'attr' => [ 'class' => 'form-control' ],
                     'required' => false,
                 ]
             )

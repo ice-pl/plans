@@ -469,7 +469,8 @@
         </div>
 
         <div id="info">
-            <iframe id="video" src="https://www.youtube.com/embed/kJQP7kiw5Fk?controls=2" allowFullScreen="allowFullScreen"></iframe>
+
+            <iframe id="video" src="{{ 'https://www.youtube.com/embed/'~ sample_product.image }}" allowFullScreen="allowFullScreen"></iframe>
 
 
             <div id="descriptions">
@@ -504,13 +505,13 @@
 
 
 
-    <script>
+    <script from="sample_item\index2">
         var sample_doing_id = '{{ sample_doing_id }}';
     </script>
 
 
 {# 
-    <script>
+    <script from="sample_item\index3">
         // var urlSortItems = '{{ path( 'sample_item.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
     </script>
 
@@ -527,7 +528,7 @@
 {% block javascripts %}
 
 
-    <script from="sample_item">
+    <script from="sample_item\index">
 
 
 

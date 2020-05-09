@@ -340,7 +340,7 @@
             resize: none;
         }
 
-        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #form_save {
+        #conversation > #conversation-content > #inner_conversation > form[name="form"] > #form > * > #conversation_form_save {
             display:none;
         }
 
@@ -507,7 +507,7 @@
 
         <div id="info">
             {# <iframe id="video" src="https://www.youtube.com/embed/kJQP7kiw5Fk?controls=2" allowFullScreen="allowFullScreen"></iframe> #}
-            <iframe id="video" src="https://www.youtube.com/embed/MRfsHix1eRA?controls=2" allowFullScreen="allowFullScreen"></iframe>
+            <iframe id="video" src="{{ 'https://www.youtube.com/embed/'~ product.image }}" allowFullScreen="allowFullScreen"></iframe>
 
 
             <div id="descriptions">
@@ -525,6 +525,11 @@
                         <label class="btn btn-outline-primary flex-fill" id="{{ item.id }}">
                             <input type="radio" name="options" id="{{ item.id }}" autocomplete="off" onClick="refreshConversation(this)" value="{{ path('conversation.create_byItem', {itemId: item.id }) }}"> {{ item.name }}
                         </label>
+
+{#                         <label class="btn btn-outline-primary flex-fill" id="{{ item.id }}">
+                            <input type="radio" name="options" id="{{ item.id }}" autocomplete="off" onClick="refreshElement(this.value, '#inner_conversation')" value="{{ path('conversation.create_byItem', {itemId: item.id }) }}"> {{ item.name }}
+                        </label> #}
+
                     {% endfor %}
 
                 </div>
@@ -542,11 +547,11 @@
 
 
 
-    <script>
+    <script from="item\index2">
         var doing_id = '{{ doing_id }}';
     </script>
 
-    <script>
+    <script from="item\index3">
         var urlSortItems = '{{ path( 'item.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
     </script>
 
@@ -563,7 +568,7 @@
 {% block javascripts %}
 
 
-    <script from="item">
+    <script from="item\index">
 
 
 
@@ -660,6 +665,7 @@
             cache: false,
             success: function(data){
                 $('#inner_conversation').html(data);
+                return false;
             },
             error: function(){},
             complete: function(){}

@@ -81,7 +81,23 @@
     		box-shadow: none !important;
 		}
 
+/*.form-card-img-top > img{ 
+   position: relative; 
+margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin: 0 auto;
+}*/
 
+/*h2 { 
+   position: absolute; 
+   top: 40px; 
+   left: 0; 
+   width: 100%; 
+}*/
+/*#yt_button{
+all: none;
+}*/
 	</style>
 
 
@@ -95,6 +111,8 @@
 
 
     <div id="modal-SampleProductPanel" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
+
+
         <div id="modal-dialog-SampleProductPanel" class="modal-dialog">
             <div class="modal-content">
 
@@ -122,7 +140,66 @@
 	        <div class="empty" data-index="" data-position="">
 	            <div class="card border-primary fill" data-index="" data-position="">
 	                <div class="card-header">{{ form_row(form.position, { 'value': 1 } ) }}</div>
-					<div class="form-card-img-top">{{ form_row(form.image) }}</div>
+					<div class="form-card-img-top">
+						<button id="yt_button" style="">Wybierz plik</button>
+						{{ form_row(form.image) }}
+
+
+
+<script>
+	$(document).ready(function(){
+		valFromDatabase = $('#sample_product_image')[0]['value'];
+		if(valFromDatabase){
+			$('#sample_product_image').val("https://www.youtube.com/watch?v="+valFromDatabase);
+			$('.form-card-img-top').append('<img src={{"https://img.youtube.com/vi/'+valFromDatabase+'/default.jpg"}} id="card-img" alt="...">').css('display', 'block').css('margin', '0 auto');
+		}
+
+
+
+		$('#sample_product_image').change(function () {
+			$('.form-card-img-top img').detach();
+			$('#yt_button').css('position','relative').css('z-index', '1');
+		});
+
+		$('#yt_button').click(function(e){
+			e.preventDefault();
+			valFromDatabase = $('#sample_product_image')[0]['value'];
+			valFromDatabase = valFromDatabase.replace("https://www.youtube.com/watch?v=", '' ).substr(0,11);
+
+
+			$('.form-card-img-top').append('<img src={{"https://img.youtube.com/vi/'+valFromDatabase+'/default.jpg"}} id="card-img" alt="...">').css('display', 'block').css('margin', '0 auto');
+
+			$('.row-form * * .form-card-img-top img').css('max-height','75px').css('object-fit','contain').css('filter', 'grayscale(100%)').css('display', 'block').css('margin', '0 auto');
+
+		});
+
+
+	});
+</script>
+{# {% set rendered = valFromDatabase %} #}
+                        {# {% set rendered = "{{ form_row(form.image) }}" %} #}
+
+						{# {{ form_row(rendered) }} #}
+
+
+{# {{ dump({{ rendered }}) }} #}
+{# {{ dump(  form.image|raw  ) }} #}
+
+{# {{ rendered }} #}
+
+
+                        {# <img src="https://img.youtube.com/vi/<insert-youtube-video-id-here>/default.jpg" class="card-img-top" alt="..."> #}
+                        
+                        {# <img src={{'https://img.youtube.com/vi/'~'xGn0Vchdf6c'~'/default.jpg'}} id="card-img" alt="..."> #}
+                        {# <img src={{'https://img.youtube.com/vi/' ~ rendered ~ '/default.jpg'}} id="card-img" alt="..."> #}
+                        {# <img src={{'https://img.youtube.com/vi/' ~ "$('#sample_product_image')[0]['value']" ~ '/default.jpg'}} id="card-img" alt="..."> #}
+
+					</div>
+
+
+
+
+
 	                <h5 class="card-title">{{ form_row(form.name) }}</h5>
 	                <div class="kanban-buttons">
 	                    <a href="#" class="btn btn-primary todo">0</a>
@@ -165,7 +242,6 @@
 
 
 
-					{# {{ form(form) }} #}
                 </div>
 
                 <!-- Modal footer -->
@@ -178,22 +254,81 @@
     </div>
 
 
-<script>
-	var urlSaveType = '{{ urlSaveType }}' ;
-	var urlSaveForm = '{{ path('sample_product.create') }}';
 
-	if(urlSaveType == 'update' ){
-		var sample_product_id = '{{ sample_product_id }}' ;
-		urlSaveForm = '{{ path('sample_product.update', { 'id': sample_product_id }) }}';
-	}
-</script>
-
-    <script>
+    <script from="sample_product\create-update2">
         $(document).ready(function(){
             $('#modal-dialog-SampleProductPanel').css( 'min-width', 80 + '%' );
-        });
-    </script>
 
+
+
+
+
+			urlSaveType = '{{ urlSaveType }}' ;
+			var sample_product_id = '{{ sample_product_id }}' ;
+
+			if( urlSaveType == 'create' ){
+				urlSaveForm = '{{ path('sample_product.create') }}';
+				$('#modal-SampleProductPanel').find('.modal-title').text('Create Sample Product');
+				$('#modal-SampleProductPanel').modal('show');
+
+			}
+
+
+			if(urlSaveType == 'update' ){
+				urlSaveForm = '{{ path('sample_product.update', { 'id': 'sample_product_id' }) }}';
+				urlSaveForm = urlSaveForm.replace("sample_product_id", sample_product_id );
+				$('#modal-SampleProductPanel').find('.modal-title').text('Update Sample Product');
+				$('#modal-SampleProductPanel').modal('show');
+			}
+
+
+        	urlRedirection = '{{ path('sample_product.list') }}';
+
+			$('#sample_product_save').on( 'click', function (e) {
+				e.preventDefault();
+				var form = $(this).closest('form');
+
+				str = form[0][2]['value'];
+				// var find = 'https://www.youtube.com/watch\\?v=';
+				var re = new RegExp('https://www.youtube.com/watch\\?v=', 'g');
+				str = str.replace(re, '').substr(0,11);
+				form[0][2]['value'] = str;
+
+
+
+
+				var formData = form.serialize();
+
+
+
+
+
+
+
+				$.ajax({
+					method:'POST',
+					url: urlSaveForm,
+					data: formData,
+					success: function(){},
+	            	complete: function(){
+
+						refreshElement(urlRedirection, '#column-right');
+		            	$('#modal-SampleProductPanel').modal('hide');
+	            	}
+				});
+			});
+        });
+
+
+		$('#modal-SampleProductPanel').on( 'hidden.bs.modal', function (e) {
+			refreshElement('{{ path('sample_product.list') }}', '#column-right');
+		});
+
+
+
+
+
+    </script>
 
 {% endblock %}
 
@@ -203,42 +338,15 @@
 
 {% block javascripts %}
 
-{# 
-	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
- #}
-
-
-    <script>
-        $(document).ready(function(){
 
 
 
-        	var urlAllPage = '{{ path('home') }}';
-        	var urlRedirection = '{{ path('home') }}';
-
-			$('#sample_product_save').on( 'click', function (e) {
-				e.preventDefault();
-				var form = $(this).closest('form');
-				var formData = form.serialize();
-
-				$.ajax({
-					method:'POST',
-					url: urlSaveForm,
-					data: formData,
-					success: function(data){
-						refreshAllPage(urlAllPage);
-					}
-				});
-			});
-
-
-        });
-
-    </script>
 
 
 
-    <script>
+
+
+    <script from="sample_product\create-update">
 
 		var $collectionHolder;
 		var $addNewItem = $('<a href="#" class="btn btn-info">Add new item</a>');
@@ -288,13 +396,49 @@
 			$('.row-form * * .card-title * label').css('display','none');
 			$('.row-form * * .card-title * input').attr('placeholder', 'Insert Name');
 
+			$('.row-form * * .form-card-img-top * input').attr('placeholder', 'Insert Youtube Path');
+
+// $('#yt_button').css('min-height','38px').css('font-size', '8px');
+// $(".form-card-img-top div").css('position','relative').css('width','69px').css('left', '102.63px').css('marginTop','-38px');
+
+
+
+				$(".form-card-img-top div").css('position','relative').css('marginTop','-38px');
+			if( urlSaveType == 'create' ){
+				$('#yt_button').css('min-height','38px').css('position','relative').css('z-index', '-1');
+			}
+			if( urlSaveType == 'update' ){
+				$('#yt_button').css('min-height','38px').css('position','relative').css('z-index', '-1');
+			}
+
+// $( ".form-card-img-top * input" )
+// .focusin(function() {
+// 	$('#yt_button').css('min-height','38px').css('position','relative').css('z-index', '-1');
+// 	$('.row-form * * .form-card-img-top img').css('opacity', '0.0');
+// })
+// .focusout(function() {
+// 	$('#yt_button').css('min-height','38px').css('position','relative').css('z-index', '1');
+// 	$('.row-form * * .form-card-img-top img').css('opacity', '0.3');
+// });
+
+
+
+
+
+
+
+
+
+
+
 			$('.row-form * * .form-card-img-top * label').css('display','none');
-			$('.row-form * * .form-card-img-top * input').css('max-width','172px').css('min-width','172px');
+
 			$('.row-form * * .form-card-img-top').css('max-width','172px').css('min-width','172px').css('max-height','100px').css('min-height','100px');
+			$('.row-form * * .form-card-img-top img').css('max-height','75px').css('object-fit','contain').css('filter', 'grayscale(100%)').css('display', 'block').css('margin', '0 auto');
 
 
-			$('.row-form * button').css('left','-5px').css('bottom','-288px').css('position','relative').css('width','119px');
-			$('.row-form * button').parent().css('width','5px');
+			$('.row-form * #sample_product_save').css('left','-5px').css('bottom','-288px').css('position','relative').css('width','119px');
+			$('.row-form * #sample_product_save').parent().css('width','5px');
 			$('.row-form').find('input').css('border','1px solid #e8e8e8');
 
 
@@ -412,23 +556,23 @@
 
         $(document).ready(function(){
 
-            $("#panLeft").mouseenter(
+            $('#modal-SampleProductPanel').find("#panLeft").mouseenter(
                 function animateLeft(){
                     $('.row-form').animate({ scrollLeft: "-="+"100px" }, 
                         100,  "linear",
                         animateLeft );
                 });
-            $("#panLeft").mouseleave(
+            $('#modal-SampleProductPanel').find("#panLeft").mouseleave(
                 function() {
                     $(".row-form").stop();
                 });
-            $("#panRight").mouseenter(
+            $('#modal-SampleProductPanel').find("#panRight").mouseenter(
                 function animateRight(){
                     $('.row-form').animate({ scrollLeft: "+="+"100px" }, 
                         100, "linear",
                         animateRight );
                 });
-            $("#panRight").mouseleave(
+            $('#modal-SampleProductPanel').find("#panRight").mouseleave(
                 function() {
                     $(".row-form").stop();
                 });

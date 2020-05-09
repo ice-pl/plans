@@ -74,7 +74,7 @@
 										<td>{{user.username}}</td>
 										{% if 'ROLE_SUPER_ADMIN' in currentUser.getroles(TRUE)  %}
 
-											<script>
+											<script from="registration\admin4">
 												$(document).ready(function(){
 													// $('#modal-dialog-AdminPanel').css( 'min-width', 1000 + 'px' );
 													$('#modal-dialog-AdminPanel').css( 'min-width', 700 + 'px' );
@@ -160,7 +160,7 @@
 
 
 
-	<script>
+	<script from="registration\admin">
 		$(document).ready(function(){
 
 			var chosen_id ;
@@ -190,7 +190,7 @@
 
 	</script>
 
-	<script>
+	<script from="registration\admin2">
 		function saveNewRole(urlForNewRole) {
 		    $.ajax({
 		        url: urlForNewRole.value,
@@ -200,7 +200,7 @@
 	</script>
 
 
-	<script>
+	<script from="registration\admin3">
 		$(document).ready(function(){
 	        $(document).on('show.bs.modal', '.modal', function (event) {
 	            var zIndex = 1040 + (10 * $('.modal:visible').length);

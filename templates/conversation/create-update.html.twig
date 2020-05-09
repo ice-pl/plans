@@ -21,9 +21,18 @@
     {# {{ render(controller( 'App\\Controller\\ConversationController::list_byItem', { itemId: itemId } )) }} #}
     </ul>
 
-
+    
 	{{ form_start(form) }}
-	{{ form_widget(form) }}
+        <div id="form">
+        	{# {{ form_widget(form) }} #}
+            {# {{ form_widget(form.save, { 'label': 'myCustomLabel','id': 'myCustomId' }) }} #}
+            <div>
+                {{ form_widget(form.content) }}
+            </div>
+            <div>
+                {{ form_widget(form.save, { 'id': 'conversation_form_save' }) }}
+            </div>
+        </div>
 	{{ form_end(form) }}
 
 
@@ -31,7 +40,7 @@
 
 
 
-<script>
+<script from="conversation\create-update">
 
     var $inner_conversation = $('#conversation-list');
     if ( $inner_conversation.length){
@@ -59,10 +68,15 @@
 
 
 
+    $("#form_content").keypress(function (e) {
+        if(e.which == 13 && !e.shiftKey) {        
+            $("#conversation_form_save").click();
+            e.preventDefault();
+        }
+    });
 
 
-
-    $('#form_save').click(function (e) {
+    $('#conversation_form_save').click(function (e) {
     	e.preventDefault();
 
 

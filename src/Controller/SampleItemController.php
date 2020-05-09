@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Form\SampleItemType;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\SampleProduct;
 
 
 /**
@@ -70,10 +71,14 @@ class SampleItemController extends AbstractController
         $sample_items = $this->getDoctrine()->getRepository(SampleItem::class)
                 ->findSampleItems_bySampleProductId($id);
 
+        $sample_product = $this->getDoctrine()->getRepository(SampleProduct::class)
+                ->find($id);
+
         // return $this->render('item/index-base.html.twig', [
         return $this->render('sample_item/index.html.twig', [
 
-            'sample_items' => $sample_items
+            'sample_items' => $sample_items,
+            'sample_product' => $sample_product,
         ]);
     }
 

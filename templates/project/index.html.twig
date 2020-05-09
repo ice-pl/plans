@@ -115,9 +115,6 @@
 
 
 
-
-                {{ render(controller( 'App\\Controller\\ProjectController::create' )) }}
-
     <div id="projects">
         <div id="switch_buttons">
             
@@ -133,19 +130,17 @@
             {% for project in projects %}
                 <li class = "default" data-index="{{ project.id }}" data-position="{{ project.position }}">{{ project.name }}
                     <a>
-                        <button id="show" onClick="refreshColumnMiddleTop(this)" value="{{ path('product.list_byProject', {projectId: project.id }) }}"></button>
+                        <button id="show" onClick="refreshElement(this.value, '#column-middle-top')" value="{{ path('product.list_byProject', {projectId: project.id }) }}"></button>
                     </a>
 
+
                     <a>
-                        <button id="update" onClick="refreshModal(this);" value="{{ path('project.update', { 'id': project.id }) }}" data-toggle="modal" data-target="#modal-ProjectPanel"></button>
+                        <button id="update" onClick="refreshElement(this.value, '#column-left', 'add')" value="{{ path('project.update', { 'id': project.id }) }}" data-toggle="modal" data-target="#modal-ProjectPanel"></button>
                     </a>
 
-{#                     <a>
-                        <button id="delete" onClick="refreshColumnLeft(this)" value="{{ path('project.delete', { 'id': project.id }) }}"></button>
-                    </a> #}
 
                     <a>
-                        <button id="delete" onClick="refreshElement(this, '#column-left')" value="{{ path('project.delete', { 'id': project.id }) }}"></button>
+                        <button id="delete" onClick="refreshElement(this.value, '#column-left')" value="{{ path('project.delete', { 'id': project.id }) }}"></button>
                     </a>
 
 
@@ -157,7 +152,7 @@
         </ul>
     </div>
 
-    <script>
+    <script from="project\index2">
         var urlSortProjects = '{{ path( 'project.sort', { 'id': '{{ id }}', 'position': '{{ position }}' } ) }}';
     </script>
 {% endblock %}
@@ -174,7 +169,7 @@
 {% block javascripts %}
 
 
-    <script from="project">
+    <script from="project\index">
         $(document).ready(function() {
             // $('table tbody').sortable({
             $("#sortable-1").sortable({

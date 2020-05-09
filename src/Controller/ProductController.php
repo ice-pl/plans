@@ -173,6 +173,13 @@ class ProductController extends AbstractController
 	                'required' => false,
 	            ]
 	        )
+            // ->add('image', AddressType::class, 
+            //     [
+            //         'label_format' => 'form.address.%name%',
+            //         'mapped' => false,
+            //         'required' => false,
+            //     ]
+            // )
             ->add('save', SubmitType::class, 
             	[
                 	'attr' => [ 'class' => 'btn btn-primary float-right' ]

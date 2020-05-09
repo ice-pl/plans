@@ -99,9 +99,10 @@ class ConversationController extends AbstractController
                 ]
             )
             ->add('save', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary float-right'
-                ]
+                'attr' => 
+                    [
+                        'class' => 'btn btn-primary float-right',
+                    ]
             ])
             ->getForm();
 
@@ -191,7 +192,10 @@ class ConversationController extends AbstractController
             )
             ->add('save', SubmitType::class, 
                 [
-                    'attr' => [ 'class' => 'btn btn-primary float-right' ]
+                    'attr' => 
+                        [ 
+                            'class' => 'btn btn-primary float-right',
+                        ]
                 ]
             )
             ->getForm();

@@ -45,7 +45,7 @@
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {{ render(controller( 'App\\Controller\\RegistrationController::admin_panel' )) }}
-                {{ render(controller( 'App\\Controller\\RegistrationController::user_panel' )) }}
+                {# {{ render(controller( 'App\\Controller\\RegistrationController::user_panel' )) }} #}
             {% endif %}
 
 
@@ -115,8 +115,10 @@
 
                         <button class="dropdown-item" type="button" data-toggle="modal" data-target="#modalChangePassword">Change Password</button>
 
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <button type="button" class="dropdown-item" id="show-UserPanel" onClick="refreshElement(this.value, '.top', 'add', $(this).data('target') )" value="{{ path('user_panel') }}" data-toggle="modal" data-target="#modal-UserPanel">Show User Page</button>
+                        {% endif %}
 
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#modal-UserPanel">Show User Page</button>
 
                         {% if is_granted('ROLE_ADMIN') %}
 
@@ -129,20 +131,12 @@
             {% endif %}
         </div>
 
-
-
-
-
-
-
-
-
-
-
     </div>
 
 
 </nav>
+
+
 
 {# 
     <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>

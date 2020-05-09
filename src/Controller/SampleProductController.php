@@ -19,6 +19,9 @@ use App\Entity\SampleItem;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Form\SampleProductType;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+
 
 
 /**
@@ -89,6 +92,16 @@ class SampleProductController extends AbstractController
         if( $form->isSubmitted() && $form->isValid() ){
 
             $em = $this->getDoctrine()->getManager();
+            // $file = $request->files->get('image');
+
+// $brochureFile = $form->get('image')->getData();
+
+// dump($request->files);
+// dump($brochureFile);
+// die;
+//             if($file){
+//                 $filename = md5(uniqid()).'.'.$file->guessClientExtension();
+//             }
             $em->persist($sample_product);
             $em->flush();
 

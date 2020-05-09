@@ -62,156 +62,103 @@
 	<script type="text/javascript" src="{{ asset('js/popper-1.16.0.umd.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
 
-	<script>
+	<script from="home\index">
 
 
-	    function refresh(address, connection, replace, position)
-	    {
+
+	    function refreshElement(address, replacedElement, whatDo='replace', onComplete=''){
 	        $.ajax({
-	            type: connection,
+	            type: "GET",
 	            url: address,
 	            data: '',
 	            cache: false,
-	            async: true,
 	            success: function(data){
-	                $(replace).html(data);
+
+	            	if(whatDo == 'replace'){
+	                	$(replacedElement).html(data);
+	            	}
+
+	            	if(whatDo == 'add'){
+	                	$(replacedElement).append(data);
+	                	// console.log(data);
+	            	}
+
 					if (sessionStorage.scrollLeft != "undefined" || sessionStorage.scrollTop != "undefined" ) {
-						$(position).scrollLeft(sessionStorage.scrollLeft);
-						$(position).scrollTop(sessionStorage.scrollTop);
+						$(replacedElement +" *").scrollLeft(sessionStorage.scrollLeft);
+						$(replacedElement +" *").scrollTop(sessionStorage.scrollTop);
 					}
+
+// console.log(sessionStorage.scrollLeft);
+// console.log(sessionStorage.scrollTop);
+// return false;
+
+// onComplete;
 	            },
 	            error: function(){},
-	            complete: function(){}
+	            complete: function(){
+	            	// if(whatDoOnComplete == 'remove'){
+	             //    	$(replacedElement).find(data['data-target']).detach();
+	            	// }
+
+// (function () {
+//   // body
+// onComplete;
+// }());
+
+
+// console.log(onComplete);
+// console.log($(this).data('target'));
+
+					$(onComplete).modal('show');
+
+
+
+	            }
 	        });
-	    }
+		}
 
 
-	    function refreshAllPage(urlAllPage)
-	    {
+
+
+	    function refreshModal(address, replacedElement, whatDo='replace'){
 	        $.ajax({
 	            type: "GET",
-	            url: urlAllPage,
+	            url: address,
 	            data: '',
 	            cache: false,
 	            success: function(data){
-	                $('html body').html(data);
+
+	            	if(whatDo == 'replace'){
+	                	$(replacedElement).html(data);
+	            	}
+
+	            	if(whatDo == 'add'){
+	                	$(replacedElement).append(data);
+	            	}
+
+
+
 	            },
 	            error: function(){},
-	            complete: function(){}
+	            complete: function(){
+					$('#modal-UserPanel').modal('show');
+					$("#modal-UserPanel").modal("show");
+
+	            }
 	        });
-	    }
-
-
-	    // function refreshColumnLeft(urlForColumnLeft)
-	    // {
-	    //     $.ajax({
-	    //         type: "GET",
-	    //         url: urlForColumnLeft.value,
-	    //         data: '',
-	    //         cache: false,
-	    //         success: function(data){
-	    //             $('#column-left').html(data);
-	    //         },
-	    //         error: function(){},
-	    //         complete: function(){}
-	    //     });
-	    // }
-
-	    function refreshElement(address, replacedElement){
-	        $.ajax({
-	            type: "GET",
-	            url: address.value,
-	            data: '',
-	            cache: false,
-	            success: function(data){
-	                // $('#column-left').html(data);
-	                $(replacedElement).html(data);
-	            },
-	            error: function(){},
-	            complete: function(){}
-	        });	    }
+		}
 
 
 
 
 
-	    function refreshColumnMiddleTop(urlForColumnMiddleTop)
-	    {
-	        $.ajax({
-	            type: "GET",
-	            url: urlForColumnMiddleTop.value,
-	            data: '',
-	            cache: false,
-	            success: function(data){
-	                $('#column-middle-top').html(data);
-	            },
-	            error: function(){},
-	            complete: function(){}
-	        });
-	    }
-
-	    function withoutRefresh(urlForwithoutRefresh)
-	    {
-	        $.ajax({
-	            type: "GET",
-	            url: urlForwithoutRefresh.value,
-	            data: '',
-	            cache: false,
-	            success: function(){
-	                // $('.top').html(data);
-	            },
-	            error: function(){},
-	            complete: function(){}
-	        });
-	    }
-	    function refreshModal(urlForModal)
-	    {
-	        $.ajax({
-	            type: "GET",
-	            url: urlForModal.value,
-	            data: '',
-	            cache: false,
-	            success: function(data){
-	                $('#column-left').append(data);
-	            },
-	            error: function(){},
-	            complete: function(){}
-	        });
-	    }
 
 
 
-	    function refreshColumnMiddleBottom(urlForColumnMiddleBottom)
-	    {
-	        // alert(urlForColumnMiddleTop.value)
-	        $.ajax({
-	            type: "GET",
-	            url: urlForColumnMiddleBottom.value,
-	            data: '',
-	            cache: false,
-	            success: function(data){
-	                $('#column-middle-bottom').html(data);
-	            },
-	            error: function(){},
-	            complete: function(){}
-	        });
-	    }
 
 
-	    function refreshColumnRight(urlForColumnRight)
-	    {
-	        $.ajax({
-	            type: "GET",
-	            url: urlForColumnRight.value,
-	            data: '',
-	            cache: false,
-	            success: function(data){
-	                $('#column-right').html(data);
-	            },
-	            error: function(){},
-	            complete: function(){}
-	        });
-	    }
+
+
 	</script>
 
 

@@ -87,10 +87,14 @@ class ItemController extends AbstractController
         $items = $this->getDoctrine()->getRepository(Item::class)
                 ->findItems_byProductId($productId);
 
+        $product = $this->getDoctrine()->getRepository(Product::class)
+                ->find($productId);
         // return $this->render('item/index-base.html.twig', [
         return $this->render('item/index.html.twig', [
 
-            'items' => $items
+            'items' => $items,
+            'product' => $product,
+
         ]);
     }
 

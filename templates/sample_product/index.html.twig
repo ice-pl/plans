@@ -53,7 +53,11 @@
         }
 
 
-
+.empty * img{
+    filter: grayscale(100%);
+    max-height: 114.66px;
+    max-width: 172px;
+}
 
     </style>
 {% endblock %}
@@ -64,7 +68,7 @@
 {% block right %}
 
 
-                {{ render(controller( 'App\\Controller\\SampleProductController::create' )) }}
+                {# {{ render(controller( 'App\\Controller\\SampleProductController::create' )) }} #}
 
 
 
@@ -137,30 +141,37 @@
                     <div class="empty" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
                         <div class="card border-primary fill" data-index="{{ sample_product.id }}" data-position="{{ 0 }}">
                             <div class="card-header">{{ header_doing }}
-{#                                 <a>
-                                    <button id="update" onClick="refreshColumnMiddleTop(this)" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}"></button>
-                                </a>
-                                <a>
-                                    <button id="delete" onClick="refreshColumnRight(this)" value="{{ path('sample_product.delete', { 'id': sample_product.id }) }}"></button>
-                                </a> #}
+
+
+{#             <a>
+                <button id="update" onClick="refreshElement(this.value, '#column-middle-top')" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}"></button>
+            </a> #}
+
+                    <a>
+                        <button id="update" onClick="refreshElement(this.value, '#column-right', 'add')" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}" data-toggle="modal" data-target="#modal-SampleProductPanel"></button>
+                    </a>
+
+
+
+
+
 
             <a>
-                <button id="update" onClick="refresh(this.value, 'GET', '#column-middle-top', '#container')" value="{{ path('sample_product.update', { 'id': sample_product.id }) }}"></button>
+                <button id="delete" onClick="refreshElement(this.value, '#column-right')" value="{{ path('sample_product.delete', { 'id': sample_product.id }) }}"></button>
             </a>
-            <a>
-                <button id="delete" onClick="refresh(this.value, 'GET', '#column-right', '#container')" value="{{ path('sample_product.delete', { 'id': sample_product.id }) }}"></button>
-            </a>
-
 
                             </div>
 
 
+                        {% if not sample_product.image %}
+                            <img src="{{ asset('uploads/noVideo.png') }}" class="card-img-top" alt="...">
+                        {% else %}
+                            <img src="{{ 'https://img.youtube.com/vi/' ~ sample_product.image ~ '/default.jpg' }} " class="card-img-top">
+                        {% endif %}
 
-
-                            <img src="{{ asset('uploads/pobrane1.jpg') }}" class="card-img-top" alt="...">
 
                             <a>
-                                <button onClick="refreshElement(this, '#column-middle-bottom')" value="{{ path('sample_item.list_byProduct', {id: sample_product.id }) }}"></button>
+                                <button onClick="refreshElement(this.value, '#column-middle-bottom')" value="{{ path('sample_item.list_byProduct', {id: sample_product.id }) }}"></button>
                             </a>
 
                             <h5 class="card-title">{{ sample_product.name }}</h5>
@@ -202,10 +213,6 @@
 
 
 
-
-
-
-
 {% endblock %}
 
 
@@ -219,7 +226,7 @@
 
 {% block javascripts %}
 
-    <script>
+    <script from="sample_product\index">
 
 
         function update_switch_sample_product() {
@@ -239,6 +246,15 @@
                 $('#column-right').find("*").find('#delete_switch_sample_product').attr('aria-pressed', 'false').removeClass('active focus');
             }, 4000);
         }
+
+
+        $('#container').on( 'scroll', function() {
+            $('#container').scroll(function() {
+                sessionStorage.scrollTop = $(this).scrollTop();
+                // console.log(sessionStorage.scrollTop);
+            });
+        });
+
     </script>
 
 

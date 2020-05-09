@@ -79,7 +79,7 @@
 
 {% block javascripts %}
 
-    <script>
+    <script from="project\create-update">
 
         $(document).ready(function(){
 
@@ -90,6 +90,7 @@
 			if( urlSaveType == 'create' ){
 				urlSaveForm = '{{ path('project.create') }}';
 				$('#modal-ProjectPanel').find('.modal-title').text('Create Project');
+				$('#modal-ProjectPanel').modal('show');
 			}
 
 
@@ -97,8 +98,8 @@
 				urlSaveForm = '{{ path('project.update', { 'id': 'project_id' }) }}';
 				urlSaveForm = urlSaveForm.replace("project_id", project_id );
 				$('#modal-ProjectPanel').find('.modal-title').text('Update Project Name');
+				$('#modal-ProjectPanel').modal('show');
 			}
-console.log(urlSaveType);
 
 
 
@@ -124,7 +125,6 @@ console.log(urlSaveType);
 				            cache: false,
 				            success: function(data){
 				                $('#column-left').html(data);
-				                // $('.modal-backdrop').detach();
 				            },
 				            error: function(){},
 				            complete: function(){
@@ -135,6 +135,10 @@ console.log(urlSaveType);
 				});
 			});
         });
+
+		$('#modal-ProjectPanel').on( 'hidden.bs.modal', function (e) {
+				refreshElement('{{ path('project.list') }}', '#column-left');
+		});
 
 
         $(document).ready(function(){
