@@ -32,20 +32,6 @@ class SampleProductController extends AbstractController
 
 
 
-    /**
-     * @Route("/list_base", name="list_base")
-     */
-    public function list_base(Request $request, $sample_products=null)
-    {
-
-        $sample_products = $this->getDoctrine()->getRepository(SampleProduct::class)->findAll();
-
-        return $this->render('sample_product/index-base.html.twig', [
-            'sample_products' => $sample_products
-        ]);
-    }
-
-
 
 
     /**
@@ -105,7 +91,7 @@ class SampleProductController extends AbstractController
             $em->persist($sample_product);
             $em->flush();
 
-            return $this->redirectToRoute('sample_product.list_base');
+            return $this->redirectToRoute('sample_product.list');
         }
 
 
@@ -168,7 +154,7 @@ class SampleProductController extends AbstractController
             // $em->persist($sample_product);
             $em->flush();
 
-            return $this->redirectToRoute('sample_product.list_base');
+            return $this->redirectToRoute('sample_product.list');
         }
 
 
@@ -194,7 +180,6 @@ class SampleProductController extends AbstractController
         $entityManager->flush();
 
         // $this->addFlash('success', 'Post was removed');
-		// return $this->redirectToRoute('sample_product.list_base');
         return $this->redirectToRoute('sample_product.list');
 
     }

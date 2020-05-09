@@ -156,7 +156,8 @@ class ItemController extends AbstractController
             $em->persist($item);
             $em->flush();
 
-            return $this->redirectToRoute('item.list_base');
+            // return $this->redirectToRoute('item.list_base');
+            return $this->redirectToRoute('item.list');
         }
 
 
@@ -216,7 +217,8 @@ class ItemController extends AbstractController
             // $em->persist($item);
             $em->flush();
 
-            return $this->redirectToRoute('item.list_base');
+            // return $this->redirectToRoute('item.list_base');
+            return $this->redirectToRoute('item.list');
         }
 
 
@@ -247,7 +249,8 @@ class ItemController extends AbstractController
 
         // $this->addFlash('success', 'Post was removed');
         // return $this->redirectToRoute('home');
-        return $this->redirectToRoute('item.list_base');
+        // return $this->redirectToRoute('item.list_base');
+        return $this->redirectToRoute('item.list');
     }
 
 

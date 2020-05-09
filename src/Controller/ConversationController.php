@@ -58,20 +58,6 @@ class ConversationController extends AbstractController
     }
 
 
-    /**
-     * @Route("/list_base", name="list_base")
-     */
-    public function list_base(Request $request)
-    {
-
-        $conversations = $this->getDoctrine()->getRepository(Conversation::class)->findAll();
-
-        return $this->render('conversation/index-base.html.twig', [
-            'conversations' => $conversations
-        ]);
-    }
-
-
 
 
 

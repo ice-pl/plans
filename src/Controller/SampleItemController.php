@@ -47,19 +47,6 @@ class SampleItemController extends AbstractController
 
 
 
-    /**
-     * @Route("/list_base", name="list_base")
-     */
-    public function list_base(Request $request)
-    {
-
-        $sample_items = $this->getDoctrine()->getRepository(SampleItem::class)->findAll();
-
-        return $this->render('sample_item/index-base.html.twig', [
-            'sample_items' => $sample_items
-        ]);
-    }
-
 
 
     /**
@@ -74,7 +61,6 @@ class SampleItemController extends AbstractController
         $sample_product = $this->getDoctrine()->getRepository(SampleProduct::class)
                 ->find($id);
 
-        // return $this->render('item/index-base.html.twig', [
         return $this->render('sample_item/index.html.twig', [
 
             'sample_items' => $sample_items,
@@ -138,7 +124,7 @@ class SampleItemController extends AbstractController
             $em->persist($sample_item);
             $em->flush();
 
-            return $this->redirectToRoute('sample_item.list_base');
+            return $this->redirectToRoute('sample_item.list');
         }
 
 
@@ -196,7 +182,7 @@ class SampleItemController extends AbstractController
             // $em->persist($sample_item);
             $em->flush();
 
-            return $this->redirectToRoute('sample_item.list_base');
+            return $this->redirectToRoute('sample_item.list');
         }
 
 
@@ -223,7 +209,7 @@ class SampleItemController extends AbstractController
 
         // $this->addFlash('success', 'Post was removed');
         // return $this->redirectToRoute('home');
-        return $this->redirectToRoute('sample_item.list_base');
+        return $this->redirectToRoute('sample_item.list');
     }
 
 

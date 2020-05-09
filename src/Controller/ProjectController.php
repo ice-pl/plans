@@ -68,35 +68,6 @@ class ProjectController extends AbstractController
 
 
 
-    /**
-     * @Route("/list_base", name="list_base", methods={"GET"})
-     */
-    public function list_base(Request $request, UserInterface $user)
-    {
-
-        $userId = $user->getId(); 
-
-
-        // $projects = $this->getDoctrine()->getRepository(Project::class)->findProjects_byUserId($userId);
-        $idForProjects = $this->getDoctrine()->getRepository(UserProject::class)->findProjectId_byUserId($userId);
-
-
-        $projects = array();
-        foreach ($idForProjects as $nr => $v) {
-            foreach ($v as $key => $value) {
-                $singleProject = $this->getDoctrine()->getRepository(Project::class)->find($value);
-            }
-            array_push($projects, $singleProject);
-        }
-        // dump( $projects );
-
-
-        return $this->render('project/index-base.html.twig', [
-            'projects' => $projects,
-        ]);
-    }
-
-
 
     /**
      * @Route("/list", name="list", methods={"GET"})

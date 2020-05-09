@@ -52,19 +52,6 @@ class ProductController extends AbstractController
 
 
 
-    /**
-     * @Route("/list_base", name="list_base")
-     */
-    public function list_base(Request $request, UserInterface $user, $products=null)
-    {
-
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-
-        return $this->render('product/index-base.html.twig', [
-            'products' => $products
-        ]);
-    }
-
 
 
     /**
@@ -129,8 +116,7 @@ class ProductController extends AbstractController
         else{
             $products=0;
         }
-// dump($projectId);
-        // return $this->render('product/index-base.html.twig', [
+
         return $this->render('product/index.html.twig', [
 
             'products' => $products,
